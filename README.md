@@ -1,25 +1,26 @@
-# Farmacia San Daniel
+# Farmacias San Daniel
 
-Tienda online de Farmacia San Daniel: catálogo de vitaminas y suplementos con filtros, carro de compras y pedido por WhatsApp.
+Prototipo de tienda online de Farmacias San Daniel, hecho en HTML, CSS y JavaScript sin dependencias ni paso de compilación.
+
+## Páginas
+
+- `index.html`: portada (carrusel, beneficios, categorías, ofertas de la semana, más vendidos, Club San Daniel, servicios, marcas y consejos).
+- `categoria.html`: listado de una categoría con filtros, orden y paginación.
+- `producto.html?id=N`: detalle de producto con galería, precio, cantidad, opciones de entrega y ficha.
+- `carro.html`: carro de compras con cantidades, cupón, forma de entrega y resumen.
 
 ## Archivos
 
-- `index.html`: la página completa y lista para publicar. No necesita servidor ni dependencias; basta con subirla a cualquier hosting estático (GitHub Pages, Netlify, etc.).
-- `src.html`: el archivo fuente que se edita.
-- `build.py`: genera `index.html` a partir de `src.html`, incrustando el logo y los íconos usados.
-- `logo.png` / `logo.webp`: logo de la farmacia.
-- `icons/`: íconos de [Phosphor Icons](https://phosphoricons.com) (licencia MIT).
+- `css/styles.css`: todos los estilos. Los colores están en `:root` y salen del logo.
+- `js/data.js`: menú de categorías y productos de ejemplo.
+- `js/common.js`: header, mega menú, tarjetas de producto, carro (se guarda en el navegador) y avisos.
+- `js/home.js`, `js/categoria.js`, `js/producto.js`, `js/carro.js`: lógica de cada página.
+- `assets/logo.png`: logo.
 
-## Cómo editar
+## Cómo verlo
 
-1. Modifica `src.html` (textos, productos en la lista `P` del script, colores en `:root`).
-2. Ejecuta `python3 build.py` (requiere Python 3).
-3. Sube el `index.html` generado.
+Abre `index.html` en el navegador, o publícalo en cualquier hosting estático (Vercel, Netlify, GitHub Pages). Con Vercel: `npx vercel deploy --prod` dentro de esta carpeta.
 
-## Antes de publicar
+## Datos de ejemplo
 
-Reemplaza los datos de ejemplo por los reales:
-
-- Teléfono `600 260 1457` y WhatsApp `+56 9 2601 4578` (también en el enlace `wa.me/56926014578`).
-- Direcciones de los locales, nombre del químico farmacéutico responsable y cifras ("27 años", "14 locales", reseñas).
-- Productos, marcas y precios de la lista `P`.
+Marcas, productos, precios, costos de despacho, comunas, cupones (`BIENVENIDA10`, `SANDANIEL5`), teléfono y correo son de ejemplo y hay que reemplazarlos por los reales antes de publicar.
