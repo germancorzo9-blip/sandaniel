@@ -29,19 +29,82 @@
     page: 1
   };
 
-  // Búsqueda que viene desde otra página (?q= o sessionStorage)
-  let initialQuery = new URLSearchParams(location.search).get('q') || '';
+  /* ---------- Qué listado mostrar: ?cat=, ?sub= y ?q= ---------- */
+  // Si la URL perdió los parámetros al navegar, se usan los del último enlace elegido.
+  let query = location.search.slice(1);
   try {
-    initialQuery = initialQuery || sessionStorage.getItem('sd-query') || '';
+    if (!query) query = sessionStorage.getItem('sd-cat-query') || '';
+    sessionStorage.removeItem('sd-cat-query');
     sessionStorage.removeItem('sd-query');
   } catch (err) { /* sin storage */ }
-  if (initialQuery) {
-    state.query = initialQuery.toLowerCase();
-    $('#searchInput').value = initialQuery;
+  const params = new URLSearchParams(query);
+  const searchTerm = (params.get('q') || '').trim();
+  const menuEntry = MENU.find(m => m.cat === params.get('cat'));
+  const catKey = CATEGORIES[params.get('cat')] ? params.get('cat') : (searchTerm || menuEntry ? null : 'vitaminas');
+  const config = catKey ? CATEGORIES[catKey] : null;
+  const mode = config ? 'category' : searchTerm ? 'search' : 'soon';
+
+  const CAT_PRODUCTS = mode === 'search' ? PRODUCTS
+    : mode === 'category' ? PRODUCTS.filter(p => config.ownOnly ? p.own : p.cat === catKey)
+    : [];
+  const SUBCAT_ORDER = [...new Set([...(config ? config.subcats : []), ...CAT_PRODUCTS.map(p => p.subcat)])];
+  const TYPES = ['Venta directa', 'Receta simple'].filter(t => CAT_PRODUCTS.some(p => p.type === t));
+
+  if (searchTerm) {
+    state.query = searchTerm.toLowerCase();
+    $('#searchInput').value = searchTerm;
+  }
+  const sub = params.get('sub');
+  if (sub && SUBCAT_ORDER.includes(sub)) state.subcat = sub;
+
+  /* ---------- Cabecera de la página según la categoría ---------- */
+  const pageName = mode === 'category' ? config.name : mode === 'search' ? `Resultados para “${searchTerm}”` : menuEntry.name;
+  document.title = `${mode === 'search' ? 'Búsqueda' : pageName} | Farmacias San Daniel`;
+  $('#catTitle').textContent = pageName;
+  $('#catCrumbs').insertAdjacentHTML('beforeend',
+    (config && config.parent ? `<span>/</span><a href="${SD.categoryUrl(catKey)}">${config.parent}</a>` : '') +
+    `<span>/</span><span aria-current="page">${mode === 'search' ? 'Búsqueda' : pageName}</span>`);
+  $('#catSeo').innerHTML = config ? `<p>${config.seo}</p>` : '';
+  $('#catSeo').hidden = !config;
+
+  function bannerArt(type) {
+    if (type === 'boxes') return '<span class="b-box b-box--1"></span><span class="b-box b-box--2"></span><span class="b-box b-box--3"></span>';
+    if (type === 'dermo') return '<span class="b-tube"></span><span class="b-jar"></span>';
+    return '<span class="b-bottle b-bottle--1"></span><span class="b-bottle b-bottle--2"></span><span class="b-bottle b-bottle--3"></span>';
+  }
+  const bigText = b => b.unit ? `${b.big}<small>${b.unit}<em>dcto.</em></small>` : b.big;
+  if (config) {
+    const { main, side } = config.banners;
+    $('#catBanners').innerHTML = `
+      <a href="${SD.categoryUrl(catKey)}" class="banner banner--main">
+        <div class="banner__text">
+          <span class="banner__kicker">${main.kicker}</span>
+          <span class="banner__sub">${main.sub}</span>
+          <span class="banner__big${main.unit ? '' : ' banner__big--price'}">${bigText(main)}</span>
+        </div>
+        <div class="banner__badge"><strong>Cuídate</strong><span>y ahorra</span></div>
+        <div class="banner__art banner__art--${main.art}" aria-hidden="true">${bannerArt(main.art)}</div>
+      </a>
+      <a href="${SD.categoryUrl(catKey)}" class="banner banner--side">
+        <div class="banner__badge banner__badge--light"><strong>Cuídate</strong><span>y ahorra</span></div>
+        <span class="banner__kicker">${side.kicker}</span>
+        <span class="banner__big banner__big--sm">${bigText(side)}</span>
+      </a>`;
+  }
+  $('#catBanners').hidden = !config;
+
+  // En la página de marca propia el filtro de marca propia sobra
+  if (config && config.ownOnly) $('#ownBrand').closest('label').hidden = true;
+
+  // Categoría del menú que todavía no tiene productos online
+  if (mode === 'soon') {
+    $('#catSoon').hidden = false;
+    document.querySelector('.listing').hidden = true;
+    document.querySelector('.listing-head__controls').hidden = true;
   }
 
   /* ---------- Filtros ---------- */
-  const baseList = () => PRODUCTS.filter(p =>
+  const baseList = () => CAT_PRODUCTS.filter(p =>
     !state.query || (p.brand + ' ' + p.name).toLowerCase().includes(state.query));
 
   function applyFilters(list, skip) {
@@ -69,7 +132,7 @@
 
     // Categorías
     const catCounts = countBy(applyFilters(base, 'subcat'), p => p.subcat);
-    const allCats = [...new Set([...SUBCATS, ...PRODUCTS.map(p => p.subcat)])];
+    const allCats = SUBCAT_ORDER;
     $('#filterCats').innerHTML = `
       <li><button class="${!state.subcat ? 'is-active' : ''}" data-cat="">Todas<span class="count">${applyFilters(base, 'subcat').length}</span></button></li>` +
       allCats.filter(c => catCounts[c]).map(c => `
@@ -82,7 +145,7 @@
     // Marcas
     const brandCounts = countBy(applyFilters(base, 'brand'), p => p.brand);
     const q = $('#brandSearch').value.trim().toLowerCase();
-    const brands = [...new Set(PRODUCTS.map(p => p.brand))].sort().filter(b => b.toLowerCase().includes(q));
+    const brands = [...new Set(CAT_PRODUCTS.map(p => p.brand))].sort().filter(b => b.toLowerCase().includes(q));
     $('#filterBrands').innerHTML = brands.map(b => checkbox('brand', b, b, brandCounts[b], state.brands.has(b))).join('')
       || '<p class="muted">Sin coincidencias</p>';
 
@@ -103,7 +166,7 @@
 
     // Tipo
     const typeCounts = countBy(applyFilters(base, 'type'), p => p.type);
-    $('#filterTypes').innerHTML = ['Venta directa', 'Receta simple'].map(t =>
+    $('#filterTypes').innerHTML = TYPES.map(t =>
       checkbox('type', t, t, typeCounts[t], state.types.has(t))).join('');
   }
 
@@ -188,10 +251,10 @@
   $('#brandSearch').addEventListener('input', renderFilters);
 
   function clearAll() {
-    Object.assign(state, { subcat: null, own: false, price: 'all', query: '', page: 1 });
+    Object.assign(state, { subcat: null, own: false, price: 'all', query: mode === 'search' ? state.query : '', page: 1 });
     state.brands.clear(); state.promos.clear(); state.types.clear();
     $('#brandSearch').value = '';
-    $('#searchInput').value = '';
+    if (mode !== 'search') $('#searchInput').value = '';
     render();
   }
   $('#clearFilters').addEventListener('click', clearAll);

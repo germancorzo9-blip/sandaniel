@@ -1020,3 +1020,40 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 }
 .summary .payments { gap: 6px; }
 .summary .payments span { padding: 5px 8px; font-size: 10px; }
+
+/* =========================================================
+   Categorías múltiples, Club y bioequivalentes (ronda 1)
+   ========================================================= */
+.banner__big--price { font-size: 58px; letter-spacing: -1px; margin-top: 6px; }
+.b-box { display: block; position: relative; background: #fff; border-radius: 4px; box-shadow: 0 6px 16px rgba(0,0,0,.18); }
+.b-box::after { content: ''; position: absolute; left: 0; right: 0; top: 34%; height: 34%; background: var(--c); }
+.b-box--1 { width: 92px; height: 70px; --c: var(--red); }
+.b-box--2 { width: 120px; height: 96px; --c: #14a37f; }
+.b-box--3 { width: 84px; height: 60px; --c: #f5b400; }
+.banner__art--dermo { gap: 16px; }
+.banner__art--dermo .b-tube { width: 50px; height: 130px; }
+.banner__art--dermo .b-tube::before { left: 13px; right: 13px; top: -16px; height: 18px; }
+.banner__art--dermo .b-jar { width: 110px; height: 80px; }
+.banner__art--dermo .b-jar::before { top: -20px; height: 24px; }
+
+.bioeq { display: inline-block; margin-left: 4px; padding: 1px 7px; border-radius: 4px; background: #fff3c4; color: #7a5600; font-size: 10px; font-weight: 700; vertical-align: 1px; }
+
+.club-price { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 12px; color: var(--red-dark); font-weight: 600; }
+.club-price b { font-size: 15px; font-weight: 800; color: var(--red); font-variant-numeric: tabular-nums; }
+.club-card { display: inline-grid; place-items: center; width: 26px; height: 17px; border-radius: 3px; background: linear-gradient(135deg, var(--red), var(--red-dark)); color: #fff; font-size: 8px; font-weight: 800; letter-spacing: .3px; }
+
+.soon { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 56px 20px; border: 1px dashed #c8d3df; border-radius: 16px; }
+.soon__icon { width: 88px; height: 88px; border-radius: 50%; background: var(--blue-light); color: var(--blue); display: grid; place-items: center; margin-bottom: 4px; }
+.soon__icon svg { width: 42px; height: 42px; stroke-width: 1.5; }
+.soon h2 { margin: 0; font-size: 22px; color: var(--blue-dark); }
+.soon p { margin: 0; max-width: 460px; color: var(--muted); line-height: 1.6; }
+.soon__links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 8px; }
+
+@media (max-width: 900px) {
+  .banner__big--price { font-size: 44px; }
+}
+.ptag--bioeq { background: #fff3c4; color: #7a5600; border-color: #f2dd8a; }
+.club-price--lg { font-size: 13px; margin-top: 6px; }
+.club-price--lg b { font-size: 18px; }
+.banner--main .banner__text { max-width: 42%; }
+@media (max-width: 900px) { .banner--main .banner__text { max-width: none; } }

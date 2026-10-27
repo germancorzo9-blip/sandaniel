@@ -16,7 +16,7 @@
   const sku = 'SD-' + String(p.id).padStart(5, '0');
   const isRx = p.type === 'Receta simple';
   const FREE_SHIPPING = SHIPPING.freeFrom;
-  const plural = (unit, n) => n === 1 || unit === 'ml' ? unit : unit === 'porción' ? 'porciones' : unit + 's';
+  const plural = (unit, n) => n === 1 || unit === 'ml' || unit === 'g' ? unit : unit === 'porción' ? 'porciones' : unit + 's';
 
   document.title = `${p.brand} ${p.name} | Farmacias San Daniel`;
 
@@ -76,13 +76,38 @@
       desc: 'Vitamina esencial que contribuye al funcionamiento normal del organismo y a la reducción del cansancio y la fatiga.',
       use: 'Tomar 1 unidad al día o según indicación de tu médico.',
       comp: ['Principio activo indicado en el envase', 'Excipientes c.s.']
-    }
+    },
+    /* Medicamentos */
+    'Dolor y fiebre': { desc: 'Analgésico y antipirético indicado para el alivio sintomático del dolor leve a moderado, como dolor de cabeza, muscular o dental, y para bajar la fiebre.', use: 'Adultos y mayores de 12 años: 1 comprimido cada 6 a 8 horas, según necesidad. No superar la dosis máxima indicada en el folleto.' },
+    'Antiinflamatorios': { desc: 'Antiinflamatorio no esteroidal (AINE) que alivia el dolor y la inflamación de origen muscular, articular o por golpes y torceduras.', use: 'Usar la menor dosis eficaz durante el menor tiempo posible. Tomar junto a las comidas. En formato gel, aplicar sobre la zona afectada 3 a 4 veces al día.' },
+    'Resfrío y gripe': { desc: 'Alivia los síntomas del resfrío común y la gripe, como congestión, tos con flema, dolor de cabeza y malestar general.', use: 'Seguir las indicaciones del folleto según la edad. No usar por más de 5 días sin consultar a un médico.' },
+    'Antialérgicos': { desc: 'Antihistamínico que alivia los síntomas de la rinitis alérgica y la urticaria: estornudos, picazón, secreción nasal y ojos llorosos.', use: 'Adultos y mayores de 12 años: 1 comprimido al día. Puede producir somnolencia; evita conducir si te ocurre.' },
+    'Sistema digestivo': { desc: 'Indicado para el tratamiento de molestias digestivas como acidez, reflujo o deshidratación por diarrea, según el producto.', use: 'Tomar según lo indicado en el folleto, de preferencia en ayunas o disuelto en agua en el caso de los sobres.' },
+    'Cardiovascular': { desc: 'Medicamento indicado para el control de la presión arterial alta. Su uso debe ser indicado y controlado por un médico.', use: 'Tomar según indicación médica, todos los días a la misma hora. No suspendas el tratamiento sin consultar a tu médico.' },
+    'Colesterol': { desc: 'Ayuda a reducir los niveles de colesterol LDL y triglicéridos en la sangre, como complemento de una dieta adecuada.', use: 'Tomar 1 comprimido al día o según indicación médica, de preferencia a la misma hora.' },
+    'Diabetes': { desc: 'Antidiabético oral que ayuda a controlar los niveles de glucosa en la sangre en personas con diabetes tipo 2.', use: 'Tomar junto a las comidas, según la dosis indicada por tu médico.' },
+    'Hormonas': { desc: 'Hormona tiroidea indicada para el tratamiento del hipotiroidismo. La dosis la define tu médico según tus exámenes.', use: 'Tomar en ayunas, 30 minutos antes del desayuno, con un vaso de agua.' },
+    'Anticonceptivos': { desc: 'Anticonceptivo oral combinado de uso diario. Su uso debe ser indicado y controlado por un profesional de la salud.', use: 'Tomar 1 comprimido al día a la misma hora durante 21 días, seguido de 7 días de descanso.' },
+    'Sistema nervioso': { desc: 'Medicamento indicado para el tratamiento de trastornos del ánimo y ansiedad. Requiere indicación y seguimiento médico.', use: 'Tomar según indicación médica. No suspendas el tratamiento de forma brusca.' },
+    /* Dermocosmética */
+    'Limpieza': { desc: 'Limpia en profundidad y retira impurezas y maquillaje sin resecar la piel. Ideal como primer paso de tu rutina facial, mañana y noche.', use: 'Aplicar sobre el rostro húmedo o con un algodón, masajear suavemente y retirar con agua.', comp: ['Agua purificada', 'Agentes limpiadores suaves', 'Glicerina', 'Niacinamida o pantenol según el producto'] },
+    'Hidratación': { desc: 'Hidrata intensamente y refuerza la barrera natural de la piel, dejándola suave y confortable durante todo el día.', use: 'Aplicar mañana y noche sobre el rostro y cuello limpios.', comp: ['Ácido hialurónico', 'Glicerina', 'Ceramidas', 'Agua termal'] },
+    'Sérum': { desc: 'Sérum concentrado de rápida absorción que potencia los resultados de tu rutina: luminosidad, hidratación y un tono más uniforme.', use: 'Aplicar 3 a 4 gotas sobre el rostro limpio antes de la crema hidratante. De día, usar siempre protector solar.', comp: ['Activo principal concentrado', 'Ácido hialurónico', 'Vitamina E', 'Base acuosa'] },
+    'Antiedad': { desc: 'Tratamiento que ayuda a reducir arrugas y líneas de expresión y mejora la firmeza de la piel.', use: 'Aplicar sobre rostro y cuello limpios. Los productos con retinol se usan solo de noche.', comp: ['Retinol o péptidos según el producto', 'Ácido hialurónico', 'Vitamina E', 'Filtros solares en los productos de día'] },
+    'Contorno de ojos': { desc: 'Fórmula suave para la delicada zona del contorno de ojos que ayuda a disminuir ojeras y bolsas.', use: 'Aplicar con pequeños toques desde el lagrimal hacia la sien, mañana y noche.', comp: ['Cafeína', 'Ácido hialurónico', 'Pigmentos correctores'] },
+    'Protección solar': { desc: 'Protección muy alta frente a los rayos UVA y UVB, con textura liviana que no deja la piel grasa. Apta para uso diario.', use: 'Aplicar generosamente 15 minutos antes de la exposición al sol y reaplicar cada 2 horas.', comp: ['Filtros UVA/UVB de amplio espectro', 'Agua termal', 'Vitamina E'] }
   };
-  const info = INFO[p.subcat] || INFO['Otras vitaminas'];
+  const catInfo = CATEGORIES[p.cat];
+  const isMed = p.cat === 'medicamentos';
+  const isDermo = p.cat === 'rostro';
+  const info = { ...(INFO[p.subcat] || INFO['Otras vitaminas']) };
+  if (isMed) info.comp = [`Principio activo: ${p.name}`, 'Excipientes c.s.'];
 
   /* ---------- Migas de pan ---------- */
   $('#pdpCrumbs').insertAdjacentHTML('beforeend',
-    `<span>/</span><a href="categoria.html">${p.subcat}</a><span>/</span><span aria-current="page">${p.brand} ${p.name}</span>`);
+    (catInfo.parent ? `<span>/</span><a href="${SD.categoryUrl(p.cat)}">${catInfo.parent}</a>` : '') +
+    `<span>/</span><a href="${SD.categoryUrl(p.cat)}">${catInfo.name}</a>` +
+    `<span>/</span><a href="${SD.categoryUrl(p.cat, p.subcat)}">${p.subcat}</a><span>/</span><span aria-current="page">${p.brand} ${p.name}</span>`);
 
   /* ---------- Galería ---------- */
   function contentArt() {
@@ -91,6 +116,7 @@
     let piece;
     if (u === 'gomita') piece = (x, y) => `<path d="M${x - 14} ${y + 10}c0-16 6-24 14-24s14 8 14 24c0 6-6 8-14 8s-14-2-14-8z" fill="${c}" opacity=".9"/>`;
     else if (u === 'comprimido') piece = (x, y) => `<circle cx="${x}" cy="${y}" r="15" fill="#fff" stroke="#d9e1ea" stroke-width="2"/><path d="M${x - 10} ${y}h20" stroke="#d9e1ea" stroke-width="2"/>`;
+    else if (u === 'ml' || u === 'g') piece = (x, y) => `<path d="M${x} ${y - 16}c6 9 11 14 11 20a11 11 0 01-22 0c0-6 5-11 11-20z" fill="${c}" opacity=".75"/>`;
     else if (u === 'porción' || u === 'sobre') piece = (x, y) => `<circle cx="${x}" cy="${y}" r="16" fill="${c}" opacity=".25"/><circle cx="${x - 4}" cy="${y - 3}" r="2" fill="${c}"/><circle cx="${x + 5}" cy="${y + 4}" r="2" fill="${c}"/>`;
     else piece = (x, y) => `<g transform="rotate(-30 ${x} ${y})"><rect x="${x - 18}" y="${y - 9}" width="36" height="18" rx="9" fill="#fff" stroke="#d9e1ea" stroke-width="2"/><path d="M${x - 9} ${y - 9}h9v18h-9a9 9 0 010-18z" fill="${c}"/></g>`;
     const spots = [[60, 70], [110, 60], [150, 85], [80, 115], [130, 120], [55, 150], [105, 160], [150, 150]];
@@ -132,11 +158,14 @@
 
   /* ---------- Datos principales ---------- */
   $('#pdpBrand').textContent = p.brand;
+  $('#pdpBrand').href = SD.categoryUrl(p.cat);
+  document.querySelector('.related .section__more').href = SD.categoryUrl(p.cat, p.subcat);
   $('#pdpName').textContent = p.name;
   $('#pdpSku').textContent = 'Código: ' + sku;
   $('#pdpTags').innerHTML = `
     <span class="ptag">${p.format}</span>
     <span class="ptag ${isRx ? 'ptag--rx' : 'ptag--ok'}">${p.type}</span>
+    ${p.bioeq ? '<span class="ptag ptag--bioeq">Bioequivalente</span>' : ''}
     ${p.offer ? '<span class="ptag ptag--offer">Oferta online</span>' : ''}`;
   $('#pdpRibbon').hidden = !p.promo;
   if (p.stock === false) {
@@ -166,6 +195,7 @@
         ${p.offer ? `<span class="price-box__save">Ahorras ${fmt(p.price - p.offer)}</span>` : ''}
       </div>
       <span class="price-box__unit">${fmt(per)} x ${p.unit}</span>
+      ${p.club ? `<span class="club-price club-price--lg"><span class="club-card" aria-hidden="true">SD</span>Precio socio Club San Daniel <b>${fmt(p.club)}</b></span>` : ''}
       ${qty > 1 ? `
         <div class="price-box__total">
           <span>Total por ${qty} unidades</span>
@@ -264,16 +294,22 @@
       ${p.own ? '<li>Marca propia San Daniel, con la misma calidad a un mejor precio</li>' : ''}
     </ul>`;
   $('#panel-use').innerHTML = `<p>${info.use}</p><p class="muted-p">Mantener en un lugar fresco y seco, a menos de 25 °C y fuera del alcance de los niños.</p>`;
-  $('#panel-comp').innerHTML = `<p>Cada ${p.unit} contiene:</p><ul class="checklist">${info.comp.map(c => `<li>${c}</li>`).join('')}</ul>`;
+  const compIntro = isDermo ? 'Ingredientes principales:' : isMed ? 'Composición:' : `Cada ${p.unit} contiene:`;
+  $('#panel-comp').innerHTML = `<p>${compIntro}</p><ul class="checklist">${info.comp.map(c => `<li>${c}</li>`).join('')}</ul>`;
   $('#panel-warn').innerHTML = isRx
     ? `<p>Medicamento de venta bajo receta médica simple. No exceder la dosis indicada por tu médico. Ante cualquier reacción adversa, suspende su uso y consulta a un profesional de la salud.</p>`
+    : isMed
+    ? `<p>Medicamento de venta directa. Lee atentamente el folleto antes de usarlo y no excedas la dosis recomendada. Si los síntomas persisten por más de 3 días, consulta a tu médico. Embarazadas y personas en tratamiento médico deben consultar antes de usarlo.</p>`
+    : isDermo
+    ? `<p>Solo para uso externo. Evita el contacto con los ojos; si ocurre, enjuaga con abundante agua. Suspende su uso si aparece irritación. Recomendamos probar el producto en una pequeña zona de la piel antes del primer uso.</p>`
     : `<p>Este suplemento alimentario no es un medicamento y no reemplaza una alimentación equilibrada. No superar la dosis diaria recomendada. Embarazadas, mujeres en período de lactancia y personas en tratamiento médico deben consultar a su médico antes de consumirlo.</p>`;
   $('#panel-spec').innerHTML = `
     <table class="spec">
       <tr><th>Marca</th><td>${p.brand}</td></tr>
       <tr><th>Formato</th><td>${p.format}</td></tr>
       <tr><th>Contenido</th><td>${p.units} ${plural(p.unit, p.units)}</td></tr>
-      <tr><th>Categoría</th><td>Vitaminas y suplementos / ${p.subcat}</td></tr>
+      <tr><th>Categoría</th><td>${catInfo.parent ? catInfo.parent + ' / ' : ''}${catInfo.name} / ${p.subcat}</td></tr>
+      ${isMed ? `<tr><th>Bioequivalente</th><td>${p.bioeq ? 'Sí' : 'No'}</td></tr>` : ''}
       <tr><th>Tipo de venta</th><td>${p.type}</td></tr>
       <tr><th>Marca propia</th><td>${p.own ? 'Sí' : 'No'}</td></tr>
       <tr><th>Código</th><td>${sku}</td></tr>
@@ -305,8 +341,8 @@
   /* ---------- Relacionados ---------- */
   const related = [
     ...PRODUCTS.filter(x => x.id !== p.id && x.subcat === p.subcat),
-    ...PRODUCTS.filter(x => x.id !== p.id && x.subcat !== p.subcat && x.brand === p.brand),
-    ...PRODUCTS.filter(x => x.id !== p.id && x.subcat !== p.subcat && x.brand !== p.brand && x.offer)
+    ...PRODUCTS.filter(x => x.id !== p.id && x.subcat !== p.subcat && x.cat === p.cat && x.brand === p.brand),
+    ...PRODUCTS.filter(x => x.id !== p.id && x.subcat !== p.subcat && x.cat === p.cat && x.brand !== p.brand)
   ].slice(0, 10);
   $('#railRelated').innerHTML = related.map(card).join('');
 

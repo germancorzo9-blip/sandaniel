@@ -9,6 +9,7 @@ window.SD = (function () {
   const finalPrice = p => p.offer || p.price;
   const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
   const CATEGORY_URL = 'categoria.html';
+  const categoryUrl = (cat, sub) => CATEGORY_URL + '?cat=' + cat + (sub ? '&sub=' + encodeURIComponent(sub) : '');
   const productUrl = p => 'producto.html?id=' + p.id;
 
   /* ---------- Imagen SVG de producto (placeholder) ---------- */
@@ -69,7 +70,7 @@ window.SD = (function () {
         <div class="card__body">
           <span class="card__brand">${p.brand}</span>
           <a href="${productUrl(p)}" class="card__name" data-product="${p.id}">${p.name}</a>
-          <span class="card__format">Formato: ${p.format}</span>
+          <span class="card__format">Formato: ${p.format}${p.bioeq ? ' <span class="bioeq">Bioequivalente</span>' : ''}</span>
           ${p.offer ? `
             <span class="card__normal">Precio normal: <s>${fmt(p.price)}</s></span>
             <div class="card__price"><span class="tag-offer">Oferta</span><strong>${fmt(p.offer)}</strong></div>
@@ -78,6 +79,7 @@ window.SD = (function () {
             <div class="card__price"><strong>${fmt(p.price)}</strong></div>
           `}
           <span class="card__unit">${fmt(per)} x ${p.unit}</span>
+          ${p.club ? `<span class="club-price"><span class="club-card" aria-hidden="true">SD</span>Club <b>${fmt(p.club)}</b></span>` : ''}
           <ul class="card__ship">
             <li><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>Despacho a domicilio</li>
             <li><svg viewBox="0 0 24 24"><path d="M4 10l2-6h12l2 6M4 10v10h16V10M4 10h16M10 20v-5h4v5"/></svg>Retiro en tienda</li>
@@ -125,7 +127,17 @@ window.SD = (function () {
       </button>
     </li>`).join('');
 
+  // Devuelve la subcategoría si existe en el listado de esa categoría (sin distinguir mayúsculas)
+  function subIn(cat, label) {
+    const subs = (CATEGORIES[cat] || {}).subcats || [];
+    return subs.find(s => s.toLowerCase() === label.toLowerCase()) || '';
+  }
+
+  let shownPanel = -1;
   function showMegaPanel(i) {
+    megaMenu.classList.add('has-panel');
+    if (i === shownPanel) return;
+    shownPanel = i;
     const cat = MENU[i];
     megaCats.querySelectorAll('.mega__cat').forEach(b => b.classList.toggle('is-active', +b.dataset.i === i));
     megaPanel.innerHTML = `
@@ -133,13 +145,13 @@ window.SD = (function () {
         <button class="mega__back" type="button" aria-label="Volver">
           <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
         </button>
-        <a href="${CATEGORY_URL}" class="mega__all">Ver todo ${cat.name}</a>
+        <a href="${categoryUrl(cat.cat)}" class="mega__all">Ver todo ${cat.name}</a>
       </div>
       <div class="mega__groups">
         ${cat.groups.map(g => `
           <div class="mega__group">
-            <a href="${CATEGORY_URL}" class="mega__group-title">${g.title}</a>
-            ${g.items.map(it => `<a href="${CATEGORY_URL}">${it}</a>`).join('')}
+            <a href="${categoryUrl(cat.cat, subIn(cat.cat, g.title))}" class="mega__group-title">${g.title}</a>
+            ${g.items.map(it => `<a href="${categoryUrl(cat.cat, subIn(cat.cat, it))}">${it}</a>`).join('')}
           </div>`).join('')}
       </div>`;
     megaMenu.classList.add('has-panel');
@@ -157,10 +169,16 @@ window.SD = (function () {
   menuBtn.addEventListener('click', () => toggleMega());
   $('#burger').addEventListener('click', () => toggleMega(true));
   onClose(() => { if (!megaMenu.hidden) toggleMega(false); });
+  // Pequeña espera antes de cambiar de panel: al mover el cursor en diagonal hacia
+  // el panel no se activan las categorías por las que pasa de camino.
+  let hoverTimer;
   megaCats.addEventListener('mouseover', e => {
     const b = e.target.closest('.mega__cat');
-    if (b && !isMobile()) showMegaPanel(+b.dataset.i);
+    if (!b || isMobile()) return;
+    clearTimeout(hoverTimer);
+    hoverTimer = setTimeout(() => showMegaPanel(+b.dataset.i), 140);
   });
+  megaCats.addEventListener('mouseleave', () => clearTimeout(hoverTimer));
   megaCats.addEventListener('click', e => {
     const b = e.target.closest('.mega__cat');
     if (b) showMegaPanel(+b.dataset.i);
@@ -210,7 +228,7 @@ window.SD = (function () {
     e.preventDefault();
     if (document.body.dataset.page === 'categoria') return;
     const q = searchInput.value.trim();
-    try { sessionStorage.setItem('sd-query', q); } catch (err) { /* sin storage */ }
+    try { sessionStorage.setItem('sd-query', q); sessionStorage.setItem('sd-cat-query', q ? 'q=' + encodeURIComponent(q) : ''); } catch (err) { /* sin storage */ }
     location.href = CATEGORY_URL + (q ? '?q=' + encodeURIComponent(q) : '');
   });
 
@@ -288,6 +306,13 @@ window.SD = (function () {
     showToast(`Te avisaremos cuando <b>${p.brand} ${p.name}</b> vuelva a estar disponible`);
   });
 
+  // Recordar la categoría elegida por si la URL pierde los parámetros al navegar
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="categoria.html"]');
+    if (!a) return;
+    try { sessionStorage.setItem('sd-cat-query', a.getAttribute('href').split('?')[1] || ''); } catch (err) { /* sin storage */ }
+  });
+
   // Recordar el producto elegido por si la URL pierde el ?id= al navegar
   document.addEventListener('click', e => {
     const a = e.target.closest('a[data-product]');
@@ -321,5 +346,5 @@ window.SD = (function () {
     showToast('¡Gracias! Te avisaremos de nuestras promociones.');
   });
 
-  return { $, fmt, discount, finalPrice, productArt, card, productUrl, addToCart, cart, lineTotal, SHIPPING, MAX_QTY, initRails, showToast, onClose, overlay, COMMUNES, getCommune: () => commune, setCommune };
+  return { $, fmt, discount, finalPrice, productArt, card, productUrl, categoryUrl, addToCart, cart, lineTotal, SHIPPING, MAX_QTY, initRails, showToast, onClose, overlay, COMMUNES, getCommune: () => commune, setCommune };
 })();

@@ -99,7 +99,7 @@
 
   <!-- Franja promocional -->
   <aside aria-label="Promoción destacada">
-  <a href="categoria.html" class="promo-strip">
+  <a href="categoria.html?cat=rostro" class="promo-strip">
     <span class="promo-strip__tag">Cyber San Daniel</span>
     <span class="promo-strip__text">Hasta <b>50%</b> en dermocosmética y <b>40%</b> en vitaminas</span>
     <span class="promo-strip__cta">Ver ofertas ›</span>
@@ -108,41 +108,16 @@
 
   <main class="container main">
     <!-- Migas de pan -->
-    <nav class="breadcrumb" aria-label="Migas de pan">
-      <a href="index.html">Inicio</a><span>/</span><span aria-current="page">Vitaminas y Suplementos</span>
+    <nav class="breadcrumb" aria-label="Migas de pan" id="catCrumbs">
+      <a href="index.html">Inicio</a>
     </nav>
 
-    <!-- Banners -->
-    <section class="banners">
-      <a href="#" class="banner banner--main">
-        <div class="banner__text">
-          <span class="banner__kicker">Suplementos deportivos</span>
-          <span class="banner__sub">Productos seleccionados</span>
-          <span class="banner__big">20<small>%<em>dcto.</em></small></span>
-        </div>
-        <div class="banner__badge">
-          <strong>Cuídate</strong>
-          <span>y ahorra</span>
-        </div>
-        <div class="banner__art" aria-hidden="true">
-          <span class="b-bottle b-bottle--1"></span>
-          <span class="b-bottle b-bottle--2"></span>
-          <span class="b-bottle b-bottle--3"></span>
-        </div>
-      </a>
-      <a href="#" class="banner banner--side">
-        <div class="banner__badge banner__badge--light">
-          <strong>Cuídate</strong>
-          <span>y ahorra</span>
-        </div>
-        <span class="banner__kicker">Especial Omega 3</span>
-        <span class="banner__big banner__big--sm">30<small>%<em>dcto.</em></small></span>
-      </a>
-    </section>
+    <!-- Banners (se llenan según la categoría) -->
+    <section class="banners" id="catBanners" aria-label="Promociones de la categoría"></section>
 
     <!-- Título y controles -->
     <div class="listing-head">
-      <h1>Vitaminas y Suplementos</h1>
+      <h1 id="catTitle">Vitaminas y Suplementos</h1>
       <div class="listing-head__controls">
         <button class="btn-filters" id="openFilters">
           <svg viewBox="0 0 24 24"><path d="M3 5h18M6 12h12M10 19h4"/></svg>Filtrar
@@ -165,6 +140,19 @@
             <option value="name">Nombre A-Z</option>
           </select>
         </label>
+      </div>
+    </div>
+
+    <div class="soon" id="catSoon" hidden>
+      <div class="soon__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7M12 11v10"/></svg>
+      </div>
+      <h2>Estamos preparando esta categoría</h2>
+      <p>Muy pronto podrás comprar estos productos online. Mientras tanto, revisa nuestras categorías disponibles:</p>
+      <div class="soon__links">
+        <a href="categoria.html?cat=vitaminas" class="btn-outline">Vitaminas y suplementos</a>
+        <a href="categoria.html?cat=medicamentos" class="btn-outline">Medicamentos</a>
+        <a href="categoria.html?cat=rostro" class="btn-outline">Dermocosmética rostro</a>
       </div>
     </div>
 
@@ -233,9 +221,7 @@
     </div>
 
     <!-- Texto SEO -->
-    <section class="seo">
-      <p>En <strong>Farmacias San Daniel</strong> encontrarás una amplia variedad de <strong>vitaminas y suplementos</strong> para acompañar tu bienestar: multivitamínicos, vitamina C, vitamina D, omega 3, colágeno, magnesio, probióticos y nutrición deportiva. Compra online con despacho a domicilio o retira en tu local más cercano. Recuerda que los suplementos no reemplazan una alimentación equilibrada; ante cualquier duda, consulta con tu médico o con nuestro químico farmacéutico.</p>
-    </section>
+    <section class="seo" id="catSeo"></section>
   </main>
 
   <!-- ===== Suscripción ===== -->
@@ -271,9 +257,9 @@
     <div class="container footer__cols">
       <div class="footer__col">
         <h4>Categorías</h4>
-        <a href="#">Dermocosmética</a><a href="#">Medicamentos</a><a href="#">Cuidado personal</a>
-        <a href="#">Vitaminas y suplementos</a><a href="#">Belleza</a><a href="#">Infantil y mamá</a>
-        <a href="#">Cuidado de la salud</a><a href="#">Adulto mayor</a><a href="#">Mascotas</a>
+        <a href="categoria.html?cat=rostro">Dermocosmética</a><a href="categoria.html?cat=medicamentos">Medicamentos</a><a href="categoria.html?cat=cuidado-personal">Cuidado personal</a>
+        <a href="categoria.html?cat=vitaminas">Vitaminas y suplementos</a><a href="categoria.html?cat=belleza">Belleza</a><a href="categoria.html?cat=infantil">Infantil y mamá</a>
+        <a href="categoria.html?cat=salud">Cuidado de la salud</a><a href="categoria.html?cat=adulto-mayor">Adulto mayor</a><a href="categoria.html?cat=mascotas">Mascotas</a>
       </div>
       <div class="footer__col">
         <h4>San Daniel</h4>

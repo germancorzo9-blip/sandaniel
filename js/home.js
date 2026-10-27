@@ -47,14 +47,16 @@
 
   /* ---------- Categorías ---------- */
   $('#catGrid').innerHTML = MENU.map(c => `
-    <a href="categoria.html" class="cat">
+    <a href="${SD.categoryUrl(c.cat)}" class="cat">
       <span class="cat__icon"><svg viewBox="0 0 24 24">${ICONS[c.icon]}</svg></span>
       <span class="cat__name">${c.name}</span>
     </a>`).join('');
 
   /* ---------- Carruseles de productos ---------- */
-  const offers = PRODUCTS.filter(p => p.offer).sort((a, b) => discount(b) - discount(a)).slice(0, 10);
-  const bestIds = [2, 5, 9, 21, 12, 7, 31, 4, 18, 26];
+  const topOffers = cat => PRODUCTS.filter(p => p.offer && p.cat === cat && p.stock !== false).sort((a, b) => discount(b) - discount(a));
+  const [v, m, r] = ['vitaminas', 'medicamentos', 'rostro'].map(topOffers);
+  const offers = Array.from({ length: 4 }, (_, i) => [v[i], r[i], m[i]]).flat().filter(Boolean).slice(0, 10);
+  const bestIds = [2, 40, 62, 5, 43, 9, 64, 21, 47, 12];
   const best = bestIds.map(id => PRODUCTS.find(p => p.id === id));
   $('#railOffers').innerHTML = offers.map(card).join('');
   $('#railBest').innerHTML = best.map(card).join('');
@@ -84,9 +86,9 @@
   setInterval(tick, 1000);
 
   /* ---------- Marcas ---------- */
-  const brands = [...new Set(PRODUCTS.map(p => p.brand))];
+  const brands = [...new Set(PRODUCTS.map(p => p.brand))].slice(0, 16);
   $('#brandRow').innerHTML = brands.map(b => {
     const p = PRODUCTS.find(x => x.brand === b);
-    return `<a href="categoria.html" class="brand" style="--c:${p.color}">${b}</a>`;
+    return `<a href="${SD.categoryUrl(p.cat)}" class="brand" style="--c:${p.color}">${b}</a>`;
   }).join('');
 })();
