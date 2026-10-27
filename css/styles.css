@@ -1097,7 +1097,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 .assist__head { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: var(--blue); color: #fff; }
 .assist__head div { flex: 1; display: flex; flex-direction: column; }
 .assist__head strong { font-size: 15px; }
-.assist__head span { font-size: 12px; opacity: .85; }
+.assist__head span { font-size: 12px; }
 .assist__close { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; color: #fff; }
 .assist__close:hover { background: rgba(255,255,255,.15); }
 .assist__close svg { width: 18px; height: 18px; }
