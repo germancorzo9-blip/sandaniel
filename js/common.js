@@ -69,7 +69,7 @@ window.SD = (function () {
         </a>
         <div class="card__body">
           <span class="card__brand">${p.brand}</span>
-          <a href="${productUrl(p)}" class="card__name" data-product="${p.id}">${p.name}</a>
+          <a href="${productUrl(p)}" class="card__name" data-product="${p.id}" title="${p.brand} ${p.name}">${p.brand} ${p.name}</a>
           <span class="card__format">Formato: ${p.format}${p.bioeq ? ' <span class="bioeq">Bioequivalente</span>' : ''}</span>
           ${p.offer ? `
             <span class="card__normal">Precio normal: <s>${fmt(p.price)}</s></span>

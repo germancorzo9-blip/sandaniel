@@ -1135,3 +1135,16 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 @media (max-width: 600px) {
   .topbar__links a:not(.topbar__phone) { display: none; }
 }
+
+/* =========================================================
+   Ronda 3: tarjetas más cercanas a la referencia
+   ========================================================= */
+.card__name {
+  display: block; min-height: 0; margin: 2px 0 2px;
+  font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: .2px; color: #4a5562;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: unset;
+}
+.btn-cart { border-width: 1.5px; font-size: 11px; padding: 9px; letter-spacing: .8px; }
+/* Despacho y botón siempre al fondo, para que las filas alineen aunque falte el precio Club */
+.card__ship { margin-top: auto; }
+.card__ship + .btn-cart { margin-top: 0; }
