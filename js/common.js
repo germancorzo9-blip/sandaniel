@@ -339,6 +339,69 @@ window.SD = (function () {
     });
   }
 
+  /* ---------- Ayuda en la barra superior ---------- */
+  const help = $('.topbar__help');
+  document.addEventListener('click', e => {
+    if (help.open && !e.target.closest('.topbar__help')) help.open = false;
+  });
+  onClose(() => { help.open = false; });
+
+  /* ---------- Asistente virtual (respuestas guiadas) ---------- */
+  const ASSIST_TOPICS = [
+    { id: 'pedido', label: 'Seguir mi pedido', answer: 'Puedes revisar el estado de tu compra en <b>Sigue tu pedido</b> con tu número de orden y tu RUT. Si tu pedido viene con despacho, te enviaremos un correo cuando salga a reparto.' },
+    { id: 'receta', label: 'Comprar con receta', answer: 'Agrega el medicamento al carro y, en el paso de pago, adjunta una foto de tu receta. Nuestro químico farmacéutico la valida antes del despacho, normalmente en menos de 1 hora.' },
+    { id: 'despacho', label: 'Costos de despacho', answer: `El despacho a domicilio cuesta ${fmt(2990)} y es <b>gratis desde ${fmt(29990)}</b>. El retiro en tienda no tiene costo y el despacho express (menos de 2 horas) cuesta ${fmt(4990)} en comunas seleccionadas.` },
+    { id: 'quimico', label: 'Hablar con un químico farmacéutico', answer: 'Nuestro equipo te atiende de lunes a domingo de 8:00 a 22:00 al <b>600 000 0000</b>. También puedes consultar en cualquiera de nuestros locales.' }
+  ];
+  document.body.insertAdjacentHTML('beforeend', `
+    <div class="assist" id="assist">
+      <section class="assist__panel" id="assistPanel" aria-label="Asistente virtual" hidden>
+        <header class="assist__head">
+          <span class="assist__avatar assist__avatar--sm" aria-hidden="true"></span>
+          <div><strong>Dani</strong><span>Asistente San Daniel</span></div>
+          <button type="button" class="assist__close" id="assistClose" aria-label="Cerrar asistente">
+            <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </header>
+        <div class="assist__body" id="assistBody" aria-live="polite">
+          <p class="assist__msg">¡Hola! Soy Dani, tu asistente de Farmacias San Daniel. ¿En qué te puedo ayudar?</p>
+        </div>
+        <div class="assist__options" id="assistOptions">
+          ${ASSIST_TOPICS.map(t => `<button type="button" data-topic="${t.id}">${t.label}</button>`).join('')}
+        </div>
+      </section>
+      <button type="button" class="assist__btn" id="assistBtn" aria-expanded="false" aria-controls="assistPanel" aria-label="Abrir asistente virtual">
+        <span class="assist__avatar" aria-hidden="true"></span>
+        <span class="assist__badge" id="assistBadge">1</span>
+      </button>
+    </div>`);
+  const assistPanel = $('#assistPanel');
+  const assistBtn = $('#assistBtn');
+  try { if (sessionStorage.getItem('sd-assist-seen')) $('#assistBadge').hidden = true; } catch (err) { /* sin storage */ }
+  function toggleAssist(open) {
+    const willOpen = open ?? assistPanel.hidden;
+    assistPanel.hidden = !willOpen;
+    assistBtn.setAttribute('aria-expanded', willOpen);
+    if (willOpen) {
+      $('#assistBadge').hidden = true;
+      try { sessionStorage.setItem('sd-assist-seen', '1'); } catch (err) { /* sin storage */ }
+    }
+  }
+  assistBtn.addEventListener('click', () => toggleAssist());
+  $('#assistClose').addEventListener('click', () => toggleAssist(false));
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-open-assist]')) { help.open = false; toggleAssist(true); }
+  });
+  $('#assistOptions').addEventListener('click', e => {
+    const b = e.target.closest('[data-topic]');
+    if (!b) return;
+    const t = ASSIST_TOPICS.find(x => x.id === b.dataset.topic);
+    const body = $('#assistBody');
+    body.insertAdjacentHTML('beforeend', `<p class="assist__msg assist__msg--me">${t.label}</p><p class="assist__msg">${t.answer}</p>`);
+    body.scrollTop = body.scrollHeight;
+  });
+  onClose(() => toggleAssist(false));
+
   /* ---------- Suscripción ---------- */
   $('#subscribeForm').addEventListener('submit', e => {
     e.preventDefault();

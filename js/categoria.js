@@ -200,10 +200,14 @@
     const nav = $('#pagination');
     if (pages <= 1) { nav.innerHTML = ''; return; }
     let html = `<button class="pg pg--arrow" data-p="${state.page - 1}" ${state.page === 1 ? 'disabled' : ''} aria-label="Página anterior"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>`;
-    for (let i = 1; i <= pages; i++) {
-      html += `<button class="pg ${i === state.page ? 'is-active' : ''}" data-p="${i}">${i}</button>`;
-    }
-    html += `<button class="pg pg--next" data-p="${state.page + 1}" ${state.page === pages ? 'disabled' : ''}>Siguiente<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>`;
+    const shown = pages <= 5 ? [...Array(pages).keys()].map(i => i + 1)
+      : [...new Set([1, state.page - 1, state.page, state.page + 1, pages].filter(i => i >= 1 && i <= pages))].sort((a, b) => a - b);
+    shown.forEach((i, k) => {
+      if (k && i - shown[k - 1] > 1) html += '<span class="pg-gap" aria-hidden="true">…</span>';
+      html += `<button class="pg ${i === state.page ? 'is-active' : ''}" data-p="${i}" ${i === state.page ? 'aria-current="page"' : ''}>${i}</button>`;
+    });
+    html += `<button class="pg pg--arrow" data-p="${state.page + 1}" ${state.page === pages ? 'disabled' : ''} aria-label="Página siguiente"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>`;
+    html += `<button class="pg pg--next" data-p="${pages}" ${state.page === pages ? 'disabled' : ''}>Último</button>`;
     nav.innerHTML = html;
   }
 

@@ -22,7 +22,20 @@
         <a href="#">Servicios</a>
         <a href="#">Beneficios</a>
         <a href="#">Locales</a>
-        <a href="tel:6000000000" class="topbar__phone">Aló San Daniel (600 000 0000)</a>
+        <details class="topbar__help">
+          <summary class="topbar__phone">Aló San Daniel (600 000 0000)
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="topbar__help-pop">
+            <strong>¿Necesitas ayuda?</strong>
+            <dl>
+              <div><dt>Teléfono</dt><dd>600 000 0000</dd></div>
+              <div><dt>Horario</dt><dd>Lunes a domingo, 8:00 a 22:00</dd></div>
+              <div><dt>Correo</dt><dd>contacto@farmaciassandaniel.cl</dd></div>
+            </dl>
+            <button type="button" class="btn-add btn-block" data-open-assist>Chatea con Dani</button>
+          </div>
+        </details>
       </nav>
     </div>
   </aside>
@@ -228,7 +241,29 @@
         </form>
       </div>
       <div class="subscribe__art" aria-hidden="true">
-        <svg viewBox="0 0 120 120"><path d="M45 10h30a8 8 0 018 8v27h27a8 8 0 018 8v14a8 8 0 01-8 8H83v27a8 8 0 01-8 8H45a8 8 0 01-8-8V75H10a8 8 0 01-8-8V53a8 8 0 018-8h27V18a8 8 0 018-8z"/></svg>
+        <svg viewBox="0 0 520 240" preserveAspectRatio="xMidYMax slice">
+          <defs>
+            <radialGradient id="sunGlow" cx="72%" cy="34%" r="45%">
+              <stop offset="0" stop-color="#fff7d6"/>
+              <stop offset=".35" stop-color="#ffe08a" stop-opacity=".85"/>
+              <stop offset="1" stop-color="#ffe08a" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="hillBack" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#b9d98a"/><stop offset="1" stop-color="#8fbf5a"/>
+            </linearGradient>
+            <linearGradient id="hillFront" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#9ccc65"/><stop offset="1" stop-color="#5f9a32"/>
+            </linearGradient>
+          </defs>
+          <rect width="520" height="240" fill="url(#sunGlow)"/>
+          <circle cx="374" cy="82" r="30" fill="#fff3c0"/>
+          <path d="M0 170 C90 120 190 140 270 150 S430 110 520 130 V240 H0z" fill="url(#hillBack)"/>
+          <path d="M0 200 C120 160 230 190 320 182 S460 160 520 175 V240 H0z" fill="url(#hillFront)"/>
+          <path d="M250 240 C270 215 300 200 340 190" stroke="#e9d7a6" stroke-width="10" fill="none" stroke-linecap="round" opacity=".8"/>
+          <g fill="#4f8a28" opacity=".7">
+            <path d="M60 196 l4 -14 l4 14z"/><path d="M90 190 l4 -12 l4 12z"/><path d="M430 168 l4 -14 l4 14z"/><path d="M470 172 l3 -10 l3 10z"/>
+          </g>
+        </svg>
       </div>
     </div>
   </section>
@@ -270,8 +305,14 @@
     </div>
 
     <div class="container footer__bottom">
-      <div class="payments">
-        <span>VISA</span><span>Mastercard</span><span>Redcompra</span><span>Webpay</span><span>Mach</span>
+      <div class="footer__trust">
+        <div class="payments">
+          <span>VISA</span><span>Mastercard</span><span>Redcompra</span><span>Webpay</span><span>Mach</span>
+        </div>
+        <div class="seals">
+          <span class="seal"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Sitio seguro</span>
+          <span class="seal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>Pago protegido</span>
+        </div>
       </div>
       <div class="social">
         <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3a4 4 0 00-4 4v3H7v4h3v7h4v-7h3l1-4h-4V8z"/></svg></a>
