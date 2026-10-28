@@ -48,6 +48,8 @@ Reglas que aplica la página:
 
 Guarda la foto de cada producto en `images/` con el SKU como nombre, por ejemplo `images/MED-001.jpg` (sirven .webp, .jpg, .jpeg o .png). También puedes agregar al CSV una columna `imagen` con la dirección de la foto. `build.py` avisa cuántos productos siguen sin foto; esos muestran el envase dibujado.
 
+Las fotos actuales son imágenes referenciales tomadas de farmacias chilenas (Farmacias Ahumada y Dr. Simi). En muchos casos muestran otra marca o laboratorio con el mismo principio activo y concentración, por eso la página indica "Imagen referencial". El origen de cada foto está en `data/fotos_fuentes.csv`. Antes de abrir la tienda a clientes conviene reemplazarlas por fotos propias o entregadas por cada laboratorio.
+
 ## Cómo editar
 
 1. Modifica `src.html` (textos, productos en la lista `P` del script, colores en `:root`).

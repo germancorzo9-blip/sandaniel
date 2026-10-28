@@ -169,6 +169,8 @@ img{max-width:100%;display:block}
 .card:hover .card-media svg{transform:scale(1.04)}
 .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:12px;background:#fff;transition:transform .5s var(--ease)}
 .card:hover .card-media .photo{transform:scale(1.04)}
+.ref{position:absolute;right:8px;bottom:8px;font-size:12px;line-height:16px;color:var(--muted);background:rgba(255,255,255,.85);border-radius:4px;padding:0 4px}
+@media (max-width:560px){.ref{display:none}}
 .disc{position:absolute;top:8px;left:8px;background:var(--red);color:#fff;font-size:12px;line-height:16px;font-weight:600;padding:4px 8px;border-radius:9999px}
 .disc.low{background:var(--blue-dark)}
 .c-desc{font-size:12px;line-height:16px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:4px}
@@ -756,7 +758,7 @@ for (const id of Object.keys(cart)) if (!SKU.has(id)) delete cart[id];
 favs = new Set([...favs].filter(id => SKU.has(id)));
 
 // Product image: a real photo when images/<SKU> exists, over the drawn package that stays as fallback
-const media = p => art(p) + (p.img ? `<img class="photo" src="${p.img}" alt="${esc(p.name)}" loading="lazy" onerror="this.remove()">` : '');
+const media = (p, note) => art(p) + (p.img ? `<img class="photo" src="${p.img}" alt="${esc(p.name)}" loading="lazy" onerror="this.nextElementSibling?.remove();this.remove()">${note ? '<span class="ref">Imagen referencial</span>' : ''}` : '');
 
 // Product art
 function art(p){
@@ -847,7 +849,7 @@ function card(p){
   const qty = cart[p.id] || 0;
   const per = p.units > 1 ? `<span class="c-unit">${fmt(p.price/p.units)} c/u</span>` : '';
   return `<article class="card" data-id="${p.id}">
-    <div class="card-media">${media(p)}
+    <div class="card-media">${media(p, true)}
       ${p.disc?`<span class="disc">${p.disc}% dcto.</span>`:''}
       ${p.flags.includes('2x')?`<span class="tag-rx" style="color:var(--red)">2da unidad 50%</span>`:''}
       ${p.stock<=0?`<span class="disc low">Agotado</span>`:(!p.disc && p.stock<=p.min?`<span class="disc low">Últimas unidades</span>`:'')}
