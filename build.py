@@ -1,4 +1,5 @@
-import base64, re, pathlib
+import base64, json, re, pathlib
+import inventario
 here = pathlib.Path(__file__).parent
 ph = here/'icons'  # Phosphor Icons (MIT), only the ones the page uses
 src = (here/'src.html').read_text()
@@ -14,6 +15,11 @@ for n in names:
 sprite = '<svg width="0" height="0" style="position:absolute" aria-hidden="true">' + ''.join(syms) + '</svg>'
 logo = 'data:image/webp;base64,' + base64.b64encode((here/'logo.webp').read_bytes()).decode()
 out = src.replace('<!--SPRITE-->', sprite).replace('__LOGO__', logo)
+productos, avisos = inventario.cargar(here/'data'/'inventario.csv')
+assert '/*INVENTARIO*/[]' in out
+out = out.replace('/*INVENTARIO*/[]', json.dumps(productos, ensure_ascii=False).replace('</', '<\\/'))
+print('productos', len(productos))
+for a in avisos: print('  aviso:', a)
 (here/'artifact.html').write_text(out)
 head = '<!doctype html>\n<html lang="es">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
 body_at = out.index('<!--BODY-->') if '<!--BODY-->' in out else out.index('</style>')+8

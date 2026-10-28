@@ -1,0 +1,101 @@
+sku,nombre,principio_activo,categoria,subcategoria,forma_farmaceutica,concentracion,contenido,laboratorio,requiere_receta,precio_clp,stock,stock_minimo,fecha_vencimiento,descripcion,activo
+MED-001,Paracetamol 500 mg,Paracetamol,Medicamentos,Analgésicos,Comprimido,500 mg,16 comprimidos,Laboratorio Chile,0,990,36,15,2027-03-26,Alivio del dolor leve a moderado y reducción de la fiebre.,1
+MED-002,Paracetamol 1 g,Paracetamol,Medicamentos,Analgésicos,Comprimido,1 g,10 comprimidos,Mintlab,0,2000,78,15,2027-11-06,Analgésico y antipirético de dosis alta para adultos.,1
+MED-003,Ibuprofeno 400 mg,Ibuprofeno,Medicamentos,Antiinflamatorios,Comprimido recubierto,400 mg,20 comprimidos,Laboratorio Chile,0,1890,65,15,2027-07-21,"Antiinflamatorio para dolor, fiebre e inflamación.",1
+MED-004,Ibuprofeno 600 mg,Ibuprofeno,Medicamentos,Antiinflamatorios,Comprimido recubierto,600 mg,20 comprimidos,Mintlab,1,2490,34,10,2029-01-21,Antiinflamatorio de mayor potencia para dolor e inflamación.,1
+MED-005,Ibuprofeno Suspensión Pediátrica,Ibuprofeno,Medicamentos,Antiinflamatorios,Suspensión oral,100 mg/5 ml,120 ml,Saval,0,3290,147,15,2027-05-29,"Fiebre y dolor en niños, dosificar según peso.",1
+MED-006,Naproxeno 550 mg,Naproxeno sódico,Medicamentos,Antiinflamatorios,Comprimido recubierto,550 mg,10 comprimidos,Andrómaco,1,2990,116,10,2027-04-02,Antiinflamatorio de acción prolongada para dolor muscular y articular.,1
+MED-007,Ketoprofeno 100 mg,Ketoprofeno,Medicamentos,Antiinflamatorios,Cápsula,100 mg,20 cápsulas,Recalcine,1,3990,15,10,2027-06-04,Tratamiento de dolor e inflamación musculoesquelética.,1
+MED-008,Diclofenaco Gel 1%,Diclofenaco dietilamina,Medicamentos,Antiinflamatorios,Gel tópico,1%,60 g,Saval,0,4590,63,15,2027-10-25,"Gel para dolores musculares, golpes y torceduras.",1
+MED-009,Ácido Acetilsalicílico 100 mg,Ácido acetilsalicílico,Medicamentos,Cardiovascular,Comprimido,100 mg,30 comprimidos,Laboratorio Chile,0,1590,137,15,2028-11-06,"Antiagregante plaquetario en dosis baja, uso según indicación médica.",1
+MED-010,Metamizol 300 mg,Metamizol sódico,Medicamentos,Analgésicos,Comprimido,300 mg,10 comprimidos,Mintlab,1,2000,14,10,2028-09-25,Analgésico y antipirético para dolor agudo y fiebre.,1
+MED-011,Loratadina 10 mg,Loratadina,Medicamentos,Antialérgicos,Comprimido,10 mg,30 comprimidos,Laboratorio Chile,0,1490,58,15,2028-12-25,Antihistamínico no sedante para rinitis y alergias.,1
+MED-012,Cetirizina 10 mg,Cetirizina diclorhidrato,Medicamentos,Antialérgicos,Comprimido recubierto,10 mg,30 comprimidos,Mintlab,0,2000,147,15,2028-05-03,Alivio de síntomas de alergia estacional y urticaria.,1
+MED-013,Desloratadina 5 mg,Desloratadina,Medicamentos,Antialérgicos,Comprimido recubierto,5 mg,30 comprimidos,Saval,0,5990,64,15,2028-06-02,Antihistamínico de segunda generación de toma diaria.,1
+MED-014,Clorfenamina Jarabe,Clorfenamina maleato,Medicamentos,Antialérgicos,Jarabe,2 mg/5 ml,100 ml,Laboratorio Chile,0,2490,79,15,2027-03-07,Antihistamínico para síntomas alérgicos y resfrío.,1
+MED-015,Omeprazol 20 mg,Omeprazol,Medicamentos,Gastrointestinal,Cápsula,20 mg,30 cápsulas,Laboratorio Chile,0,2000,48,15,2029-02-12,Reduce la acidez estomacal y el reflujo gastroesofágico.,1
+MED-016,Esomeprazol 40 mg,Esomeprazol,Medicamentos,Gastrointestinal,Comprimido recubierto,40 mg,28 comprimidos,Andrómaco,1,12990,116,10,2028-02-12,Inhibidor de la bomba de protones para reflujo y úlcera.,1
+MED-017,Famotidina 20 mg,Famotidina,Medicamentos,Gastrointestinal,Comprimido recubierto,20 mg,30 comprimidos,Recalcine,1,3990,79,10,2027-08-07,Reduce la producción de ácido gástrico.,1
+MED-018,Loperamida 2 mg,Loperamida clorhidrato,Medicamentos,Gastrointestinal,Comprimido,2 mg,6 comprimidos,Mintlab,0,2000,63,15,2028-02-08,Tratamiento sintomático de la diarrea aguda.,1
+MED-019,Domperidona 10 mg,Domperidona,Medicamentos,Gastrointestinal,Comprimido,10 mg,30 comprimidos,Saval,1,3500,34,10,2027-06-03,"Alivio de náuseas, vómitos y digestión lenta.",1
+MED-020,Sales de Rehidratación Oral,Glucosa y electrolitos,Medicamentos,Gastrointestinal,Polvo para solución oral,Fórmula OMS,4 sobres,Laboratorio Chile,0,2990,105,15,2027-06-08,Reposición de líquidos y electrolitos en diarrea o deshidratación.,1
+MED-021,Simeticona 80 mg,Simeticona,Medicamentos,Gastrointestinal,Comprimido masticable,80 mg,20 comprimidos,Andrómaco,0,2790,99,15,2028-02-16,Alivio de gases y meteorismo.,1
+MED-022,Antiácido Suspensión,Hidróxido de aluminio + hidróxido de magnesio,Medicamentos,Gastrointestinal,Suspensión oral,200 mg/200 mg por 5 ml,200 ml,Laboratorio Chile,0,3500,75,15,2027-04-14,Alivio rápido de acidez y ardor estomacal.,1
+MED-023,Amoxicilina 500 mg,Amoxicilina,Medicamentos,Antibióticos,Cápsula,500 mg,21 cápsulas,Laboratorio Chile,1,3990,125,10,2028-08-31,Antibiótico de amplio espectro para infecciones bacterianas.,1
+MED-024,Amoxicilina + Ácido Clavulánico 875/125 mg,Amoxicilina + ácido clavulánico,Medicamentos,Antibióticos,Comprimido recubierto,875 mg/125 mg,14 comprimidos,Recalcine,1,9990,39,10,2028-03-22,"Antibiótico para infecciones respiratorias, urinarias y de piel.",1
+MED-025,Azitromicina 500 mg,Azitromicina,Medicamentos,Antibióticos,Comprimido recubierto,500 mg,3 comprimidos,Saval,1,5000,28,10,2028-09-16,Antibiótico macrólido de tratamiento corto.,1
+MED-026,Ciprofloxacino 500 mg,Ciprofloxacino,Medicamentos,Antibióticos,Comprimido recubierto,500 mg,14 comprimidos,Mintlab,1,3990,83,10,2028-12-03,Antibiótico para infecciones urinarias y gastrointestinales.,1
+MED-027,Cefadroxilo 500 mg,Cefadroxilo,Medicamentos,Antibióticos,Cápsula,500 mg,16 cápsulas,Andrómaco,1,5990,100,10,2028-10-12,Cefalosporina para infecciones de piel y vías respiratorias.,1
+MED-028,Nitrofurantoína 100 mg,Nitrofurantoína,Medicamentos,Antibióticos,Cápsula,100 mg,20 cápsulas,Laboratorio Chile,1,5000,57,10,2029-02-19,Antibiótico para infecciones urinarias.,1
+MED-029,Losartán 50 mg,Losartán potásico,Medicamentos,Cardiovascular,Comprimido recubierto,50 mg,30 comprimidos,Laboratorio Chile,1,2000,25,10,2027-04-16,Antihipertensivo para el control de la presión arterial.,1
+MED-030,Enalapril 10 mg,Enalapril maleato,Medicamentos,Cardiovascular,Comprimido,10 mg,30 comprimidos,Mintlab,1,1490,66,10,2027-12-22,Antihipertensivo e insuficiencia cardíaca.,1
+MED-031,Amlodipino 5 mg,Amlodipino besilato,Medicamentos,Cardiovascular,Comprimido,5 mg,30 comprimidos,Recalcine,1,2000,28,10,2027-10-25,Bloqueador de canales de calcio para hipertensión.,1
+MED-032,Atorvastatina 20 mg,Atorvastatina cálcica,Medicamentos,Cardiovascular,Comprimido recubierto,20 mg,30 comprimidos,Saval,1,3990,33,10,2028-03-24,Reduce el colesterol LDL y los triglicéridos.,1
+MED-033,Metformina 850 mg,Metformina clorhidrato,Medicamentos,Diabetes,Comprimido recubierto,850 mg,30 comprimidos,Laboratorio Chile,1,2000,79,10,2028-06-07,Control de la glicemia en diabetes tipo 2.,1
+MED-034,Levotiroxina 100 mcg,Levotiroxina sódica,Medicamentos,Endocrino,Comprimido,100 mcg,30 comprimidos,Andrómaco,1,2990,101,10,2027-08-14,Reemplazo de hormona tiroidea en hipotiroidismo.,1
+MED-035,Salbutamol Inhalador,Salbutamol,Medicamentos,Respiratorio,Aerosol para inhalación,100 mcg/dosis,200 dosis,Laboratorio Chile,1,5000,102,10,2028-02-27,Broncodilatador de acción rápida para asma y broncoespasmo.,1
+MED-036,Ambroxol Jarabe Adulto,Ambroxol clorhidrato,Medicamentos,Respiratorio,Jarabe,30 mg/5 ml,120 ml,Mintlab,0,3500,61,15,2029-01-15,Mucolítico que facilita la expectoración.,1
+MED-037,Acetilcisteína 600 mg,Acetilcisteína,Medicamentos,Respiratorio,Comprimido efervescente,600 mg,10 comprimidos,Saval,0,5990,76,15,2029-02-16,Mucolítico para tos con flema.,1
+MED-038,Dextrometorfano Jarabe,Dextrometorfano bromhidrato,Medicamentos,Respiratorio,Jarabe,15 mg/5 ml,120 ml,Laboratorio Chile,0,3990,26,15,2028-11-13,Antitusivo para tos seca e irritativa.,1
+MED-039,Fluticasona Spray Nasal,Fluticasona propionato,Medicamentos,Respiratorio,Spray nasal,50 mcg/dosis,120 dosis,Recalcine,1,8990,51,10,2028-08-28,Corticoide nasal para rinitis alérgica.,1
+MED-040,Clotrimazol Crema 1%,Clotrimazol,Medicamentos,Dermatológicos,Crema,1%,20 g,Laboratorio Chile,0,2490,70,15,2027-08-15,Antifúngico tópico para pie de atleta y micosis cutáneas.,1
+MED-041,Hidrocortisona Crema 1%,Hidrocortisona acetato,Medicamentos,Dermatológicos,Crema,1%,15 g,Mintlab,0,2990,126,15,2028-03-23,Alivio de picazón e inflamación leve de la piel.,1
+MED-042,Mupirocina Ungüento 2%,Mupirocina,Medicamentos,Dermatológicos,Ungüento,2%,15 g,Saval,1,5990,77,10,2028-12-15,Antibiótico tópico para infecciones cutáneas.,1
+MED-043,Aciclovir Crema 5%,Aciclovir,Medicamentos,Dermatológicos,Crema,5%,5 g,Laboratorio Chile,0,3500,150,15,2027-10-11,Antiviral tópico para herpes labial.,1
+MED-044,"Betametasona Crema 0,05%",Betametasona dipropionato,Medicamentos,Dermatológicos,Crema,"0,05%",15 g,Andrómaco,1,3990,91,10,2027-04-27,Corticoide tópico para dermatitis y eczema.,1
+MED-045,Lágrimas Artificiales,Hipromelosa,Medicamentos,Oftalmológicos,Solución oftálmica,"0,3%",15 ml,Saval,0,3990,66,15,2027-04-02,Lubricante ocular para ojo seco.,1
+MED-046,Sertralina 50 mg,Sertralina clorhidrato,Medicamentos,Sistema nervioso,Comprimido recubierto,50 mg,30 comprimidos,Recalcine,1,5000,88,10,2028-04-14,"Antidepresivo ISRS, uso bajo control médico.",1
+MED-047,Ondansetrón 8 mg,Ondansetrón,Medicamentos,Gastrointestinal,Comprimido recubierto,8 mg,10 comprimidos,Andrómaco,1,5990,76,10,2027-05-07,Prevención de náuseas y vómitos.,1
+MED-048,"Tamsulosina 0,4 mg",Tamsulosina clorhidrato,Medicamentos,Urología,Cápsula de liberación prolongada,"0,4 mg",30 cápsulas,Saval,1,6990,62,10,2028-10-01,Tratamiento de síntomas de hiperplasia prostática benigna.,1
+MED-049,Fluconazol 150 mg,Fluconazol,Medicamentos,Antifúngicos,Cápsula,150 mg,1 cápsula,Laboratorio Chile,1,2000,88,10,2027-10-04,Antifúngico oral de dosis única para candidiasis.,1
+MED-050,Prednisona 20 mg,Prednisona,Medicamentos,Corticoides,Comprimido,20 mg,10 comprimidos,Mintlab,1,2490,135,10,2028-04-09,Corticoide oral para procesos inflamatorios y alérgicos.,1
+VIT-001,Vitamina C 1000 mg Efervescente,Ácido ascórbico,Vitaminas,Vitamina C,Comprimido efervescente,1000 mg,10 comprimidos,Andrómaco,0,3990,125,15,2027-07-25,"Apoyo al sistema inmune, sabor naranja.",1
+VIT-002,Vitamina C 500 mg Masticable,Ácido ascórbico,Vitaminas,Vitamina C,Comprimido masticable,500 mg,60 comprimidos,Mintlab,0,5990,75,15,2027-07-21,Vitamina C masticable para consumo diario.,1
+VIT-003,Vitamina C 1000 mg Liberación Prolongada,Ácido ascórbico,Vitaminas,Vitamina C,Comprimido de liberación prolongada,1000 mg,30 comprimidos,Laboratorio Chile,0,8000,71,15,2028-09-25,Liberación gradual durante el día.,1
+VIT-004,Vitamina C + Zinc,Ácido ascórbico + zinc,Vitaminas,Vitamina C,Comprimido,500 mg/10 mg,30 comprimidos,Saval,0,5990,145,15,2027-11-25,Combinación para reforzar las defensas.,1
+VIT-005,Vitamina C + D + Zinc Efervescente,Ácido ascórbico + colecalciferol + zinc,Vitaminas,Vitamina C,Comprimido efervescente,1000 mg/400 UI/10 mg,20 comprimidos,Andrómaco,0,6990,117,15,2028-10-18,Triple acción para el sistema inmune.,1
+VIT-006,Vitamina C Gomitas Infantil,Ácido ascórbico,Vitaminas,Vitamina C,Gomita,125 mg,60 gomitas,Mintlab,0,6990,110,15,2028-03-05,Vitamina C para niños en gomitas sabor frutilla.,1
+VIT-007,Vitamina D3 1000 UI,Colecalciferol,Vitaminas,Vitamina D,Cápsula blanda,1000 UI,60 cápsulas,Laboratorio Chile,0,6990,64,15,2027-07-20,Contribuye a la salud ósea y a la absorción de calcio.,1
+VIT-008,Vitamina D3 5000 UI,Colecalciferol,Vitaminas,Vitamina D,Cápsula blanda,5000 UI,60 cápsulas,Saval,0,9990,138,15,2028-07-18,Alta concentración para déficit de vitamina D bajo indicación profesional.,1
+VIT-009,Vitamina D3 Gotas Pediátricas,Colecalciferol,Vitaminas,Vitamina D,Solución oral en gotas,400 UI/gota,10 ml,Andrómaco,0,8000,31,15,2027-04-18,Suplementación de vitamina D en lactantes y niños.,1
+VIT-010,Vitamina D3 + K2,Colecalciferol + menaquinona-7,Vitaminas,Vitamina D,Cápsula blanda,2000 UI/100 mcg,60 cápsulas,Mintlab,0,14990,36,15,2027-08-04,Favorece la fijación del calcio en los huesos.,1
+VIT-011,Vitamina K2 MK-7 100 mcg,Menaquinona-7,Vitaminas,Vitamina K,Cápsula,100 mcg,60 cápsulas,Saval,0,12990,48,15,2029-01-25,Apoyo a la salud ósea y cardiovascular.,1
+VIT-012,Vitamina E 400 UI,Acetato de tocoferol,Vitaminas,Vitamina E,Cápsula blanda,400 UI,30 cápsulas,Laboratorio Chile,0,8000,116,15,2028-10-31,Antioxidante que protege las células del daño oxidativo.,1
+VIT-013,Complejo B,"Vitaminas B1, B2, B3, B5, B6, B9, B12",Vitaminas,Complejo B,Comprimido recubierto,Fórmula completa,30 comprimidos,Mintlab,0,5000,24,15,2028-03-29,Apoyo al metabolismo energético y sistema nervioso.,1
+VIT-014,Vitamina B12 1000 mcg Sublingual,Cianocobalamina,Vitaminas,Complejo B,Comprimido sublingual,1000 mcg,30 comprimidos,Saval,0,6990,105,15,2028-10-31,"Absorción sublingual, ideal para dietas veganas.",1
+VIT-015,Vitamina B1 + B6 + B12,Tiamina + piridoxina + cianocobalamina,Vitaminas,Complejo B,Comprimido recubierto,100 mg/100 mg/1 mg,30 comprimidos,Andrómaco,0,5990,127,15,2028-08-23,Neurovitaminas para el sistema nervioso.,1
+VIT-016,Vitamina B6 50 mg,Piridoxina clorhidrato,Vitaminas,Complejo B,Comprimido,50 mg,60 comprimidos,Laboratorio Chile,0,5490,72,15,2028-09-17,Contribuye al metabolismo de proteínas.,1
+VIT-017,Vitamina B3 Niacinamida 500 mg,Niacinamida,Vitaminas,Complejo B,Cápsula,500 mg,60 cápsulas,Mintlab,0,8000,10,15,2029-01-25,Apoyo al metabolismo energético y la piel.,1
+VIT-018,Biotina 5000 mcg,Biotina (vitamina B7),Vitaminas,Complejo B,Cápsula,5000 mcg,60 cápsulas,Saval,0,8990,37,15,2029-01-27,"Contribuye a la salud del cabello, piel y uñas.",1
+VIT-019,Ácido Fólico 1 mg,Ácido fólico (vitamina B9),Vitaminas,Complejo B,Comprimido,1 mg,30 comprimidos,Laboratorio Chile,0,1490,145,15,2027-11-29,Recomendado en etapa preconcepcional y embarazo.,1
+VIT-020,Multivitamínico Adulto,Vitaminas y minerales,Vitaminas,Multivitamínicos,Comprimido recubierto,Fórmula A-Z,30 comprimidos,Andrómaco,0,8990,95,15,2027-06-23,Vitaminas y minerales esenciales para el día a día.,1
+VIT-021,Multivitamínico Mujer,Vitaminas y minerales,Vitaminas,Multivitamínicos,Comprimido recubierto,Fórmula mujer,30 comprimidos,Mintlab,0,9990,83,15,2028-05-19,Fórmula con hierro y ácido fólico para la mujer.,1
+VIT-022,Multivitamínico Hombre,Vitaminas y minerales,Vitaminas,Multivitamínicos,Comprimido recubierto,Fórmula hombre,30 comprimidos,Mintlab,0,9990,48,15,2028-06-07,Fórmula con zinc y selenio para el hombre.,1
+VIT-023,Multivitamínico 50+,Vitaminas y minerales,Vitaminas,Multivitamínicos,Comprimido recubierto,Fórmula 50+,30 comprimidos,Andrómaco,0,11000,8,15,2027-11-25,Adaptado a las necesidades de adultos mayores de 50 años.,1
+VIT-024,Multivitamínico Infantil Gomitas,Vitaminas y minerales,Vitaminas,Multivitamínicos,Gomita,Fórmula infantil,60 gomitas,Saval,0,8990,136,15,2027-08-30,"Vitaminas para niños desde 4 años, sabores surtidos.",1
+VIT-025,Multivitamínico Prenatal con DHA,"Vitaminas, minerales y DHA",Vitaminas,Multivitamínicos,Cápsula blanda,Fórmula prenatal,30 cápsulas,Laboratorio Chile,0,14990,137,15,2027-06-17,Apoyo nutricional durante el embarazo y la lactancia.,1
+SUP-001,Omega 3 1000 mg,Aceite de pescado (EPA/DHA),Suplementos,Ácidos grasos,Cápsula blanda,1000 mg,60 cápsulas,Saval,0,9990,84,15,2028-12-14,Apoyo a la salud cardiovascular y cerebral.,1
+SUP-002,Omega 3 Alta Concentración,EPA + DHA concentrado,Suplementos,Ácidos grasos,Cápsula blanda,EPA 600 mg/DHA 400 mg,60 cápsulas,Andrómaco,0,17000,137,15,2028-11-13,Alta pureza y concentración de ácidos grasos omega 3.,1
+SUP-003,Magnesio Citrato 400 mg,Citrato de magnesio,Suplementos,Minerales,Comprimido,400 mg,60 comprimidos,Mintlab,0,8990,58,15,2027-08-04,Contribuye a la función muscular y reducción del cansancio.,1
+SUP-004,Magnesio + Vitamina B6,Magnesio + piridoxina,Suplementos,Minerales,Comprimido recubierto,300 mg/2 mg,30 comprimidos,Laboratorio Chile,0,6990,103,15,2027-08-13,Apoyo al sistema nervioso y muscular.,1
+SUP-005,Zinc 50 mg,Gluconato de zinc,Suplementos,Minerales,Comprimido,50 mg,60 comprimidos,Saval,0,5990,146,15,2028-08-25,Contribuye al funcionamiento del sistema inmune.,1
+SUP-006,Hierro Bisglicinato 25 mg,Hierro bisglicinato,Suplementos,Minerales,Cápsula,25 mg,60 cápsulas,Andrómaco,0,8000,8,15,2028-11-03,Hierro de alta absorción y buena tolerancia digestiva.,1
+SUP-007,Calcio + Vitamina D3,Carbonato de calcio + colecalciferol,Suplementos,Minerales,Comprimido recubierto,600 mg/400 UI,60 comprimidos,Laboratorio Chile,0,8000,90,15,2028-07-13,Mantenimiento de huesos y dientes.,1
+SUP-008,Colágeno Hidrolizado en Polvo,Péptidos de colágeno,Suplementos,Belleza y articulaciones,Polvo,10 g por porción,300 g,Mintlab,0,14990,12,15,2027-06-23,"Apoyo a la piel, articulaciones y huesos. Sin sabor.",1
+SUP-009,Colágeno + Ácido Hialurónico + Vitamina C,Colágeno + ácido hialurónico + ácido ascórbico,Suplementos,Belleza y articulaciones,Cápsula,Fórmula combinada,90 cápsulas,Saval,0,17990,100,15,2028-01-09,Fórmula para firmeza de la piel y salud articular.,1
+SUP-010,Glucosamina + Condroitina,Glucosamina sulfato + condroitina sulfato,Suplementos,Belleza y articulaciones,Comprimido recubierto,1500 mg/1200 mg,60 comprimidos,Andrómaco,0,14990,69,15,2027-04-29,Apoyo al cartílago y la movilidad articular.,1
+SUP-011,Melatonina 3 mg,Melatonina,Suplementos,Sueño y relajación,Comprimido,3 mg,60 comprimidos,Laboratorio Chile,0,5990,69,15,2028-10-01,Ayuda a conciliar el sueño y regular el ciclo de descanso.,1
+SUP-012,Ashwagandha 500 mg,Extracto de Withania somnifera,Suplementos,Sueño y relajación,Cápsula,500 mg,60 cápsulas,Mintlab,0,12990,28,15,2027-05-27,Planta adaptógena para el manejo del estrés.,1
+SUP-013,Probióticos 10 Mil Millones UFC,Lactobacillus y Bifidobacterium,Suplementos,Salud digestiva,Cápsula,10.000 millones UFC,30 cápsulas,Saval,0,15990,132,15,2027-05-10,Equilibrio de la flora intestinal.,1
+SUP-014,Fibra Psyllium en Polvo,Plantago ovata,Suplementos,Salud digestiva,Polvo,5 g por porción,300 g,Andrómaco,0,8990,144,15,2027-07-07,Fibra soluble para el tránsito intestinal.,1
+SUP-015,Proteína Whey Vainilla,Proteína de suero de leche,Suplementos,Nutrición deportiva,Polvo,24 g proteína por porción,900 g,Mintlab,0,35000,40,15,2029-01-04,"Recuperación y desarrollo muscular, sabor vainilla.",1
+SUP-016,Creatina Monohidrato,Creatina monohidrato,Suplementos,Nutrición deportiva,Polvo,5 g por porción,300 g,Mintlab,0,20000,129,15,2028-09-13,Mejora el rendimiento en ejercicios de alta intensidad.,1
+SUP-017,L-Carnitina 500 mg,L-carnitina tartrato,Suplementos,Nutrición deportiva,Cápsula,500 mg,60 cápsulas,Saval,0,11990,50,15,2027-11-27,Apoyo al metabolismo de las grasas.,1
+SUP-018,Electrolitos en Polvo,"Sodio, potasio, magnesio",Suplementos,Nutrición deportiva,Polvo para solución oral,1 sobre por porción,10 sobres,Laboratorio Chile,0,6990,143,15,2028-11-11,Hidratación durante y después del ejercicio.,1
+SUP-019,Coenzima Q10 100 mg,Ubiquinona,Suplementos,Antioxidantes,Cápsula blanda,100 mg,30 cápsulas,Andrómaco,0,17000,116,15,2027-10-03,Antioxidante que apoya la producción de energía celular.,1
+SUP-020,Cúrcuma con Pimienta Negra,Extracto de cúrcuma + piperina,Suplementos,Antioxidantes,Cápsula,500 mg/5 mg,60 cápsulas,Mintlab,0,11000,146,15,2029-02-04,Antioxidante natural con mayor biodisponibilidad.,1
+SUP-021,Spirulina 500 mg,Spirulina platensis,Suplementos,Antioxidantes,Comprimido,500 mg,120 comprimidos,Saval,0,9990,59,15,2029-02-28,Superalimento rico en proteínas y minerales.,1
+SUP-022,Ginkgo Biloba 120 mg,Extracto de Ginkgo biloba,Suplementos,Memoria y energía,Comprimido recubierto,120 mg,30 comprimidos,Laboratorio Chile,0,8990,87,15,2028-04-12,Apoyo a la memoria y la circulación.,1
+SUP-023,Ginseng 400 mg,Extracto de Panax ginseng,Suplementos,Memoria y energía,Cápsula,400 mg,30 cápsulas,Andrómaco,0,8990,103,15,2028-05-22,Energía y vitalidad natural.,1
+SUP-024,Arándano Rojo (Cranberry) 500 mg,Extracto de Vaccinium macrocarpon,Suplementos,Salud urinaria,Cápsula,500 mg,30 cápsulas,Saval,0,9990,140,15,2028-06-05,Apoyo a la salud de las vías urinarias.,1
+SUP-025,Levadura de Cerveza,Saccharomyces cerevisiae,Suplementos,Belleza y articulaciones,Comprimido,500 mg,100 comprimidos,Mintlab,0,5000,38,15,2027-11-09,Fuente natural de vitaminas B para piel y cabello.,1
