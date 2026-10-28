@@ -1,5 +1,5 @@
 sku,nombre,principio_activo,categoria,subcategoria,forma_farmaceutica,concentracion,contenido,laboratorio,requiere_receta,precio_clp,stock,stock_minimo,fecha_vencimiento,descripcion,activo
-MED-001,Paracetamol 500 mg,Paracetamol,Medicamentos,Analgésicos,Comprimido,500 mg,16 comprimidos,Laboratorio Chile,0,990,35,15,2027-03-26,Alivio del dolor leve a moderado y reducción de la fiebre.,1
+MED-001,Paracetamol 500 mg,Paracetamol,Medicamentos,Analgésicos,Comprimido,500 mg,16 comprimidos,Laboratorio Chile,0,990,34,15,2027-03-26,Alivio del dolor leve a moderado y reducción de la fiebre.,1
 MED-002,Paracetamol 1 g,Paracetamol,Medicamentos,Analgésicos,Comprimido,1 g,10 comprimidos,Mintlab,0,2000,78,15,2027-11-06,Analgésico y antipirético de dosis alta para adultos.,1
 MED-003,Ibuprofeno 400 mg,Ibuprofeno,Medicamentos,Antiinflamatorios,Comprimido recubierto,400 mg,20 comprimidos,Laboratorio Chile,0,1890,65,15,2027-07-21,"Antiinflamatorio para dolor, fiebre e inflamación.",1
 MED-004,Ibuprofeno 600 mg,Ibuprofeno,Medicamentos,Antiinflamatorios,Comprimido recubierto,600 mg,20 comprimidos,Mintlab,1,2490,34,10,2029-01-21,Antiinflamatorio de mayor potencia para dolor e inflamación.,1
