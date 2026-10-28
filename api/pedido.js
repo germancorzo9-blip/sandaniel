@@ -17,6 +17,7 @@ module.exports = async (req, res) => {
     if (e.faltantes) return res.status(409).json({ error: 'No hay stock suficiente para algunos productos.', faltantes: e.faltantes });
     if (e.status && e.status < 500 && !e.github) return res.status(e.status).json({ error: e.message });
     console.error(e);
-    return res.status(e.status === 503 ? 503 : 502).json({ error: 'No pudimos registrar el pedido en el inventario. Intenta de nuevo en unos segundos.' });
+    // the GitHub status and message help the pharmacy fix the setup; they never include the token
+    return res.status(e.status === 503 ? 503 : 502).json({ error: 'No pudimos registrar el pedido en el inventario. Intenta de nuevo en unos segundos.', detalle: e.github ? e.message : undefined });
   }
 };
