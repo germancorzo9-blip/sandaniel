@@ -49,12 +49,13 @@ async function gh(path, opts = {}) {
   }
   return data;
 }
-// What the configured token can do on this repository, to explain a 403 without exposing the token
+// Which token Vercel is using (its expiry date, as GitHub reports it), to match it with the user's token list
 async function accesoToken() {
   try {
-    const r = await gh('');
-    return r.permissions ? (r.permissions.push ? 'el token puede escribir en el repositorio' : 'el token solo puede leer el repositorio') : 'GitHub no informó los permisos del token';
-  } catch (e) { return e.message; }
+    const res = await fetch(`${API}/repos/${OWNER}/${REPO}`, { headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}`, Accept: 'application/vnd.github+json', 'User-Agent': 'farmacia-san-daniel' } });
+    const exp = res.headers.get('github-authentication-token-expiration');
+    return exp ? `el token que usa Vercel vence el ${exp.slice(0, 10)}` : 'el token que usa Vercel no tiene fecha de vencimiento';
+  } catch (e) { return undefined; }
 }
 async function readFile(path, ref) {
   try {
