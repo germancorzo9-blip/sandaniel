@@ -325,14 +325,73 @@ footer{background:var(--surface);border-top:1px solid var(--line)}
 .drawer-f .note{font-size:12px;line-height:16px;color:var(--muted);text-align:center}
 .order-err{font-size:14px;line-height:20px;color:var(--red-dark);background:var(--red-soft);border-radius:8px;padding:8px 12px}
 .order-err a{font-weight:600;text-decoration:underline}
-.order-ok{display:flex;flex-direction:column;gap:12px;padding-block:8px}
-.order-ok > .ic{width:48px;height:48px;color:var(--ok)}
-.order-wait > .ic{color:var(--blue)}
-.order-ok h3{font-size:20px;line-height:28px}
-.order-ok p{color:var(--muted)}
-.order-ok ul{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px;font-size:14px}
-.order-ok li{display:flex;justify-content:space-between;gap:12px}
-.order-ok li span{min-width:0}
+.in-checkout #main > .wrap > section:not(#checkout), .in-checkout #main > section{display:none}
+.co{padding-block:0 64px}
+.co-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start;margin-top:16px}
+.co-main{display:flex;flex-direction:column;gap:16px;min-width:0}
+.co-main h1, .co-empty h1, .co-result h1{font-size:28px;line-height:36px}
+.co-items{list-style:none;margin:0;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.co-box{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.co-box h2, .co-sum h2{font-size:20px;line-height:28px}
+.co-seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:4px;background:var(--bg);border-radius:12px}
+.co-seg .co-opt{justify-content:center;text-align:center;border-color:transparent;background:transparent}
+.co-seg .co-opt:has(input:checked){background:var(--surface);border-color:var(--blue)}
+.co-seg small{color:var(--ok)!important;font-weight:600}
+.co-opt{position:relative;display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:border-color .3s var(--ease),background-color .3s var(--ease)}
+.co-opt:hover{border-color:var(--blue)}
+.co-opt:has(input:checked){border-color:var(--blue);background:var(--blue-soft)}
+.co-opt:has(input:focus-visible){outline:2px solid var(--blue);outline-offset:2px}
+.co-opt input{accent-color:var(--blue);width:18px;height:18px;flex:none;margin:0}
+.co-seg .co-opt input{position:absolute;opacity:0;pointer-events:none}
+.co-opt span{display:flex;flex-direction:column;flex:1;min-width:0}
+.co-opt b{font-weight:600;font-size:16px;line-height:24px}
+.co-opt small{font-size:14px;line-height:20px;color:var(--muted)}
+.co-opt > .ic{color:var(--blue);width:24px;height:24px}
+.co-list, .co-locales{display:flex;flex-direction:column;gap:8px}
+.co-locales{display:grid;grid-template-columns:1fr 1fr}
+.co-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+.co-field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.co-field.wide{grid-column:1/-1}
+.co-field label{font-size:14px;line-height:20px;font-weight:500}
+.co-field label span{color:var(--muted);font-weight:400}
+.co-field input{border:1px solid var(--line-strong);border-radius:8px;padding:10px 12px;font-size:16px;line-height:24px;color:var(--ink);background:var(--surface);transition:border-color .3s var(--ease)}
+.co-field input:focus{outline:2px solid var(--blue);outline-offset:-1px;border-color:var(--blue)}
+.co-field input[aria-invalid="true"]{border-color:var(--red)}
+.co-msg{font-size:12px;line-height:16px;color:var(--red-dark)}
+.co-note{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:16px;color:var(--muted)}
+.co-note .ic{flex:none;color:var(--ok)}
+.co-rx{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;border-radius:12px;background:var(--blue-soft);color:var(--blue-dark);font-size:14px;line-height:20px}
+.co-rx .ic{flex:none;width:20px;height:20px}
+.co-sum{position:sticky;top:calc(env(safe-area-inset-top,0px) + 144px);background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.co-sum .tot{font-size:16px;line-height:24px;color:var(--ink)}
+.co-sum .tot.big{font-size:22px;line-height:32px;padding-top:12px;border-top:1px solid var(--line)}
+.co-sum s{color:var(--muted);font-size:14px}
+.co-save, .co-free, .co-saved{color:var(--ok)!important}
+.co-saved{text-align:right;font-weight:600;font-size:14px;line-height:20px;margin-top:-8px}
+.co-pay{width:100%;padding:12px;font-size:18px;line-height:28px;margin-top:4px}
+.co-empty, .co-result{max-width:640px;margin:24px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:32px 24px;display:flex;flex-direction:column;gap:12px}
+.co-empty{align-items:center;text-align:center}
+.co-empty > .ic, .co-result > .ic{width:48px;height:48px;color:var(--ok)}
+.co-empty > .ic, .co-result.wait > .ic{color:var(--blue)}
+.co-empty p, .co-result > p{color:var(--muted)}
+.co-num b{color:var(--ink)}
+.co-lines{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px;font-size:14px}
+.co-lines li{display:flex;justify-content:space-between;gap:12px}
+.co-lines li span{min-width:0}
+.co-lines li.big{font-size:18px;line-height:28px;font-weight:700;padding-top:8px;border-top:1px solid var(--line)}
+.co-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.co-help{font-size:14px;line-height:20px}
+.co-help a{color:var(--blue);font-weight:600;text-decoration:underline}
+@media (max-width:900px){
+  .co-grid{grid-template-columns:minmax(0,1fr)}
+  .co-sum{position:static}
+}
+@media (max-width:560px){
+  .co-box, .co-sum{padding:16px}
+  .co-fields, .co-locales{grid-template-columns:minmax(0,1fr)}
+  .co-main h1, .co-empty h1, .co-result h1{font-size:24px;line-height:32px}
+  .co-actions .btn{width:100%}
+}
 .order-id{font-variant-numeric:tabular-nums;color:var(--blue-dark)}
 .cart-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:48px 16px;color:var(--muted)}
 .cart-empty .ic{width:48px;height:48px;color:var(--blue)}
@@ -609,7 +668,7 @@ footer{background:var(--surface);border-top:1px solid var(--line)}
     <section class="perks" aria-label="Beneficios">
       <div class="perk"><svg class="ic"><use href="#i-crown-simple"/></svg><div><b>Club San Daniel</b><span>Precios exclusivos al registrarte</span></div></div>
       <div class="perk"><svg class="ic"><use href="#i-storefront"/></svg><div><b>Retiro en 2 horas</b><span>Compra online y retira en tu local</span></div></div>
-      <div class="perk"><svg class="ic"><use href="#i-prescription"/></svg><div><b>Receta digital</b><span>Sube tu receta al pagar</span></div></div>
+      <div class="perk"><svg class="ic"><use href="#i-prescription"/></svg><div><b>Medicamentos con receta</b><span>Presenta tu receta al recibir o retirar</span></div></div>
       <div class="perk"><svg class="ic"><use href="#i-shield-check"/></svg><div><b>Pago seguro</b><span>Débito, crédito y transferencia</span></div></div>
     </section>
 
@@ -690,6 +749,7 @@ footer{background:var(--surface);border-top:1px solid var(--line)}
     </section>
 
     <section id="pdp" class="pdp" hidden aria-label="Detalle del producto"></section>
+    <section id="checkout" class="co" hidden aria-label="Finaliza tu compra"></section>
 
     <section class="tagline reveal" aria-label="Nuestra promesa">
       <p id="taglineText">Te atendemos como en el barrio, con la comodidad de comprar online. Tu salud en buenas manos, todos los días del año.</p>
@@ -1060,6 +1120,7 @@ function renderSection(){
 let fresh = false; // set when the visitor picks a section, so the list starts from the top
 function route(scroll){
   const id = decodeURIComponent(location.hash.slice(1));
+  if (id === 'checkout'){ showCheckout(); return; }
   if (BY_SLUG[id]){ showProduct(BY_SLUG[id]); return; }
   if (id && !SEC_BY_ID[id]) return; // plain anchors such as #faq keep the current view
   const next = id && COUNT[id] ? id : DEFAULT_SEC;
@@ -1229,10 +1290,13 @@ function paintPdpCart(){
 let view = 'catalog', catalogScroll = 0, current = null;
 function setView(v){
   if (v === view) return;
-  if (v === 'pdp') catalogScroll = scrollY;
+  if (view === 'catalog') catalogScroll = scrollY;
+  if (view === 'checkout'){ resultado = null; orderErr = ''; coErr = {}; }
   view = v;
-  $$('.perks, .banners, #catalogo').forEach(el => el.hidden = v === 'pdp');
+  $$('.perks, .banners, #catalogo').forEach(el => el.hidden = v !== 'catalog');
   $('#pdp').hidden = v !== 'pdp';
+  $('#checkout').hidden = v !== 'checkout';
+  document.body.classList.toggle('in-checkout', v === 'checkout');
 }
 function renderPdp(){ $('#pdp').innerHTML = pdpHTML(current); paintPdpCart(); }
 function showProduct(p){
@@ -1276,11 +1340,11 @@ $('#filterApply').addEventListener('click', () => { closeFilters(); $('#catalogo
 function saveCart(){ store.set('sd-cart', cart); }
 const maxQty = id => Math.min(10, (P.find(p => p.id === id) || {stock:0}).stock);
 function setQty(id, q){
-  if (done && q > 0){ done = null; }
   orderErr = '';
   if (q <= 0) delete cart[id]; else cart[id] = Math.min(q, maxQty(id));
   saveCart(); renderCart();
   paintPdpCart();
+  if (view === 'checkout') renderCheckout();
   $$(`.card[data-id="${id}"] .c-cta`).forEach(c => c.innerHTML = cart[id] ? stepper(id, cart[id]) : `<button class="btn btn-red" type="button" data-add="${id}"><svg class="ic"><use href="#i-shopping-cart-simple"/></svg><span>Agregar<span class="hide-sm"> al carro</span></span></button>`);
 }
 function cartTotals(){
@@ -1297,38 +1361,26 @@ function renderCart(){
   $('#shipBar').innerHTML = (sub >= FREE ? '<b>Tu despacho es gratis.</b>' : `Te faltan <b>${fmt(left)}</b> para despacho gratis.`) + `<div class="track"><div class="fill" style="transform:scaleX(${Math.min(1, sub/FREE)})"></div></div>`;
   const body = $('#cartBody'), foot = $('#cartFoot');
   $('#shipBar').hidden = false;
-  if (done){ renderDone(body, foot); return; }
   if (!items){
-    body.innerHTML = (orderErr ? `<p class="order-err" role="alert">${orderErr}</p>` : '') + `<div class="cart-empty"><svg class="ic"><use href="#i-basket"/></svg><h3>Tu carro está vacío</h3><p>Agrega productos desde el catálogo. Los más pedidos esta semana son vitamina C, omega 3 y colágeno.</p><button class="btn btn-blue" type="button" id="goShop">Ver vitaminas</button></div>`;
+    const pend = store.get('sd-pedido', null);
+    body.innerHTML = (pend && pend.pago ? `<p class="order-err">Tienes la compra ${pend.pedido} sin pagar. <a href="#checkout" id="goCheckout">Ver compra</a></p>` : '') + `<div class="cart-empty"><svg class="ic"><use href="#i-basket"/></svg><h3>Tu carro está vacío</h3><p>Agrega productos desde el catálogo. Los más pedidos esta semana son vitamina C, omega 3 y colágeno.</p><button class="btn btn-blue" type="button" id="goShop">Ver vitaminas</button></div>`;
     foot.innerHTML = '';
     return;
   }
   body.innerHTML = Object.entries(cart).map(([id,q]) => { const p = P.find(x=>x.id==id); return `<div class="line-item"><div class="thumb">${media(p)}</div><div><h4><a href="#${slug(p)}">${p.name}</a></h4><span class="meta">${p.brand} · ${p.pres}</span></div><div class="right"><b>${fmt(p.price*q)}</b><div class="mini-step"><button type="button" data-dec="${id}" aria-label="Quitar una unidad"><svg class="ic ic-sm"><use href="#i-${q===1?'trash':'minus'}"/></svg></button><span>${q}</span><button type="button" data-inc="${id}" aria-label="Agregar una unidad"><svg class="ic ic-sm"><use href="#i-plus"/></svg></button></div></div></div>`; }).join('');
   const ship = sub >= FREE ? 0 : SHIP;
-  const lines = Object.entries(cart).map(([id,q]) => { const p = P.find(x=>x.id==id); return `• ${q} x ${p.name} · ${p.brand} [${p.id}]${p.rx?' (con receta)':''} (${fmt(p.price*q)})`; }).join('\n');
-  const needsRx = Object.keys(cart).some(id => (P.find(x=>x.id===id)||{}).rx);
-  const msg = encodeURIComponent(`Hola Farmacia San Daniel, quiero hacer este pedido:\n${lines}\nTotal: ${fmt(sub+ship)}`);
-  const waLink = `https://wa.me/56926014578?text=${msg}`;
   foot.innerHTML = `<div class="tot"><span>Subtotal (${items} ${items===1?'producto':'productos'})</span><span>${fmt(sub)}</span></div>
     ${save?`<div class="tot" style="color:var(--ok)"><span>Ahorras</span><span>${fmt(save)}</span></div>`:''}
     <div class="tot"><span>Despacho</span><span>${ship?fmt(ship):'Gratis'}</span></div>
     <div class="tot big"><span>Total</span><span>${fmt(sub+ship)}</span></div>
-    ${orderErr ? `<p class="order-err" role="alert">${orderErr}${orderErrWa ? ` <a href="${waLink}" target="_blank" rel="noopener">envíalo por WhatsApp</a>.` : ''}</p>` : ''}
-    ${LIVE && MP
-      ? `<button class="btn btn-red" type="button" id="payOrder" ${sending?'disabled':''}><svg class="ic"><use href="#i-credit-card"/></svg>${sending==='mp'?'Abriendo Mercado Pago…':'Pagar con Mercado Pago'}</button>
-         <button class="btn btn-ghost" type="button" id="confirmOrder" ${sending?'disabled':''}><svg class="ic"><use href="#i-whatsapp-logo"/></svg>${sending==='wa'?'Reservando pedido…':'Reservar y pagar por WhatsApp'}</button>
-         <p class="note">Paga con tarjeta de débito, crédito o saldo de Mercado Pago. Reservamos tus unidades al iniciar el pago.${needsRx?' Tu pedido incluye medicamentos con receta: envía también la foto de la receta por WhatsApp.':''}</p>`
-      : LIVE
-      ? `<button class="btn btn-red" type="button" id="confirmOrder" ${sending?'disabled':''}><svg class="ic"><use href="#i-check-circle--fill"/></svg>${sending?'Confirmando pedido…':'Confirmar pedido'}</button>
-         <p class="note">Al confirmar reservamos las unidades. Después envías el pedido por WhatsApp para coordinar pago y entrega.${needsRx?' Tu pedido incluye medicamentos con receta: envía también la foto de la receta.':''}</p>`
-      : `<a class="btn btn-red" href="${waLink}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp-logo"/></svg>Enviar pedido por WhatsApp</a>
-         <p class="note">${needsRx?'Tu pedido incluye medicamentos con receta. Envía la foto de la receta por WhatsApp junto al pedido. ':''}Un químico farmacéutico confirma stock y forma de pago antes de despachar.</p>`}`;
+    <a class="btn btn-red" href="#checkout" id="goCheckout">Continuar compra<svg class="ic"><use href="#i-caret-right"/></svg></a>
+    <p class="note">Elige despacho o retiro gratis en local y paga con Mercado Pago.</p>`;
 }
 // Live inventory: /api/stock and /api/pedido run on Vercel and keep data/inventario.csv up to date.
 // Where they are not available (a static preview) the page keeps the stock it was built with.
-let LIVE = false, MP = false, sending = false, done = null, orderErr = '', orderErrWa = false, lastStock = 0;
+let LIVE = false, MP = false, sending = false, orderErr = '', lastStock = 0;
 async function api(path, opts = {}){
-  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 15000);
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 20000);
   try { const r = await fetch(path, {...opts, signal: ctl.signal, cache: 'no-store'}); return {status: r.status, data: await r.json().catch(() => ({}))}; }
   finally { clearTimeout(t); }
 }
@@ -1347,77 +1399,190 @@ function applyStock(map){
   saveCart(); refreshViews();
 }
 function refreshViews(){
-  if (view === 'pdp' && current) renderPdp(); else if ($('#grid').getAttribute('aria-busy') !== 'true') renderGrid();
+  if (view === 'checkout') renderCheckout();
+  else if (view === 'pdp' && current) renderPdp(); else if ($('#grid').getAttribute('aria-busy') !== 'true') renderGrid();
   renderCart();
 }
-// pagar: go straight to Mercado Pago once the units are reserved
-async function confirmOrder(pagar){
+
+// Checkout page (#checkout): delivery, customer details, payment method and billing, then Mercado Pago.
+// Customer details go only to Mercado Pago; the public repository keeps no personal data.
+const co = {entrega: 'envio', local: -1, pago: 'debito', doc: 'boleta', nombre: '', email: '', telefono: '', direccion: '', depto: '', comuna: '', rut: '', razon: '', giro: ''};
+let coErr = {}, resultado = null;
+const PAGOS = {debito: ['Tarjeta de débito', 'Redcompra, Visa y Mastercard débito'], credito: ['Tarjeta de crédito', 'Paga en cuotas con tu banco'], cuenta: ['Dinero en Mercado Pago', 'Usa el saldo de tu cuenta']};
+const rutOk = r => {
+  const m = String(r).replace(/[.\s]/g, '').toUpperCase().match(/^(\d{7,8})-?([\dK])$/); if (!m) return false;
+  let s = 0, k = 2; for (const d of m[1].split('').reverse()){ s += d * k; k = k === 7 ? 2 : k + 1; }
+  const v = 11 - s % 11; return (v === 11 ? '0' : v === 10 ? 'K' : String(v)) === m[2];
+};
+function coTotals(){
+  const t = cartTotals(), ship = co.entrega === 'retiro' || t.sub >= FREE ? 0 : SHIP;
+  return {...t, ship, total: t.sub + ship};
+}
+const field = (id, label, opts = {}) => `<div class="co-field${opts.wide ? ' wide' : ''}"><label for="co-${id}">${label}${opts.opt ? ' <span>(opcional)</span>' : ''}</label>
+  <input id="co-${id}" name="${id}" value="${esc(co[id])}" ${opts.attrs || ''} ${coErr[id] ? `aria-invalid="true" aria-describedby="co-${id}-err"` : ''}>
+  ${coErr[id] ? `<p class="co-msg" id="co-${id}-err">${coErr[id]}</p>` : ''}</div>`;
+const radio = (name, value, title, sub, extra = '') => `<label class="co-opt"><input type="radio" name="${name}" value="${value}" ${co[name] === value ? 'checked' : ''}><span><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>${extra}</label>`;
+function checkoutHTML(){
+  const ids = Object.keys(cart);
+  if (!ids.length) return `<div class="co-empty"><svg class="ic"><use href="#i-basket"/></svg><h1>Tu carro está vacío</h1><p>Agrega productos desde el catálogo para finalizar una compra.</p><a class="btn btn-blue" href="#todos">Ver productos</a></div>`;
+  const {items, sub, save, ship, total} = coTotals(), full = sub + save;
+  const rx = ids.some(id => (P.find(x => x.id === id) || {}).rx);
+  const shipEnvio = sub >= FREE ? 'Gratis' : fmt(SHIP);
+  return `<div class="co-grid">
+  <form class="co-main" id="coForm" novalidate>
+    <h1>Finaliza tu compra</h1>
+    <ul class="co-items">${ids.map(id => { const p = P.find(x => x.id === id), q = cart[id]; return `<li class="line-item"><div class="thumb">${media(p)}</div><div><h4><a href="#${slug(p)}">${p.name}</a></h4><span class="meta">${p.brand} · ${p.pres} · ${q} ${q === 1 ? 'unidad' : 'unidades'}${p.rx ? ' · Requiere receta' : ''}</span></div><div class="right"><b>${fmt(p.price * q)}</b></div></li>`; }).join('')}</ul>
+
+    <section class="co-box" aria-labelledby="coEntrega">
+      <h2 id="coEntrega">Forma de entrega</h2>
+      <div class="co-seg" role="radiogroup" aria-label="Forma de entrega">
+        ${radio('entrega', 'envio', 'Despacho a domicilio', shipEnvio)}
+        ${radio('entrega', 'retiro', 'Retiro en local', 'Gratis')}
+      </div>
+      ${co.entrega === 'envio'
+        ? `<div class="co-fields">${field('direccion', 'Calle y número', {wide: true, attrs: 'autocomplete="address-line1" maxlength="120"'})}${field('depto', 'Depto, casa u oficina', {opt: true, attrs: 'autocomplete="address-line2" maxlength="60"'})}${field('comuna', 'Comuna', {attrs: 'autocomplete="address-level2" maxlength="60"'})}</div>`
+        : `<div class="co-locales" role="radiogroup" aria-label="Local de retiro">${COMUNAS.map((c, i) => `<label class="co-opt"><input type="radio" name="local" value="${i}" ${co.local === i ? 'checked' : ''}><span><b>Local ${c}</b><small>Listo para retirar en 2 horas</small></span></label>`).join('')}</div>`}
+    </section>
+
+    <section class="co-box" aria-labelledby="coDatos">
+      <h2 id="coDatos">Tus datos</h2>
+      <div class="co-fields">${field('nombre', 'Nombre y apellido', {wide: true, attrs: 'autocomplete="name" maxlength="80"'})}${field('email', 'Correo electrónico', {attrs: 'type="email" autocomplete="email" maxlength="120"'})}${field('telefono', 'Teléfono', {attrs: 'type="tel" autocomplete="tel" placeholder="+56 9 1234 5678" maxlength="20"'})}</div>
+    </section>
+
+    <section class="co-box" aria-labelledby="coPago">
+      <h2 id="coPago">Medios de pago</h2>
+      <div class="co-list" role="radiogroup" aria-label="Medio de pago">${Object.entries(PAGOS).map(([k, [t, s]]) => radio('pago', k, t, s, '<svg class="ic"><use href="#i-credit-card"/></svg>')).join('')}</div>
+      <p class="co-note"><svg class="ic ic-sm"><use href="#i-shield-check"/></svg>Ingresas los datos de pago en Mercado Pago. La farmacia nunca ve el número de tu tarjeta.</p>
+    </section>
+
+    <section class="co-box" aria-labelledby="coDoc">
+      <h2 id="coDoc">Facturación</h2>
+      <div class="co-seg" role="radiogroup" aria-label="Documento tributario">
+        ${radio('doc', 'boleta', 'Boleta', '')}
+        ${radio('doc', 'factura', 'Factura', '')}
+      </div>
+      <div class="co-fields">${co.doc === 'factura'
+        ? `${field('rut', 'RUT de la empresa', {attrs: 'placeholder="76.123.456-7" maxlength="12"'})}${field('razon', 'Razón social', {attrs: 'autocomplete="organization" maxlength="100"'})}${field('giro', 'Giro', {wide: true, attrs: 'maxlength="100"'})}`
+        : field('rut', 'RUT', {opt: true, attrs: 'placeholder="12.345.678-9" maxlength="12"'})}</div>
+    </section>
+    ${rx ? `<p class="co-rx"><svg class="ic"><use href="#i-prescription"/></svg>Tu compra incluye medicamentos con receta. Presenta la receta médica al ${co.entrega === 'retiro' ? 'retirar' : 'recibir'} tu pedido.</p>` : ''}
+  </form>
+
+  <aside class="co-sum" aria-labelledby="coSum">
+    <h2 id="coSum">Resumen de compra</h2>
+    <div class="tot"><span>Productos (${items})</span><span>${fmt(full)}</span></div>
+    ${save ? `<div class="tot co-save"><span>Descuentos</span><span>-${fmt(save)}</span></div>` : ''}
+    <div class="tot"><span>${co.entrega === 'retiro' ? 'Retiro en local' : 'Despacho'}</span><span>${ship ? fmt(ship) : `${co.entrega === 'envio' ? `<s>${fmt(SHIP)}</s> ` : ''}<b class="co-free">Gratis</b>`}</span></div>
+    <div class="tot big"><span>Total</span><span>${fmt(total)}</span></div>
+    ${save || (!ship && co.entrega === 'envio') ? `<p class="co-saved">Ahorras ${fmt(save + (co.entrega === 'envio' && !ship ? SHIP : 0))}</p>` : ''}
+    ${orderErr ? `<p class="order-err" role="alert">${orderErr}</p>` : ''}
+    <button class="btn btn-blue co-pay" type="submit" form="coForm" ${sending ? 'disabled' : ''}>${sending ? 'Abriendo Mercado Pago…' : 'Pagar y finalizar'}</button>
+    <p class="co-note"><svg class="ic ic-sm"><use href="#i-shield-check"/></svg>Pago seguro con Mercado Pago. Reservamos tus unidades al presionar el botón.</p>
+  </aside>
+</div>`;
+}
+const RESULTADO = {
+  aprobado: ['check-circle--fill', '¡Listo! Recibimos tu pago', 'Te enviamos el comprobante de Mercado Pago a tu correo. Preparamos tu pedido y te avisamos cuando esté en camino o listo para retirar.'],
+  pendiente: ['credit-card', 'Tu pago está en proceso', 'Mercado Pago está procesando tu pago. Tus unidades siguen reservadas y te avisaremos por correo cuando se acredite.'],
+  rechazado: ['credit-card', 'El pago no se completó', 'No se hizo ningún cargo. Tus unidades siguen reservadas: puedes intentar de nuevo con otro medio de pago.'],
+  sinpagar: ['credit-card', 'Tienes una compra sin pagar', 'Guardamos estas unidades para ti. Completa el pago en Mercado Pago para finalizar tu compra.'],
+};
+function resultadoHTML(){
+  const d = resultado, [icon, title, text] = RESULTADO[d.estado], ok = d.estado === 'aprobado';
+  const retry = d.pago && d.pago.url && (d.estado === 'rechazado' || d.estado === 'sinpagar');
+  return `<div class="co-result${ok ? '' : ' wait'}" role="status"><svg class="ic"><use href="#i-${icon}"/></svg>
+    <h1>${title}</h1><p>${text}</p>
+    ${orderErr ? `<p class="order-err" role="alert">${orderErr}</p>` : ''}
+    <p class="co-num">Número de compra <b>${d.pedido}</b></p>
+    <ul class="co-lines">${d.items.map(it => `<li><span>${it.cantidad} x ${it.nombre}</span><b>${fmt(it.subtotal)}</b></li>`).join('')}
+      <li><span>${d.entrega === 'retiro' ? 'Retiro en local' : 'Despacho'}</span><b>${d.pago && d.pago.envio ? fmt(d.pago.envio) : 'Gratis'}</b></li>
+      <li class="big"><span>Total${ok ? ' pagado' : ''}</span><b>${fmt(d.pago ? d.pago.total : d.total)}</b></li></ul>
+    ${d.rx ? `<p class="co-rx"><svg class="ic"><use href="#i-prescription"/></svg>Recuerda presentar la receta médica al ${d.entrega === 'retiro' ? 'retirar' : 'recibir'} tu pedido.</p>` : ''}
+    <div class="co-actions">${retry ? `<a class="btn btn-blue" href="${esc(d.pago.url)}">${d.estado === 'sinpagar' ? 'Pagar ahora' : 'Intentar pagar de nuevo'}</a>` : ''}
+    <a class="btn ${retry ? 'btn-ghost' : 'btn-blue'}" href="#todos" id="coDone">Seguir comprando</a></div>
+    <p class="co-help">¿Necesitas ayuda con tu compra? Escríbenos al <a href="https://wa.me/56926014578?text=${encodeURIComponent('Hola, tengo una consulta sobre mi compra ' + d.pedido)}" target="_blank" rel="noopener">WhatsApp +56 9 2601 4578</a>.</p>
+  </div>`;
+}
+function renderCheckout(){
+  if (!resultado && !Object.keys(cart).length){ const d = store.get('sd-pedido', null); if (d) resultado = {...d, estado: d.estado || 'sinpagar'}; }
+  $('#checkout').innerHTML = `<nav class="crumbs" aria-label="Ruta de navegación"><a href="#todos">Inicio</a><svg class="ic ic-sm"><use href="#i-caret-right"/></svg><span aria-current="page">${resultado ? 'Tu compra' : 'Finaliza tu compra'}</span></nav>` + (resultado ? resultadoHTML() : checkoutHTML());
+}
+function showCheckout(){
+  if (co.local < 0) co.local = Math.max(0, locI);
+  setView('checkout'); closeCart(); renderCheckout();
+  document.title = 'Finaliza tu compra · Farmacia San Daniel';
+  scrollTo({top: 0, behavior: 'instant'});
+  loadStock(true);
+}
+function validar(){
+  const e = {}, req = (k, msg) => { if (!co[k].trim()) e[k] = msg; };
+  req('nombre', 'Escribe tu nombre y apellido.');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(co.email.trim())) e.email = 'Escribe un correo válido, por ejemplo nombre@correo.cl.';
+  if (co.telefono.replace(/\D/g, '').length < 8) e.telefono = 'Escribe un teléfono con al menos 8 dígitos.';
+  if (co.entrega === 'envio'){ req('direccion', 'Escribe la calle y el número.'); req('comuna', 'Escribe la comuna.'); }
+  if (co.doc === 'factura'){ req('razon', 'Escribe la razón social.'); req('giro', 'Escribe el giro de la empresa.'); }
+  if ((co.doc === 'factura' || co.rut.trim()) && !rutOk(co.rut)) e.rut = 'Revisa el RUT, por ejemplo 12.345.678-9.';
+  return e;
+}
+async function pagar(){
   if (sending) return;
-  sending = pagar ? 'mp' : 'wa'; orderErr = ''; orderErrWa = false; renderCart();
+  coErr = validar(); orderErr = '';
+  if (Object.keys(coErr).length){ renderCheckout(); const f = $('#checkout [aria-invalid="true"]'); if (f){ f.focus(); f.scrollIntoView({block: 'center', behavior: reduce ? 'auto' : 'smooth'}); } return; }
+  if (!LIVE || !MP){
+    orderErr = 'El pago en línea no está disponible en este momento. Intenta de nuevo en unos minutos o escríbenos al <a href="https://wa.me/56926014578" target="_blank" rel="noopener">WhatsApp</a>.';
+    loadStock(true); renderCheckout(); return;
+  }
+  sending = true; renderCheckout();
   const items = Object.entries(cart).map(([sku, cantidad]) => ({sku, cantidad}));
+  const t = s => s.trim();
+  const body = {items, pago: co.pago,
+    entrega: co.entrega === 'retiro' ? {tipo: 'retiro', local: `Local ${COMUNAS[co.local]}`} : {tipo: 'envio', direccion: t(co.direccion), depto: t(co.depto), comuna: t(co.comuna)},
+    cliente: {nombre: t(co.nombre), email: t(co.email), telefono: t(co.telefono)},
+    documento: {tipo: co.doc, rut: t(co.rut), razon: co.doc === 'factura' ? t(co.razon) : '', giro: co.doc === 'factura' ? t(co.giro) : ''}};
   try {
-    const {status, data} = await api('/api/pedido', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({items})});
+    const {status, data} = await api('/api/pedido', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
     if (status === 201){
       for (const it of data.items){ const p = P.find(x => x.id === it.sku); if (p) p.stock = it.stock; }
-      const sub = data.total, ship = sub >= FREE ? 0 : SHIP;
-      // choosing WhatsApp keeps the WhatsApp screen; the online payment stays available only for Mercado Pago
-      if (!pagar){ delete data.pago; delete data.pagoError; delete data.pagoDetalle; }
-      done = {...data, ship, rx: data.items.some(it => (P.find(x => x.id === it.sku) || {}).rx)};
-      cart = {}; saveCart(); store.set('sd-pedido', done);
-      if (pagar && data.pago && data.pago.url){ location.href = data.pago.url; return; }
+      const pedido = {pedido: data.pedido, total: data.total, items: data.items, pago: data.pago, entrega: co.entrega, rx: data.items.some(it => (P.find(x => x.id === it.sku) || {}).rx)};
+      cart = {}; saveCart(); store.set('sd-pedido', pedido);
+      if (data.pago && data.pago.url){ location.href = data.pago.url; return; }
+      orderErr = `Reservamos tu compra ${data.pedido}, pero no pudimos abrir Mercado Pago${data.pagoDetalle ? ` (${esc(data.pagoDetalle)})` : ''}.`;
+      resultado = {...pedido, estado: 'sinpagar'};
     } else if (status === 409 && data.faltantes){
       for (const f of data.faltantes){ const p = P.find(x => x.id === f.sku); if (p) p.stock = f.disponible; }
       for (const id of Object.keys(cart)){ const m = maxQty(id); if (cart[id] > m){ if (m > 0) cart[id] = m; else delete cart[id]; } }
       saveCart();
-      orderErr = 'Mientras comprabas se agotaron unidades: ' + data.faltantes.map(f => `${f.nombre || f.sku} (quedan ${f.disponible})`).join(', ') + (Object.keys(cart).length ? '. Ajustamos tu carro; revísalo y confirma de nuevo.' : '. Lo quitamos de tu carro.');
+      orderErr = 'Mientras comprabas se agotaron unidades: ' + data.faltantes.map(f => `${f.nombre || f.sku} (quedan ${f.disponible})`).join(', ') + '. Ajustamos tu compra; revísala y presiona Pagar y finalizar de nuevo.';
       loadStock(true);
     } else {
-      orderErr = (data && data.error ? data.error : 'No pudimos reservar el pedido.') + ' Si se repite,'; orderErrWa = true;
+      orderErr = (data && data.error ? data.error : 'No pudimos procesar tu compra.') + ' Intenta de nuevo en unos segundos.';
     }
   } catch (e) {
-    orderErr = 'No pudimos conectarnos para reservar el pedido. Revisa tu conexión e intenta de nuevo, o'; orderErrWa = true;
+    orderErr = 'No pudimos conectarnos. Revisa tu conexión e intenta de nuevo.';
   }
   sending = false; refreshViews();
 }
+$('#checkout').addEventListener('input', e => {
+  const n = e.target.name; if (!n || !(n in co)) return;
+  if (e.target.type === 'radio'){ co[n] = n === 'local' ? +e.target.value : e.target.value; if (n === 'local'){ locI = co.local; store.set('sd-loc', locI); paintLoc(); } coErr = {}; renderCheckout(); return; }
+  co[n] = e.target.value;
+  if (coErr[n]){ delete coErr[n]; e.target.removeAttribute('aria-invalid'); const m = $(`#co-${n}-err`); if (m) m.remove(); }
+});
+$('#checkout').addEventListener('submit', e => { e.preventDefault(); pagar(); });
+$('#checkout').addEventListener('click', e => { if (e.target.closest('#coDone')){ resultado = null; store.set('sd-pedido', null); } });
 // Mercado Pago sends the customer back with ?pago=aprobado|pendiente|rechazado&pedido=SD-…
-const RETORNO = {
-  aprobado: ['check-circle--fill', 'Pago recibido', 'Mercado Pago aprobó tu pago. Preparamos tu pedido y te contactamos para coordinar la entrega.'],
-  pendiente: ['credit-card', 'Pago pendiente', 'Mercado Pago está procesando tu pago. Tus unidades siguen reservadas; te avisaremos cuando se acredite.'],
-  rechazado: ['credit-card', 'El pago no se completó', 'Tus unidades siguen reservadas. Puedes intentar de nuevo con otro medio de pago o coordinar el pago por WhatsApp.'],
-};
-function renderDone(body, foot){
-  const d = done, lines = d.items.map(it => `• ${it.cantidad} x ${it.nombre} [${it.sku}] (${fmt(it.subtotal)})`).join('\n');
-  const total = d.pago ? d.pago.total : d.total + d.ship, r = d.retorno && RETORNO[d.retorno];
-  const pagado = d.retorno === 'aprobado';
-  const msg = encodeURIComponent(`Hola Farmacia San Daniel, ${pagado ? 'pagué con Mercado Pago' : 'confirmé'} el pedido ${d.pedido}:\n${lines}\nTotal: ${fmt(total)}${d.rx ? '\nAdjunto la foto de la receta.' : ''}`);
-  const wa = `https://wa.me/56926014578?text=${msg}`;
-  const pagar = d.pago && !pagado && d.retorno !== 'pendiente';
-  $('#shipBar').hidden = true;
-  body.innerHTML = `<div class="order-ok${r && !pagado ? ' order-wait' : ''}" role="status"><svg class="ic"><use href="#i-${r ? r[0] : 'check-circle--fill'}"/></svg>
-    <h3>${r ? r[1] : 'Pedido'} <span class="order-id">${d.pedido}</span>${r ? '' : ' reservado'}</h3>
-    <p>${r ? r[2] : d.pago ? 'Guardamos estas unidades para ti. Paga con Mercado Pago para completar tu compra.' : 'Guardamos estas unidades para ti. Envía el pedido por WhatsApp para coordinar el pago y la entrega.'}${d.rx ? ' Envía la foto de la receta por WhatsApp.' : ''}</p>
-    ${d.pagoError ? `<p class="order-err" role="alert">${d.pagoError} Tus unidades quedaron reservadas: coordina el pago por WhatsApp.${d.pagoDetalle ? `<br><small>${esc(d.pagoDetalle)}</small>` : ''}</p>` : ''}
-    <ul>${d.items.map(it => `<li><span>${it.cantidad} x ${it.nombre}</span><b>${fmt(it.subtotal)}</b></li>`).join('')}</ul></div>`;
-  foot.innerHTML = `<div class="tot"><span>Despacho</span><span>${d.ship ? fmt(d.ship) : 'Gratis'}</span></div>
-    <div class="tot big"><span>Total${pagado ? ' pagado' : ''}</span><span>${fmt(total)}</span></div>
-    ${pagar ? `<a class="btn btn-red" href="${d.pago.url}"><svg class="ic"><use href="#i-credit-card"/></svg>${d.retorno ? 'Intentar pagar de nuevo' : `Pagar ${fmt(total)} con Mercado Pago`}</a>` : ''}
-    <a class="btn ${pagar ? 'btn-ghost' : 'btn-red'}" href="${wa}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp-logo"/></svg>${pagar ? 'Prefiero pagar por WhatsApp' : `Enviar pedido ${d.pedido} por WhatsApp`}</a>
-    <button class="btn btn-ghost" type="button" id="keepShopping">Seguir comprando</button>`;
-}
 function volverDePago(){
   const q = new URLSearchParams(location.search), estado = q.get('pago'), id = q.get('pedido');
   if (!estado || !id) return;
-  history.replaceState(null, '', location.pathname + location.hash);
+  history.replaceState(null, '', location.pathname + '#checkout');
   const d = store.get('sd-pedido', null);
-  if (!d || d.pedido !== id || !RETORNO[estado]) return;
-  done = {...d, retorno: estado};
-  if (estado === 'aprobado') store.set('sd-pedido', null); else store.set('sd-pedido', done);
-  renderCart(); openCart();
+  if (!d || d.pedido !== id || !RESULTADO[estado]) return;
+  resultado = {...d, estado};
+  store.set('sd-pedido', estado === 'aprobado' ? null : resultado);
+  showCheckout();
 }
 document.addEventListener('click', e => {
-  if (e.target.closest('#confirmOrder')) confirmOrder(false);
-  if (e.target.closest('#payOrder')) confirmOrder(true);
-  if (e.target.closest('#keepShopping')){ done = null; store.set('sd-pedido', null); renderCart(); closeCart(); }
+  if (e.target.closest('#goCheckout') && location.hash === '#checkout'){ e.preventDefault(); showCheckout(); }
 });
 
 let toastT;

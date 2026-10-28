@@ -12,11 +12,15 @@ module.exports = async (req, res) => {
   let body = req.body;
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = null; } }
   try {
+    // checkout details (delivery, customer, billing) are checked before reserving any stock
+    const datos = body && body.cliente ? mercadopago.datosCompra(body) : null;
+    const invalido = datos && mercadopago.datosInvalidos(datos);
+    if (invalido) return res.status(400).json({ error: invalido });
     const r = await registrarPedido(body && body.items);
     // With MP_ACCESS_TOKEN the customer pays online; if Mercado Pago fails the order stays
-    // reserved and the page falls back to WhatsApp.
+    // reserved and the page tells the customer.
     if (mercadopago.activo()) {
-      try { r.pago = await mercadopago.crearPreferencia(r, req); }
+      try { r.pago = await mercadopago.crearPreferencia(r, req, datos); }
       // the Mercado Pago message (never the token) helps fix the setup
       catch (e) { console.error(e); r.pagoError = 'No pudimos abrir el pago con Mercado Pago.'; r.pagoDetalle = e.message; }
     }

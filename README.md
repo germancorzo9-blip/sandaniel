@@ -1,6 +1,6 @@
 # Farmacia San Daniel
 
-Tienda online de Farmacia San Daniel: catálogo de vitaminas y suplementos con filtros, carro de compras y pedido por WhatsApp.
+Tienda online de Farmacia San Daniel: catálogo de vitaminas y suplementos con filtros, carro de compras y pago en línea con Mercado Pago.
 
 ## Archivos
 
@@ -31,15 +31,15 @@ Las secciones sin productos en el inventario no se muestran en el menú. Hoy el 
 
 ## Descuento automático de stock
 
-Cuando un cliente presiona **Confirmar pedido** en el carro:
+Cuando un cliente presiona **Pagar y finalizar** en la página Finaliza tu compra:
 
 1. `api/pedido.js` (una función de Vercel) lee `data/inventario.csv` desde GitHub y revisa que haya stock de cada producto.
 2. Si alcanza, descuenta las unidades, anota cada línea en `data/pedidos.csv` (número de pedido, fecha, SKU, cantidad, precio, stock anterior y nuevo) y guarda ambos archivos en un solo commit `Pedido SD-…`.
-3. El cliente ve el número de pedido y lo envía por WhatsApp para coordinar pago y entrega.
+3. El cliente pasa a pagar en Mercado Pago (ver más abajo).
 
 Si dos clientes compran la última unidad al mismo tiempo, solo uno la obtiene; al otro se le avisa y se ajusta su carro. `api/stock.js` entrega el stock actual y la página lo consulta al abrirse y al abrir el carro, así muestra lo que realmente queda sin tener que regenerarse. `vercel.json` evita un nuevo despliegue cuando un commit solo cambia los CSV de inventario, pedidos o pagos.
 
-`data/pedidos.csv` no guarda datos personales porque el repositorio es público; el nombre, teléfono y dirección del cliente llegan solo por WhatsApp.
+`data/pedidos.csv` no guarda datos personales porque el repositorio es público; el nombre, teléfono y dirección del cliente llegan solo a Mercado Pago.
 
 ### Configuración (una sola vez)
 
@@ -47,21 +47,30 @@ Si dos clientes compran la última unidad al mismo tiempo, solo uno la obtiene; 
 2. En Vercel abre el proyecto → Settings → Environment Variables y agrega `GITHUB_TOKEN` con ese token (Production).
 3. En Vercel → Deployments, usa **Redeploy** en el último despliegue para que la función tome el token.
 
-Sin el token la tienda sigue funcionando como antes: el carro envía el pedido por WhatsApp y el stock no se descuenta.
+Sin el token no se pueden reservar pedidos: la página Finaliza tu compra avisa que el pago en línea no está disponible y ofrece el WhatsApp de la farmacia.
 
 ### Al editar el inventario a mano
 
 Los pedidos hacen commits en `main`, así que antes de editar ejecuta `git pull`. Para reponer stock o anular un pedido, cambia la columna `stock` del producto en `data/inventario.csv` y sube el cambio.
 
-## Pago con Mercado Pago
+## Finalizar compra y pago con Mercado Pago
 
-Cuando `MP_ACCESS_TOKEN` está configurado, el carro muestra **Pagar con Mercado Pago** (y, como alternativa, **Reservar y pagar por WhatsApp**). Al presionarlo, `api/pedido.js` reserva el stock, crea un pago de Mercado Pago (Checkout Pro) con los productos, precios del inventario y el despacho ($2.990 bajo $29.990) y lleva al cliente a pagar con tarjeta de débito, crédito o saldo de Mercado Pago. `api/stock.js` indica a la página si Mercado Pago está activo (`"mercadopago": true`); si Mercado Pago responde con un error, el carro lo muestra y el pedido queda reservado para pagarlo por WhatsApp.
+El botón **Continuar compra** del carro abre la página **Finaliza tu compra** (`/#checkout`). Ahí el cliente ve sus productos y completa:
 
-1. Al terminar, Mercado Pago devuelve al cliente a la tienda (`/?pago=aprobado|pendiente|rechazado&pedido=SD-…`) y el carro le muestra el resultado. Si el pago falla, puede intentarlo de nuevo; las unidades siguen reservadas.
-2. Mercado Pago avisa cada pago a `api/mercadopago.js`, que consulta el pago directamente en Mercado Pago y lo anota en `data/pagos.csv` (pedido, fecha, id del pago, estado, detalle, monto y medio de pago) con un commit `Pago SD-…: approved`.
-3. Para saber si un pedido está pagado, busca su número en `data/pagos.csv`: `approved` es pagado; `pending` o `in_process` está en proceso; `rejected` o `cancelled` no se pagó. También lo ves en tu cuenta de Mercado Pago → Actividad, con el número del pedido como referencia.
+- **Forma de entrega**: despacho a domicilio (calle y número, depto y comuna; $2.990, gratis sobre $29.990) o retiro gratis en uno de los locales.
+- **Tus datos**: nombre, correo y teléfono.
+- **Medio de pago**: tarjeta de débito, tarjeta de crédito o dinero en Mercado Pago. Mercado Pago muestra solo los medios del tipo elegido.
+- **Facturación**: boleta (RUT opcional) o factura (RUT, razón social y giro). El RUT se valida con su dígito verificador.
 
-Los pedidos rechazados o sin pagar mantienen el stock reservado: para liberarlo, súbelo a mano en `data/inventario.csv`.
+El resumen de la derecha muestra productos, descuentos, despacho y total. Al presionar **Pagar y finalizar**:
+
+1. `api/pedido.js` revisa los datos, reserva el stock (igual que antes) y crea el pago de Mercado Pago (Checkout Pro) con los precios del inventario y el costo de despacho según la forma de entrega.
+2. El cliente paga en Mercado Pago y vuelve a la tienda (`/?pago=aprobado|pendiente|rechazado&pedido=SD-…`), que le muestra el resultado con su número de compra. Si el pago falla, puede intentarlo de nuevo; las unidades siguen reservadas.
+3. Mercado Pago avisa cada pago a `api/mercadopago.js`, que lo anota en `data/pagos.csv` (pedido, fecha, id del pago, estado, detalle, monto y medio de pago) con un commit `Pago SD-…: approved`.
+
+**Datos del cliente**: el nombre, correo, teléfono, dirección y datos de facturación se envían solo a Mercado Pago, nunca al repositorio (es público). Quedan en el pago, en `additional_info` y `metadata` de la preferencia, y el pagador en los datos del comprador. Para verlos, abre el pago en tu cuenta de Mercado Pago → Actividad y busca el número de compra.
+
+Para saber si un pedido está pagado, busca su número en `data/pagos.csv`: `approved` es pagado; `pending` o `in_process` está en proceso; `rejected` o `cancelled` no se pagó. Los pedidos rechazados o sin pagar mantienen el stock reservado: para liberarlo, súbelo a mano en `data/inventario.csv`.
 
 ### Configuración (una sola vez)
 
@@ -71,7 +80,7 @@ Los pedidos rechazados o sin pagar mantienen el stock reservado: para liberarlo,
 4. Opcional: si la tienda usa un dominio propio, agrega `SITE_URL` (por ejemplo `https://farmaciasandaniel.cl`) para que Mercado Pago devuelva al cliente a ese dominio.
 5. Usa **Redeploy** en el último despliegue.
 
-Sin `MP_ACCESS_TOKEN` el carro funciona como antes: reserva el pedido y lo envía por WhatsApp. El registro de pagos usa el mismo `GITHUB_TOKEN` de los pedidos.
+Sin `MP_ACCESS_TOKEN` el botón **Pagar y finalizar** no reserva nada: avisa que el pago en línea no está disponible y ofrece el WhatsApp de la farmacia. El registro de pagos usa el mismo `GITHUB_TOKEN` de los pedidos.
 
 ## Página de cada producto
 
@@ -92,7 +101,7 @@ Reglas que aplica la página:
 - Los productos para niños, embarazo y adulto mayor también se muestran en esas secciones. La lista está en `TAMBIEN` dentro de `inventario.py`.
 - No se muestran los productos con `activo` distinto de 1 ni los vencidos.
 - Con `stock` igual o menor a `stock_minimo` el producto muestra "Últimas unidades"; con stock 0 aparece como agotado. Nadie puede pedir más unidades que el stock (máximo 10 por producto).
-- `requiere_receta` = 1 muestra "Requiere receta" y lo marca en el pedido de WhatsApp.
+- `requiere_receta` = 1 muestra "Requiere receta" y en Finaliza tu compra recuerda presentar la receta al recibir o retirar.
 
 ## Fotos de productos
 
