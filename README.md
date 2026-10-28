@@ -55,7 +55,7 @@ Los pedidos hacen commits en `main`, así que antes de editar ejecuta `git pull`
 
 ## Pago con Mercado Pago
 
-Al confirmar el pedido, además de reservar el stock, `api/pedido.js` crea un pago de Mercado Pago (Checkout Pro) con los productos, precios del inventario y el despacho ($2.990 bajo $29.990). El carro muestra **Pagar con Mercado Pago**, que lleva al cliente a pagar con tarjeta de débito, crédito o saldo de Mercado Pago, y deja la opción de coordinar el pago por WhatsApp.
+Cuando `MP_ACCESS_TOKEN` está configurado, el carro muestra **Pagar con Mercado Pago** (y, como alternativa, **Reservar y pagar por WhatsApp**). Al presionarlo, `api/pedido.js` reserva el stock, crea un pago de Mercado Pago (Checkout Pro) con los productos, precios del inventario y el despacho ($2.990 bajo $29.990) y lleva al cliente a pagar con tarjeta de débito, crédito o saldo de Mercado Pago. `api/stock.js` indica a la página si Mercado Pago está activo (`"mercadopago": true`); si Mercado Pago responde con un error, el carro lo muestra y el pedido queda reservado para pagarlo por WhatsApp.
 
 1. Al terminar, Mercado Pago devuelve al cliente a la tienda (`/?pago=aprobado|pendiente|rechazado&pedido=SD-…`) y el carro le muestra el resultado. Si el pago falla, puede intentarlo de nuevo; las unidades siguen reservadas.
 2. Mercado Pago avisa cada pago a `api/mercadopago.js`, que consulta el pago directamente en Mercado Pago y lo anota en `data/pagos.csv` (pedido, fecha, id del pago, estado, detalle, monto y medio de pago) con un commit `Pago SD-…: approved`.

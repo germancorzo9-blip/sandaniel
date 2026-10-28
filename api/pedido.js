@@ -17,7 +17,8 @@ module.exports = async (req, res) => {
     // reserved and the page falls back to WhatsApp.
     if (mercadopago.activo()) {
       try { r.pago = await mercadopago.crearPreferencia(r, req); }
-      catch (e) { console.error(e); r.pagoError = 'No pudimos abrir el pago con Mercado Pago.'; }
+      // the Mercado Pago message (never the token) helps fix the setup
+      catch (e) { console.error(e); r.pagoError = 'No pudimos abrir el pago con Mercado Pago.'; r.pagoDetalle = e.message; }
     }
     return res.status(201).json(r);
   } catch (e) {

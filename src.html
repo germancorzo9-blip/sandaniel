@@ -1314,15 +1314,19 @@ function renderCart(){
     <div class="tot"><span>Despacho</span><span>${ship?fmt(ship):'Gratis'}</span></div>
     <div class="tot big"><span>Total</span><span>${fmt(sub+ship)}</span></div>
     ${orderErr ? `<p class="order-err" role="alert">${orderErr}${orderErrWa ? ` <a href="${waLink}" target="_blank" rel="noopener">envíalo por WhatsApp</a>.` : ''}</p>` : ''}
-    ${LIVE
+    ${LIVE && MP
+      ? `<button class="btn btn-red" type="button" id="payOrder" ${sending?'disabled':''}><svg class="ic"><use href="#i-credit-card"/></svg>${sending==='mp'?'Abriendo Mercado Pago…':'Pagar con Mercado Pago'}</button>
+         <button class="btn btn-ghost" type="button" id="confirmOrder" ${sending?'disabled':''}><svg class="ic"><use href="#i-whatsapp-logo"/></svg>${sending==='wa'?'Reservando pedido…':'Reservar y pagar por WhatsApp'}</button>
+         <p class="note">Paga con tarjeta de débito, crédito o saldo de Mercado Pago. Reservamos tus unidades al iniciar el pago.${needsRx?' Tu pedido incluye medicamentos con receta: envía también la foto de la receta por WhatsApp.':''}</p>`
+      : LIVE
       ? `<button class="btn btn-red" type="button" id="confirmOrder" ${sending?'disabled':''}><svg class="ic"><use href="#i-check-circle--fill"/></svg>${sending?'Confirmando pedido…':'Confirmar pedido'}</button>
-         <p class="note">Al confirmar reservamos las unidades y pagas con Mercado Pago (tarjeta de débito, crédito o saldo), o coordinas el pago por WhatsApp.${needsRx?' Tu pedido incluye medicamentos con receta: envía también la foto de la receta por WhatsApp.':''}</p>`
+         <p class="note">Al confirmar reservamos las unidades. Después envías el pedido por WhatsApp para coordinar pago y entrega.${needsRx?' Tu pedido incluye medicamentos con receta: envía también la foto de la receta.':''}</p>`
       : `<a class="btn btn-red" href="${waLink}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp-logo"/></svg>Enviar pedido por WhatsApp</a>
          <p class="note">${needsRx?'Tu pedido incluye medicamentos con receta. Envía la foto de la receta por WhatsApp junto al pedido. ':''}Un químico farmacéutico confirma stock y forma de pago antes de despachar.</p>`}`;
 }
 // Live inventory: /api/stock and /api/pedido run on Vercel and keep data/inventario.csv up to date.
 // Where they are not available (a static preview) the page keeps the stock it was built with.
-let LIVE = false, sending = false, done = null, orderErr = '', orderErrWa = false, lastStock = 0;
+let LIVE = false, MP = false, sending = false, done = null, orderErr = '', orderErrWa = false, lastStock = 0;
 async function api(path, opts = {}){
   const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 15000);
   try { const r = await fetch(path, {...opts, signal: ctl.signal, cache: 'no-store'}); return {status: r.status, data: await r.json().catch(() => ({}))}; }
@@ -1334,7 +1338,7 @@ async function loadStock(force){
   try {
     const {status, data} = await api('/api/stock');
     if (status !== 200 || !data.stock) return;
-    LIVE = true; applyStock(data.stock);
+    LIVE = true; MP = !!data.mercadopago; applyStock(data.stock);
   } catch (e) {}
 }
 function applyStock(map){
@@ -1346,17 +1350,21 @@ function refreshViews(){
   if (view === 'pdp' && current) renderPdp(); else if ($('#grid').getAttribute('aria-busy') !== 'true') renderGrid();
   renderCart();
 }
-async function confirmOrder(){
+// pagar: go straight to Mercado Pago once the units are reserved
+async function confirmOrder(pagar){
   if (sending) return;
-  sending = true; orderErr = ''; orderErrWa = false; renderCart();
+  sending = pagar ? 'mp' : 'wa'; orderErr = ''; orderErrWa = false; renderCart();
   const items = Object.entries(cart).map(([sku, cantidad]) => ({sku, cantidad}));
   try {
     const {status, data} = await api('/api/pedido', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({items})});
     if (status === 201){
       for (const it of data.items){ const p = P.find(x => x.id === it.sku); if (p) p.stock = it.stock; }
       const sub = data.total, ship = sub >= FREE ? 0 : SHIP;
+      // choosing WhatsApp keeps the WhatsApp screen; the online payment stays available only for Mercado Pago
+      if (!pagar){ delete data.pago; delete data.pagoError; delete data.pagoDetalle; }
       done = {...data, ship, rx: data.items.some(it => (P.find(x => x.id === it.sku) || {}).rx)};
       cart = {}; saveCart(); store.set('sd-pedido', done);
+      if (pagar && data.pago && data.pago.url){ location.href = data.pago.url; return; }
     } else if (status === 409 && data.faltantes){
       for (const f of data.faltantes){ const p = P.find(x => x.id === f.sku); if (p) p.stock = f.disponible; }
       for (const id of Object.keys(cart)){ const m = maxQty(id); if (cart[id] > m){ if (m > 0) cart[id] = m; else delete cart[id]; } }
@@ -1388,7 +1396,7 @@ function renderDone(body, foot){
   body.innerHTML = `<div class="order-ok${r && !pagado ? ' order-wait' : ''}" role="status"><svg class="ic"><use href="#i-${r ? r[0] : 'check-circle--fill'}"/></svg>
     <h3>${r ? r[1] : 'Pedido'} <span class="order-id">${d.pedido}</span>${r ? '' : ' reservado'}</h3>
     <p>${r ? r[2] : d.pago ? 'Guardamos estas unidades para ti. Paga con Mercado Pago para completar tu compra.' : 'Guardamos estas unidades para ti. Envía el pedido por WhatsApp para coordinar el pago y la entrega.'}${d.rx ? ' Envía la foto de la receta por WhatsApp.' : ''}</p>
-    ${d.pagoError ? `<p class="order-err" role="alert">${d.pagoError} Coordina el pago por WhatsApp.</p>` : ''}
+    ${d.pagoError ? `<p class="order-err" role="alert">${d.pagoError} Tus unidades quedaron reservadas: coordina el pago por WhatsApp.${d.pagoDetalle ? `<br><small>${esc(d.pagoDetalle)}</small>` : ''}</p>` : ''}
     <ul>${d.items.map(it => `<li><span>${it.cantidad} x ${it.nombre}</span><b>${fmt(it.subtotal)}</b></li>`).join('')}</ul></div>`;
   foot.innerHTML = `<div class="tot"><span>Despacho</span><span>${d.ship ? fmt(d.ship) : 'Gratis'}</span></div>
     <div class="tot big"><span>Total${pagado ? ' pagado' : ''}</span><span>${fmt(total)}</span></div>
@@ -1407,7 +1415,8 @@ function volverDePago(){
   renderCart(); openCart();
 }
 document.addEventListener('click', e => {
-  if (e.target.closest('#confirmOrder')) confirmOrder();
+  if (e.target.closest('#confirmOrder')) confirmOrder(false);
+  if (e.target.closest('#payOrder')) confirmOrder(true);
   if (e.target.closest('#keepShopping')){ done = null; store.set('sd-pedido', null); renderCart(); closeCart(); }
 });
 
