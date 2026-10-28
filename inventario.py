@@ -70,6 +70,15 @@ def etiqueta(sku, nombre):
         out += ' ' + w
     return out
 
+FOTOS = pathlib.Path(__file__).parent / 'images'
+
+def foto(sku, fila):
+    # columna opcional "imagen" (URL o ruta); si no, images/<SKU>.webp|jpg|jpeg|png
+    if (fila.get('imagen') or '').strip(): return fila['imagen'].strip()
+    for ext in ('webp', 'jpg', 'jpeg', 'png'):
+        if (FOTOS / f'{sku}.{ext}').exists(): return f'images/{sku}.{ext}'
+    return None
+
 def cargar(ruta, hoy=None):
     hoy = hoy or datetime.date.today()
     productos, avisos, skus, colores = [], [], set(), {}
@@ -102,7 +111,10 @@ def cargar(ruta, hoy=None):
                 'units': unidades, 'unit': unidad, 'shape': envase(cat, r['forma_farmaceutica']),
                 'c': c, 'c2': c2, 'lbl': etiqueta(sku, r['nombre']), 'dose': r['concentracion'].strip(),
                 'badge': f'{unidades} u' if unidades > 1 else contenido, 'flags': [],
+                'img': foto(sku, r),
             })
+    sin = [p['id'] for p in productos if not p['img']]
+    if sin: avisos.append(f'{len(sin)} productos sin foto (se muestra el envase dibujado)')
     return productos, avisos
 
 if __name__ == '__main__':

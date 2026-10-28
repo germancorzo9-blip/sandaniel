@@ -44,6 +44,10 @@ Reglas que aplica la página:
 - Con `stock` igual o menor a `stock_minimo` el producto muestra "Últimas unidades"; con stock 0 aparece como agotado. Nadie puede pedir más unidades que el stock (máximo 10 por producto).
 - `requiere_receta` = 1 muestra "Requiere receta" y lo marca en el pedido de WhatsApp.
 
+## Fotos de productos
+
+Guarda la foto de cada producto en `images/` con el SKU como nombre, por ejemplo `images/MED-001.jpg` (sirven .webp, .jpg, .jpeg o .png). También puedes agregar al CSV una columna `imagen` con la dirección de la foto. `build.py` avisa cuántos productos siguen sin foto; esos muestran el envase dibujado.
+
 ## Cómo editar
 
 1. Modifica `src.html` (textos, productos en la lista `P` del script, colores en `:root`).
