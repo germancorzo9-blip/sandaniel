@@ -327,6 +327,7 @@ footer{background:var(--surface);border-top:1px solid var(--line)}
 .order-err a{font-weight:600;text-decoration:underline}
 .order-ok{display:flex;flex-direction:column;gap:12px;padding-block:8px}
 .order-ok > .ic{width:48px;height:48px;color:var(--ok)}
+.order-wait > .ic{color:var(--blue)}
 .order-ok h3{font-size:20px;line-height:28px}
 .order-ok p{color:var(--muted)}
 .order-ok ul{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px;font-size:14px}
@@ -1315,7 +1316,7 @@ function renderCart(){
     ${orderErr ? `<p class="order-err" role="alert">${orderErr}${orderErrWa ? ` <a href="${waLink}" target="_blank" rel="noopener">envíalo por WhatsApp</a>.` : ''}</p>` : ''}
     ${LIVE
       ? `<button class="btn btn-red" type="button" id="confirmOrder" ${sending?'disabled':''}><svg class="ic"><use href="#i-check-circle--fill"/></svg>${sending?'Confirmando pedido…':'Confirmar pedido'}</button>
-         <p class="note">Al confirmar reservamos las unidades. Después envías el pedido por WhatsApp para coordinar pago y entrega.${needsRx?' Tu pedido incluye medicamentos con receta: envía también la foto de la receta.':''}</p>`
+         <p class="note">Al confirmar reservamos las unidades y pagas con Mercado Pago (tarjeta de débito, crédito o saldo), o coordinas el pago por WhatsApp.${needsRx?' Tu pedido incluye medicamentos con receta: envía también la foto de la receta por WhatsApp.':''}</p>`
       : `<a class="btn btn-red" href="${waLink}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp-logo"/></svg>Enviar pedido por WhatsApp</a>
          <p class="note">${needsRx?'Tu pedido incluye medicamentos con receta. Envía la foto de la receta por WhatsApp junto al pedido. ':''}Un químico farmacéutico confirma stock y forma de pago antes de despachar.</p>`}`;
 }
@@ -1355,7 +1356,7 @@ async function confirmOrder(){
       for (const it of data.items){ const p = P.find(x => x.id === it.sku); if (p) p.stock = it.stock; }
       const sub = data.total, ship = sub >= FREE ? 0 : SHIP;
       done = {...data, ship, rx: data.items.some(it => (P.find(x => x.id === it.sku) || {}).rx)};
-      cart = {}; saveCart();
+      cart = {}; saveCart(); store.set('sd-pedido', done);
     } else if (status === 409 && data.faltantes){
       for (const f of data.faltantes){ const p = P.find(x => x.id === f.sku); if (p) p.stock = f.disponible; }
       for (const id of Object.keys(cart)){ const m = maxQty(id); if (cart[id] > m){ if (m > 0) cart[id] = m; else delete cart[id]; } }
@@ -1370,22 +1371,44 @@ async function confirmOrder(){
   }
   sending = false; refreshViews();
 }
+// Mercado Pago sends the customer back with ?pago=aprobado|pendiente|rechazado&pedido=SD-…
+const RETORNO = {
+  aprobado: ['check-circle--fill', 'Pago recibido', 'Mercado Pago aprobó tu pago. Preparamos tu pedido y te contactamos para coordinar la entrega.'],
+  pendiente: ['credit-card', 'Pago pendiente', 'Mercado Pago está procesando tu pago. Tus unidades siguen reservadas; te avisaremos cuando se acredite.'],
+  rechazado: ['credit-card', 'El pago no se completó', 'Tus unidades siguen reservadas. Puedes intentar de nuevo con otro medio de pago o coordinar el pago por WhatsApp.'],
+};
 function renderDone(body, foot){
   const d = done, lines = d.items.map(it => `• ${it.cantidad} x ${it.nombre} [${it.sku}] (${fmt(it.subtotal)})`).join('\n');
-  const msg = encodeURIComponent(`Hola Farmacia San Daniel, confirmé el pedido ${d.pedido}:\n${lines}\nTotal: ${fmt(d.total + d.ship)}${d.rx ? '\nAdjunto la foto de la receta.' : ''}`);
+  const total = d.pago ? d.pago.total : d.total + d.ship, r = d.retorno && RETORNO[d.retorno];
+  const pagado = d.retorno === 'aprobado';
+  const msg = encodeURIComponent(`Hola Farmacia San Daniel, ${pagado ? 'pagué con Mercado Pago' : 'confirmé'} el pedido ${d.pedido}:\n${lines}\nTotal: ${fmt(total)}${d.rx ? '\nAdjunto la foto de la receta.' : ''}`);
+  const wa = `https://wa.me/56926014578?text=${msg}`;
+  const pagar = d.pago && !pagado && d.retorno !== 'pendiente';
   $('#shipBar').hidden = true;
-  body.innerHTML = `<div class="order-ok" role="status"><svg class="ic"><use href="#i-check-circle--fill"/></svg>
-    <h3>Pedido <span class="order-id">${d.pedido}</span> reservado</h3>
-    <p>Guardamos estas unidades para ti. Envía el pedido por WhatsApp para coordinar el pago y la entrega${d.rx ? ', junto con la foto de la receta' : ''}.</p>
+  body.innerHTML = `<div class="order-ok${r && !pagado ? ' order-wait' : ''}" role="status"><svg class="ic"><use href="#i-${r ? r[0] : 'check-circle--fill'}"/></svg>
+    <h3>${r ? r[1] : 'Pedido'} <span class="order-id">${d.pedido}</span>${r ? '' : ' reservado'}</h3>
+    <p>${r ? r[2] : d.pago ? 'Guardamos estas unidades para ti. Paga con Mercado Pago para completar tu compra.' : 'Guardamos estas unidades para ti. Envía el pedido por WhatsApp para coordinar el pago y la entrega.'}${d.rx ? ' Envía la foto de la receta por WhatsApp.' : ''}</p>
+    ${d.pagoError ? `<p class="order-err" role="alert">${d.pagoError} Coordina el pago por WhatsApp.</p>` : ''}
     <ul>${d.items.map(it => `<li><span>${it.cantidad} x ${it.nombre}</span><b>${fmt(it.subtotal)}</b></li>`).join('')}</ul></div>`;
   foot.innerHTML = `<div class="tot"><span>Despacho</span><span>${d.ship ? fmt(d.ship) : 'Gratis'}</span></div>
-    <div class="tot big"><span>Total</span><span>${fmt(d.total + d.ship)}</span></div>
-    <a class="btn btn-red" href="https://wa.me/56926014578?text=${msg}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp-logo"/></svg>Enviar pedido ${d.pedido} por WhatsApp</a>
+    <div class="tot big"><span>Total${pagado ? ' pagado' : ''}</span><span>${fmt(total)}</span></div>
+    ${pagar ? `<a class="btn btn-red" href="${d.pago.url}"><svg class="ic"><use href="#i-credit-card"/></svg>${d.retorno ? 'Intentar pagar de nuevo' : `Pagar ${fmt(total)} con Mercado Pago`}</a>` : ''}
+    <a class="btn ${pagar ? 'btn-ghost' : 'btn-red'}" href="${wa}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp-logo"/></svg>${pagar ? 'Prefiero pagar por WhatsApp' : `Enviar pedido ${d.pedido} por WhatsApp`}</a>
     <button class="btn btn-ghost" type="button" id="keepShopping">Seguir comprando</button>`;
+}
+function volverDePago(){
+  const q = new URLSearchParams(location.search), estado = q.get('pago'), id = q.get('pedido');
+  if (!estado || !id) return;
+  history.replaceState(null, '', location.pathname + location.hash);
+  const d = store.get('sd-pedido', null);
+  if (!d || d.pedido !== id || !RETORNO[estado]) return;
+  done = {...d, retorno: estado};
+  if (estado === 'aprobado') store.set('sd-pedido', null); else store.set('sd-pedido', done);
+  renderCart(); openCart();
 }
 document.addEventListener('click', e => {
   if (e.target.closest('#confirmOrder')) confirmOrder();
-  if (e.target.closest('#keepShopping')){ done = null; renderCart(); closeCart(); }
+  if (e.target.closest('#keepShopping')){ done = null; store.set('sd-pedido', null); renderCart(); closeCart(); }
 });
 
 let toastT;
@@ -1469,4 +1492,5 @@ $$('[data-count]').forEach(el => el.textContent = COUNT[el.dataset.count]);
 renderCart();
 route(!!SEC_BY_ID[decodeURIComponent(location.hash.slice(1))]);
 loadStock(true);
+volverDePago();
 </script>
