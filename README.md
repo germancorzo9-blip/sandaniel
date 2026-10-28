@@ -10,6 +10,23 @@ Tienda online de Farmacia San Daniel: catálogo de vitaminas y suplementos con f
 - `logo.png` / `logo.webp`: logo de la farmacia.
 - `icons/`: íconos de [Phosphor Icons](https://phosphoricons.com) (licencia MIT).
 
+## Enlaces directos por sección
+
+Cada categoría del menú tiene su propio enlace, que se puede compartir en redes o por WhatsApp:
+
+| Sección | Enlace |
+|---|---|
+| Medicamentos | `/#medicamentos` |
+| Vitaminas y suplementos | `/#vitaminas-y-suplementos` |
+| Dermocosmética | `/#dermocosmetica` |
+| Cuidado personal | `/#cuidado-personal` |
+| Bebé y maternidad | `/#bebe-y-maternidad` |
+| Adulto mayor | `/#adulto-mayor` |
+| Ofertas de la semana | `/#ofertas` |
+| Todos los productos | `/#todos` |
+
+Para agregar un producto a una sección, súmalo a la lista `P` con `sec:'<id de la sección>'` y `cat:'<subcategoría>'`. Para que además aparezca en otra sección, usa `also:{'<id>':'<subcategoría>'}`. Las ofertas se arman solas con los productos que tienen descuento o segunda unidad a mitad de precio.
+
 ## Cómo editar
 
 1. Modifica `src.html` (textos, productos en la lista `P` del script, colores en `:root`).
