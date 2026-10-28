@@ -29,6 +29,12 @@ Cada categoría del menú tiene su propio enlace, que se puede compartir en rede
 
 Las secciones sin productos en el inventario no se muestran en el menú. Hoy el inventario tiene medicamentos, vitaminas y suplementos, así que Dermocosmética, Cuidado personal y Ofertas están ocultas. Aparecen solas cuando el CSV traiga productos de esas categorías.
 
+## Página de cada producto
+
+Cada producto tiene su propia página, con su enlace: `/#producto-` seguido del SKU en minúsculas, por ejemplo `/#producto-med-001`. Se abre al hacer clic en cualquier tarjeta del catálogo y muestra foto, precio por unidad, disponibilidad, cantidad, favoritos, descripción, ficha técnica, advertencias y productos relacionados. En vitaminas y suplementos agrega la información nutricional; en medicamentos, la información del medicamento.
+
+Todo sale del inventario: la tabla nutricional muestra la porción, las porciones por envase y la cantidad de cada componente según `principio_activo` y `concentracion`. Las calorías y otros nutrientes no están en el CSV, por eso la página remite a la etiqueta del envase.
+
 ## Actualizar productos, precios y stock
 
 1. Reemplaza `data/inventario.csv` por la versión nueva, con las mismas columnas.

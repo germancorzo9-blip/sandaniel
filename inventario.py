@@ -112,6 +112,7 @@ def cargar(ruta, hoy=None):
                 'c': c, 'c2': c2, 'lbl': etiqueta(sku, r['nombre']), 'dose': r['concentracion'].strip(),
                 'badge': f'{unidades} u' if unidades > 1 else contenido, 'flags': [],
                 'img': foto(sku, r),
+                'kind': cat, 'venc': venc.strftime('%m/%Y'),
             })
     sin = [p['id'] for p in productos if not p['img']]
     if sin: avisos.append(f'{len(sin)} productos sin foto (se muestra el envase dibujado)')

@@ -122,6 +122,8 @@ img{max-width:100%;display:block}
 /* Catalog */
 .crumbs{display:flex;gap:8px;align-items:center;font-size:12px;line-height:16px;color:var(--muted);margin-top:24px}
 .crumbs a:hover{color:var(--blue);text-decoration:underline}
+.crumbs{flex-wrap:wrap;row-gap:4px}
+.crumbs a{white-space:nowrap}
 .cat-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:8px;padding-bottom:16px;border-bottom:1px solid var(--line)}
 .cat-head h1{font-size:30px;line-height:36px;background:linear-gradient(90deg,#000000,#666666);-webkit-background-clip:text;background-clip:text;color:transparent;max-width:680px}
 .cat-head p{color:var(--muted);margin-top:4px;max-width:680px}
@@ -170,7 +172,7 @@ img{max-width:100%;display:block}
 .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:12px;background:#fff;transition:transform .5s var(--ease)}
 .card:hover .card-media .photo{transform:scale(1.04)}
 .ref{position:absolute;right:8px;bottom:8px;font-size:12px;line-height:16px;color:var(--muted);background:rgba(255,255,255,.85);border-radius:4px;padding:0 4px}
-@media (max-width:560px){.ref{display:none}}
+@media (max-width:560px){.ref{display:none}.shot .ref{display:inline}}
 .disc{position:absolute;top:8px;left:8px;background:var(--red);color:#fff;font-size:12px;line-height:16px;font-weight:600;padding:4px 8px;border-radius:9999px}
 .disc.low{background:var(--blue-dark)}
 .c-desc{font-size:12px;line-height:16px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:4px}
@@ -361,7 +363,86 @@ footer{background:var(--surface);border-top:1px solid var(--line)}
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .promo-tile{grid-column:span 2}
 }
+.c-name a{color:inherit;transition:color .3s var(--ease)}
+.c-name a::after{content:"";position:absolute;inset:0;border-radius:16px}
+.c-name a:hover{color:var(--blue-dark)}
+.card .fav{z-index:2}
+.card .c-cta{position:relative;z-index:2}
+.card:focus-within{border-color:var(--blue)}
+.line-item h4 a:hover{color:var(--blue-dark);text-decoration:underline}
+
+/* Product page */
+.pdp{padding-block:0 64px}
+.pdp-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:32px;margin-top:16px;align-items:start}
+.gallery{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;align-items:start}
+.thumbs{display:flex;flex-direction:column;gap:12px}
+.thumb-btn{position:relative;width:96px;height:96px;border-radius:12px;border:1px solid var(--line);background:#fff;padding:4px;overflow:hidden;display:grid;place-items:center;transition:border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.thumb-btn:hover{border-color:var(--line-strong)}
+.thumb-btn[aria-pressed="true"]{border-color:var(--red);box-shadow:0 0 0 1px var(--red)}
+.thumb-btn svg{width:80%;height:80%}
+.thumb-btn .photo{padding:4px}
+.stage{position:relative;aspect-ratio:1/1;max-width:100%;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.shot{position:absolute;inset:0;display:grid;place-items:center}
+.shot > svg{width:72%;height:72%}
+.shot .photo{padding:32px}
+.shot-label{padding:24px;overflow:auto}
+.buybox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 144px)}
+.bb-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:12px;line-height:16px;color:var(--muted)}
+.buybox h1{font-size:24px;line-height:32px;font-weight:600}
+.bb-pres{color:var(--muted);margin-top:-8px}
+.bb-price{font-size:30px;line-height:36px;font-weight:700;font-variant-numeric:tabular-nums}
+.bb-tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:12px;line-height:16px;font-weight:500;padding:4px 8px;border-radius:9999px;background:var(--bg);color:var(--muted)}
+.tag-ok{background:var(--ok-soft);color:var(--ok)}
+.tag-low{background:var(--blue-soft);color:var(--blue-dark)}
+.tag-out{background:var(--red-soft);color:var(--red-dark)}
+.tag-recipe{background:var(--red-soft);color:var(--red-dark)}
+.qty-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.qty-row label{font-weight:500;flex-basis:100%}
+.qty-row small{font-size:12px;line-height:16px;color:var(--muted)}
+.qty{display:inline-flex;align-items:center;gap:8px}
+.qty button{width:40px;height:40px;border-radius:9999px;border:0;background:var(--red-soft);color:var(--red);display:grid;place-items:center;transition:background-color .3s var(--ease),transform .3s var(--ease)}
+.qty button:hover{background:#F9D5DA}
+.qty button:active{transform:scale(.96)}
+.qty input{width:64px;height:40px;text-align:center;border:1px solid var(--line-strong);border-radius:8px;font-weight:600;font-size:16px;background:var(--surface);-moz-appearance:textfield}
+.qty input::-webkit-inner-spin-button,.qty input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.qty input:focus{outline:0;border-color:var(--blue)}
+.bb-actions{display:flex;flex-direction:column;gap:8px}
+.bb-incart{font-size:14px;color:var(--ok)}
+.bb-incart:empty{display:none}
+.bb-info{list-style:none;margin:0;padding:16px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px;font-size:14px;color:var(--muted)}
+.bb-info li{display:flex;gap:12px;align-items:center}
+.bb-info .ic{color:var(--red)}
+.bb-links{display:flex;flex-wrap:wrap;gap:16px}
+.linkish{border:0;background:none;padding:0;color:var(--blue-dark);font-weight:600;font-size:14px;display:inline-flex;gap:8px;align-items:center;transition:color .3s var(--ease)}
+.linkish:hover{color:var(--blue);text-decoration:underline}
+.pdp-info{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:32px;margin-top:48px;align-items:start}
+.pdp-col{display:flex;flex-direction:column;gap:24px;min-width:0}
+.info-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px}
+.info-card h2{font-size:20px;line-height:28px;margin-bottom:12px}
+.info-card p + p{margin-top:8px}
+.info-card p{color:var(--muted);max-width:640px}
+.spec{width:100%;border-collapse:collapse;font-size:14px}
+.spec th{text-align:left;font-weight:500;color:var(--muted);padding:12px 16px 12px 0;width:42%;vertical-align:top;border-bottom:1px solid var(--line)}
+.spec td{padding:12px 0;border-bottom:1px solid var(--line)}
+.spec tr:last-child th,.spec tr:last-child td{border-bottom:0}
+.nlabel{background:#fff;border:2px solid #14263D;color:#14263D;padding:12px;font-size:14px;line-height:20px;max-width:380px;width:100%;font-variant-numeric:tabular-nums}
+.nlabel h3{font-size:16px;line-height:24px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border-bottom:8px solid #14263D;padding-bottom:4px;margin-bottom:4px}
+.nlabel .row{display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px solid #14263D}
+.nlabel .row span{min-width:0}
+.nlabel .row b{text-align:right;font-weight:600}
+.nlabel .thick{border-bottom-width:4px}
+.nlabel .head b{font-size:12px;line-height:16px}
+.nlabel small{display:block;font-size:12px;line-height:16px;margin-top:8px;color:#5A687B}
+.warn-list{margin:0;padding-left:24px;display:flex;flex-direction:column;gap:8px;color:var(--muted)}
+.related{margin-top:48px}
+.related h2{font-size:24px;line-height:32px;margin-bottom:16px}
+.related .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+
 @media (max-width:900px){
+  .pdp-grid,.pdp-info{grid-template-columns:1fr}
+  .buybox{position:static}
+  .related .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .util-links{display:none}
   .util .wrap{justify-content:center}
   .catalog{grid-template-columns:1fr}
@@ -399,6 +480,13 @@ footer{background:var(--surface);border-top:1px solid var(--line)}
   .perk{flex:none}
 }
 @media (max-width:560px){
+  .gallery{grid-template-columns:1fr}
+  .thumbs{flex-direction:row;order:2}
+  .thumb-btn{width:64px;height:64px;border-radius:8px}
+  .shot .photo{padding:16px}
+  .shot-label{padding:12px}
+  .buybox,.info-card{padding:16px}
+  .related .grid{gap:8px}
   .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .card{padding:8px;border-radius:12px}
   .card-media{border-radius:4px}
@@ -589,6 +677,8 @@ footer{background:var(--surface);border-top:1px solid var(--line)}
         </div>
       </div>
     </section>
+
+    <section id="pdp" class="pdp" hidden aria-label="Detalle del producto"></section>
 
     <section class="tagline reveal" aria-label="Nuestra promesa">
       <p id="taglineText">Te atendemos como en el barrio, con la comodidad de comprar online. Tu salud en buenas manos, todos los días del año.</p>
@@ -858,7 +948,7 @@ function card(p){
     </div>
     <div class="card-body">
       <span class="c-brand">${p.brand}</span>
-      <h3 class="c-name" title="${p.name}">${p.name}</h3>
+      <h3 class="c-name"><a href="#${slug(p)}" title="${p.name}">${p.name}</a></h3>
       <span class="c-pres">${p.pres}</span>
       ${p.desc?`<p class="c-desc">${p.desc}</p>`:''}
       <div class="c-prices">
@@ -956,14 +1046,24 @@ function renderSection(){
   const cur = $('.rail a[aria-current]');
   if (cur){ const ul = cur.closest('ul'); ul.scrollTo({left: cur.offsetLeft - (ul.clientWidth - cur.offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth'}); }
 }
+let fresh = false; // set when the visitor picks a section, so the list starts from the top
 function route(scroll){
   const id = decodeURIComponent(location.hash.slice(1));
-  if (id && !SEC_BY_ID[id]) return; // plain anchors such as #faq keep the current section
-  state.sec = id && COUNT[id] ? id : DEFAULT_SEC;
+  if (BY_SLUG[id]){ showProduct(BY_SLUG[id]); return; }
+  if (id && !SEC_BY_ID[id]) return; // plain anchors such as #faq keep the current view
+  const next = id && COUNT[id] ? id : DEFAULT_SEC;
+  // back from a product page to the same list: keep filters, page and scroll position
+  if (view === 'pdp' && next === state.sec && !pending && !fresh){
+    setView('catalog'); renderSection(); scrollTo({top: catalogScroll, behavior: 'instant'}); return;
+  }
+  fresh = false;
+  setView('catalog');
+  state.sec = next;
   state.cats.clear(); state.brands.clear(); state.promos.clear(); state.types.clear(); state.price = null; state.page = 1;
   $('#brandFind').value = '';
   state.q = pending && pending.q ? pending.q : ''; $('#q').value = state.q;
   if (pending && pending.promo) state.promos.add(pending.promo);
+  if (pending && pending.cat) state.cats.add(pending.cat);
   pending = null;
   renderSection(); renderFilters(); showSkeleton();
   setTimeout(renderGrid, 250);
@@ -973,11 +1073,184 @@ function go(id, opts){ pending = opts || null; if (location.hash === '#' + id) r
 addEventListener('hashchange', () => route(true));
 document.addEventListener('click', e => {
   const a = e.target.closest('a[data-sec]');
-  if (a){ closeMenu(); if (location.hash === '#' + a.dataset.sec || (!location.hash && a.dataset.sec === DEFAULT_SEC)){ e.preventDefault(); go(a.dataset.sec); } return; }
+  if (a){ closeMenu(); fresh = true; if (location.hash === '#' + a.dataset.sec || (!location.hash && a.dataset.sec === DEFAULT_SEC)){ e.preventDefault(); go(a.dataset.sec); } return; }
   const g = e.target.closest('[data-go]');
-  if (g) go(g.dataset.go, {promo: g.dataset.goPromo, q: g.dataset.goQ});
+  if (g){ e.preventDefault(); go(g.dataset.go, {promo: g.dataset.goPromo, q: g.dataset.goQ, cat: g.dataset.goCat}); }
 });
 $('#searchForm').addEventListener('submit', e => { e.preventDefault(); go($('#searchCat').value, {q: $('#q').value.trim()}); });
+
+// Product pages: #producto-<sku>, built from the inventory data
+const slug = p => 'producto-' + p.id.toLowerCase();
+const BY_SLUG = Object.fromEntries(P.map(p => [slug(p), p]));
+const isSupp = p => p.kind !== 'Medicamentos';
+const ALIAS = {'ácido ascórbico':'vitamina C','colecalciferol':'vitamina D3','menaquinona-7':'vitamina K2','acetato de tocoferol':'vitamina E',
+  'cianocobalamina':'vitamina B12','piridoxina':'vitamina B6','piridoxina clorhidrato':'vitamina B6','tiamina':'vitamina B1','niacinamida':'vitamina B3','ubiquinona':'coenzima Q10'};
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+function via(forma){
+  const f = forma.toLowerCase();
+  if (/crema|gel|ungüento/.test(f)) return 'Tópica (sobre la piel)';
+  if (f.includes('oftálmica')) return 'Oftálmica';
+  if (f.includes('nasal')) return 'Nasal';
+  if (f.includes('inhalación')) return 'Inhalatoria';
+  if (f.includes('sublingual')) return 'Sublingual';
+  return 'Oral';
+}
+// serving info and amount per serving, only from what the inventory states
+function nutrition(p){
+  let dose = p.dose, portion;
+  const perPortion = dose.match(/^(.*) por porción$/), perDrop = dose.match(/^(.+)\/gota$/);
+  if (perPortion) dose = perPortion[1];
+  if (perDrop){ dose = perDrop[1]; portion = '1 gota'; }
+  if (!portion) portion = p.unit === 'sobre' ? '1 sobre' : p.unit ? '1 ' + p.forma.toLowerCase() : /^[\d.,]+ g$/.test(dose) ? dose : '1 medida';
+  let servings = p.unit ? String(p.units) : '';
+  const g = dose.match(/^([\d.,]+) g$/), total = p.pres.match(/^([\d.,]+) g$/);
+  if (!servings && g && total) servings = 'aprox. ' + Math.floor(parseFloat(total[1]) / parseFloat(g[1]));
+  const parts = p.pa.split(/\s\+\s/), amounts = dose.split('/').map(a => a.trim().replace(/^[A-Za-zÁÉÍÓÚáéíóú]+\s(?=\d)/, ''));
+  const measurable = a => /\d[\d.,]*\s*(mg|mcg|g|UI|millones UFC)/.test(a);
+  const rows = parts.length === amounts.length && amounts.every(measurable)
+    ? parts.map((n, i) => {
+        const k = n.toLowerCase(), named = amounts[i].match(/^([\d.,]+\s*(?:mg|mcg|g|UI|millones UFC))\s+(\D+)$/); // "24 g proteína"
+        return named ? [cap(named[2]), named[1]] : [cap(n) + (ALIAS[k] ? ` (${ALIAS[k]})` : ''), amounts[i]];
+      })
+    : [['Composición', p.pa]].concat(/por porción$/.test(p.dose) ? [] : [['Concentración', p.dose]]);
+  return {portion, servings, rows};
+}
+function labelHTML(p){
+  if (isSupp(p)){
+    const n = nutrition(p);
+    return `<div class="nlabel"><h3>Información nutricional</h3>
+      <div class="row"><span>Porción</span><b>${n.portion}</b></div>
+      ${n.servings ? `<div class="row thick"><span>Porciones por envase</span><b>${n.servings}</b></div>` : ''}
+      <div class="row head"><span></span><b>Cantidad por porción</b></div>
+      ${n.rows.map(([k, v]) => `<div class="row"><span>${k}</span><b>${v}</b></div>`).join('')}
+      <small>Datos según la ficha del producto. La tabla completa, con energía y demás nutrientes, viene impresa en el envase.</small></div>`;
+  }
+  return `<div class="nlabel"><h3>Información del medicamento</h3>
+    ${[['Principio activo', p.pa], ['Concentración', p.dose], ['Forma farmacéutica', p.forma], ['Contenido', p.pres], ['Vía de administración', via(p.forma)], ['Condición de venta', p.rx ? 'Receta médica' : 'Venta directa']]
+      .map(([k, v]) => `<div class="row"><span>${k}</span><b>${v}</b></div>`).join('')}
+    <small>Lee el folleto de información al paciente antes de usar.</small></div>`;
+}
+const labelThumb = `<svg viewBox="0 0 80 80" aria-hidden="true"><rect x="12" y="8" width="56" height="64" rx="2" fill="#fff" stroke="#14263D" stroke-width="2"/><rect x="18" y="14" width="36" height="5" fill="#14263D"/><rect x="18" y="23" width="44" height="3" fill="#14263D"/>${[32,40,48,56].map(y => `<rect x="18" y="${y}" width="24" height="2" fill="#5A687B"/><rect x="50" y="${y}" width="12" height="2" fill="#5A687B"/>`).join('')}</svg>`;
+function stockTag(p){
+  if (p.stock <= 0) return `<span class="tag tag-out">Agotado</span>`;
+  if (p.stock <= p.min) return `<span class="tag tag-low">Quedan pocas unidades</span>`;
+  return `<span class="tag tag-ok"><svg class="ic ic-sm"><use href="#i-check"/></svg>Disponible</span>`;
+}
+function pdpHTML(p){
+  const sec = SEC_BY_ID[p.sec], max = maxQty(p.id);
+  const unitPrice = p.units > 1 ? `${fmt(p.price / p.units)} x ${p.unit}` : '';
+  const related = P.filter(x => x.id !== p.id && x.sec === p.sec && x.cat === p.cat)
+    .concat(P.filter(x => x.id !== p.id && x.sec === p.sec && x.cat !== p.cat)).slice(0, 4);
+  const warns = isSupp(p)
+    ? ['Su uso no es recomendable para consumo por menores de 8 años, embarazadas y nodrizas, salvo indicación profesional competente, y no reemplaza a una alimentación balanceada.', 'No exceder la dosis diaria recomendada.', 'Mantener fuera del alcance de los niños.']
+    : [p.rx ? 'Este medicamento requiere receta médica. Envía la foto de tu receta por WhatsApp junto con el pedido.' : 'Si los síntomas persisten, consulta a tu médico.', 'Lee el folleto de información al paciente antes de usar.', 'Mantener fuera del alcance de los niños.', 'Conservar según las indicaciones del envase.'];
+  const spec = [['Código', p.id], ['Laboratorio', p.brand], ['Categoría', `${sec.name} · ${p.cat}`], ['Principio activo', p.pa], ['Concentración', p.dose], ['Forma', p.forma], ['Contenido', p.pres],
+    ['Condición de venta', p.rx ? 'Receta médica' : 'Venta directa'], ['Vencimiento del lote disponible', p.venc]];
+  const wa = encodeURIComponent(`Hola Farmacia San Daniel, tengo una consulta sobre ${p.name} de ${p.brand} (${p.id}).`);
+  return `<div class="pdp-in">
+  <nav class="crumbs" aria-label="Ruta de navegación">
+    <a href="#todos" data-sec="todos">Inicio</a><svg class="ic ic-sm"><use href="#i-caret-right"/></svg>
+    <a href="#${p.sec}" data-sec="${p.sec}">${sec.name}</a><svg class="ic ic-sm"><use href="#i-caret-right"/></svg>
+    <a href="#${p.sec}" data-go="${p.sec}" data-go-cat="${esc(p.cat)}">${p.cat}</a><svg class="ic ic-sm"><use href="#i-caret-right"/></svg>
+    <span aria-current="page">${p.name}</span>
+  </nav>
+  <div class="pdp-grid">
+    <div class="gallery">
+      <div class="thumbs" role="group" aria-label="Imágenes del producto">
+        <button class="thumb-btn" type="button" data-shot="0" aria-pressed="true" aria-label="Ver foto del producto">${media(p)}</button>
+        <button class="thumb-btn" type="button" data-shot="1" aria-pressed="false" aria-label="Ver ${isSupp(p) ? 'información nutricional' : 'información del medicamento'}">${labelThumb}</button>
+      </div>
+      <div class="stage">
+        <div class="shot" data-panel="0">${media(p, true)}</div>
+        <div class="shot shot-label" data-panel="1" hidden>${labelHTML(p)}</div>
+      </div>
+    </div>
+    <aside class="buybox" aria-label="Comprar">
+      <div class="bb-top"><span class="c-brand">${p.brand}</span>${unitPrice ? `<span>${unitPrice}</span>` : ''}</div>
+      <h1 id="pdpTitle">${p.name}</h1>
+      <p class="bb-pres">${p.pres} · ${p.forma}</p>
+      <p class="bb-price">${fmt(p.price)}</p>
+      <div class="bb-tags">${stockTag(p)}${p.rx ? `<span class="tag tag-recipe"><svg class="ic ic-sm"><use href="#i-prescription"/></svg>Requiere receta</span>` : ''}<span class="tag">Código ${p.id}</span></div>
+      ${p.stock > 0 ? `<div class="qty-row"><label for="pdpQty">Cantidad</label>
+        <div class="qty"><button type="button" data-q="-1" aria-label="Quitar una unidad"><svg class="ic"><use href="#i-minus"/></svg></button><input id="pdpQty" type="number" inputmode="numeric" min="1" max="${max}" value="1"><button type="button" data-q="1" aria-label="Sumar una unidad"><svg class="ic"><use href="#i-plus"/></svg></button></div>
+        <small>Máximo ${max} por pedido</small></div>` : ''}
+      <div class="bb-actions">
+        ${p.stock > 0 ? `<button class="btn btn-red" type="button" data-pdp-add="${p.id}"><svg class="ic"><use href="#i-shopping-cart-simple"/></svg>Agregar al carro</button>` : `<button class="btn btn-ghost" type="button" disabled>Sin stock</button>`}
+        <button class="btn btn-ghost" type="button" data-fav="${p.id}" aria-pressed="${favs.has(p.id)}">${favLabel(p.id)}</button>
+      </div>
+      <p class="bb-incart" id="pdpInCart" aria-live="polite"></p>
+      <ul class="bb-info">
+        <li><svg class="ic"><use href="#i-credit-card"/></svg>Paga con débito, crédito o transferencia</li>
+        <li><svg class="ic"><use href="#i-storefront"/></svg>Retiro en farmacia sin costo</li>
+        <li><svg class="ic"><use href="#i-truck"/></svg>Despacho a domicilio en 24 horas hábiles</li>
+        ${p.rx ? '' : '<li><svg class="ic"><use href="#i-lightning"/></svg>Entrega express en 3 horas</li>'}
+      </ul>
+      <div class="bb-links">
+        <a class="linkish" href="https://wa.me/56926014578?text=${wa}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp-logo"/></svg>Consultar a un farmacéutico</a>
+        <button class="linkish" type="button" data-copy-link><svg class="ic"><use href="#i-link"/></svg>Copiar enlace</button>
+      </div>
+    </aside>
+  </div>
+  <div class="pdp-info">
+    <div class="pdp-col">
+      <section class="info-card" aria-labelledby="dTitle"><h2 id="dTitle">Descripción</h2>
+        <p>${p.name} de ${p.brand}, presentación de ${p.pres}.</p><p>${p.desc}</p></section>
+      <section class="info-card" aria-labelledby="sTitle"><h2 id="sTitle">Ficha técnica</h2>
+        <table class="spec"><tbody>${spec.map(([k, v]) => `<tr><th scope="row">${k}</th><td>${v}</td></tr>`).join('')}</tbody></table></section>
+    </div>
+    <div class="pdp-col">
+      ${isSupp(p) ? `<section class="info-card" aria-labelledby="nTitle"><h2 id="nTitle">Información nutricional</h2>${labelHTML(p)}</section>` : ''}
+      <section class="info-card" aria-labelledby="wTitle"><h2 id="wTitle">Advertencias</h2><ul class="warn-list">${warns.map(w => `<li>${w}</li>`).join('')}</ul></section>
+    </div>
+  </div>
+  ${related.length ? `<section class="related" aria-labelledby="rTitle"><h2 id="rTitle">También te puede interesar</h2><div class="grid">${related.map(card).join('')}</div></section>` : ''}
+  </div>`;
+}
+function favLabel(id){ return favs.has(id) ? `<svg class="ic"><use href="#i-heart--fill"/></svg>En tus favoritos` : `<svg class="ic"><use href="#i-heart"/></svg>Agregar a favoritos`; }
+function paintFav(id){
+  $$(`[data-fav="${id}"]`).forEach(b => { b.setAttribute('aria-pressed', favs.has(id)); b.innerHTML = b.classList.contains('fav') ? `<svg class="ic"><use href="#i-heart${favs.has(id)?'--fill':''}"/></svg>` : favLabel(id); });
+}
+function paintPdpCart(){
+  const el = $('#pdpInCart'); if (!el) return;
+  const q = cart[current?.id] || 0;
+  el.innerHTML = q ? `Tienes ${q} en tu carro. <button class="linkish" type="button" id="pdpOpenCart">Ver carro</button>` : '';
+}
+let view = 'catalog', catalogScroll = 0, current = null;
+function setView(v){
+  if (v === view) return;
+  if (v === 'pdp') catalogScroll = scrollY;
+  view = v;
+  $$('.perks, .banners, #catalogo').forEach(el => el.hidden = v === 'pdp');
+  $('#pdp').hidden = v !== 'pdp';
+}
+function showProduct(p){
+  setView('pdp'); current = p;
+  $('#searchCat').value = p.sec;
+  $('#pdp').innerHTML = pdpHTML(p);
+  document.title = `${p.name} · Farmacia San Daniel`;
+  $$('a[data-sec]').forEach(a => a.dataset.sec === p.sec && a.closest('.rail, .mnav, footer') ? a.setAttribute('aria-current','page') : a.removeAttribute('aria-current'));
+  paintPdpCart();
+  scrollTo({top: 0, behavior: 'instant'});
+}
+$('#pdp').addEventListener('click', e => {
+  const t = e.target.closest('[data-shot]');
+  if (t){ $$('#pdp [data-shot]').forEach(b => b.setAttribute('aria-pressed', b === t)); $$('#pdp [data-panel]').forEach(s => s.hidden = s.dataset.panel !== t.dataset.shot); }
+  const q = e.target.closest('[data-q]');
+  if (q){ const inp = $('#pdpQty'); inp.value = Math.min(+inp.max, Math.max(1, (+inp.value || 1) + +q.dataset.q)); }
+  const add = e.target.closest('[data-pdp-add]');
+  if (add){
+    const id = add.dataset.pdpAdd, want = Math.max(1, +$('#pdpQty').value || 1), have = cart[id] || 0, room = maxQty(id) - have;
+    if (room <= 0){ toast(`Ya tienes el máximo de ${maxQty(id)} unidades en tu carro`, false); return; }
+    setQty(id, have + Math.min(want, room));
+    toast(want > room ? `Agregamos ${room}: es el máximo disponible por pedido` : `Agregado al carro: ${want} x ${current.name}`);
+  }
+  if (e.target.closest('#pdpOpenCart')) openCart();
+  if (e.target.closest('[data-copy-link]')){
+    const url = location.href;
+    (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => toast('Enlace copiado. Pégalo en WhatsApp o en un correo.', false), () => toast(`Copia este enlace: ${url}`, false));
+  }
+});
+$('#pdp').addEventListener('change', e => { if (e.target.id === 'pdpQty'){ const i = e.target; i.value = Math.min(+i.max, Math.max(1, Math.round(+i.value) || 1)); } });
 
 // Mobile filters
 const scrim = $('#scrim');
@@ -993,8 +1266,8 @@ const maxQty = id => Math.min(10, (P.find(p => p.id === id) || {stock:0}).stock)
 function setQty(id, q){
   if (q <= 0) delete cart[id]; else cart[id] = Math.min(q, maxQty(id));
   saveCart(); renderCart();
-  const c = $(`.card[data-id="${id}"] .c-cta`);
-  if (c) c.innerHTML = cart[id] ? stepper(id, cart[id]) : `<button class="btn btn-red" type="button" data-add="${id}"><svg class="ic"><use href="#i-shopping-cart-simple"/></svg><span>Agregar<span class="hide-sm"> al carro</span></span></button>`;
+  paintPdpCart();
+  $$(`.card[data-id="${id}"] .c-cta`).forEach(c => c.innerHTML = cart[id] ? stepper(id, cart[id]) : `<button class="btn btn-red" type="button" data-add="${id}"><svg class="ic"><use href="#i-shopping-cart-simple"/></svg><span>Agregar<span class="hide-sm"> al carro</span></span></button>`);
 }
 function cartTotals(){
   let items = 0, sub = 0, save = 0;
@@ -1014,7 +1287,7 @@ function renderCart(){
     foot.innerHTML = '';
     return;
   }
-  body.innerHTML = Object.entries(cart).map(([id,q]) => { const p = P.find(x=>x.id==id); return `<div class="line-item"><div class="thumb">${media(p)}</div><div><h4>${p.name}</h4><span class="meta">${p.brand} · ${p.pres}</span></div><div class="right"><b>${fmt(p.price*q)}</b><div class="mini-step"><button type="button" data-dec="${id}" aria-label="Quitar una unidad"><svg class="ic ic-sm"><use href="#i-${q===1?'trash':'minus'}"/></svg></button><span>${q}</span><button type="button" data-inc="${id}" aria-label="Agregar una unidad"><svg class="ic ic-sm"><use href="#i-plus"/></svg></button></div></div></div>`; }).join('');
+  body.innerHTML = Object.entries(cart).map(([id,q]) => { const p = P.find(x=>x.id==id); return `<div class="line-item"><div class="thumb">${media(p)}</div><div><h4><a href="#${slug(p)}">${p.name}</a></h4><span class="meta">${p.brand} · ${p.pres}</span></div><div class="right"><b>${fmt(p.price*q)}</b><div class="mini-step"><button type="button" data-dec="${id}" aria-label="Quitar una unidad"><svg class="ic ic-sm"><use href="#i-${q===1?'trash':'minus'}"/></svg></button><span>${q}</span><button type="button" data-inc="${id}" aria-label="Agregar una unidad"><svg class="ic ic-sm"><use href="#i-plus"/></svg></button></div></div></div>`; }).join('');
   const ship = sub >= FREE ? 0 : SHIP;
   const lines = Object.entries(cart).map(([id,q]) => { const p = P.find(x=>x.id==id); return `• ${q} x ${p.name} · ${p.brand} [${p.id}]${p.rx?' (con receta)':''} (${fmt(p.price*q)})`; }).join('\n');
   const needsRx = Object.keys(cart).some(id => (P.find(x=>x.id===id)||{}).rx);
@@ -1040,7 +1313,8 @@ document.addEventListener('click', e => {
   if (add){ const id = add.dataset.add; setQty(id, 1); const p = P.find(x=>x.id===id); toast(`Agregado al carro: ${p.name.length>34?p.name.slice(0,34).replace(/\s+\S*$/,'')+'…':p.name}`); }
   if (inc){ const id = inc.dataset.inc; if ((cart[id]||0) >= maxQty(id)) { toast(`Puedes llevar hasta ${maxQty(id)} unidades de este producto`, false); return; } setQty(id, (cart[id]||0)+1); }
   if (dec){ const id = dec.dataset.dec; setQty(id, (cart[id]||0)-1); }
-  if (fav){ const id = fav.dataset.fav; favs.has(id)?favs.delete(id):favs.add(id); store.set('sd-favs',[...favs]); fav.setAttribute('aria-pressed', favs.has(id)); fav.innerHTML = `<svg class="ic"><use href="#i-heart${favs.has(id)?'--fill':''}"/></svg>`; toast(favs.has(id)?'Guardado en tus favoritos':'Quitado de tus favoritos', false); }
+  if (e.target.closest('a[href^="#producto-"]')){ closeCart(); closeMenu(); }
+  if (fav){ const id = fav.dataset.fav; favs.has(id)?favs.delete(id):favs.add(id); store.set('sd-favs',[...favs]); paintFav(id); toast(favs.has(id)?'Guardado en tus favoritos':'Quitado de tus favoritos', false); }
   if (e.target.closest('#goShop')){ closeCart(); $('#catalogo').scrollIntoView({behavior:'smooth'}); }
   if (e.target.closest('#emptyClear')) clearAll();
   const lg = e.target.closest('[data-legal]'); if (lg){ e.preventDefault(); toast('El texto legal completo se entrega impreso en cada local y por correo a quien lo solicite.', false); }
