@@ -328,6 +328,16 @@ footer{background:var(--surface);border-top:1px solid var(--line)}
 .tot{display:flex;justify-content:space-between;font-size:14px;color:var(--muted)}
 .tot.big{font-size:18px;line-height:28px;font-weight:700;color:var(--ink)}
 .drawer-f .note{font-size:12px;line-height:16px;color:var(--muted);text-align:center}
+.order-err{font-size:14px;line-height:20px;color:var(--red-dark);background:var(--red-soft);border-radius:8px;padding:8px 12px}
+.order-err a{font-weight:600;text-decoration:underline}
+.order-ok{display:flex;flex-direction:column;gap:12px;padding-block:8px}
+.order-ok > .ic{width:48px;height:48px;color:var(--ok)}
+.order-ok h3{font-size:20px;line-height:28px}
+.order-ok p{color:var(--muted)}
+.order-ok ul{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px;font-size:14px}
+.order-ok li{display:flex;justify-content:space-between;gap:12px}
+.order-ok li span{min-width:0}
+.order-id{font-variant-numeric:tabular-nums;color:var(--blue-dark)}
 .cart-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:48px 16px;color:var(--muted)}
 .cart-empty .ic{width:48px;height:48px;color:var(--blue)}
 .cart-empty h3{color:var(--ink);font-size:18px;line-height:28px}
@@ -1231,10 +1241,11 @@ function setView(v){
   $$('.perks, .banners, #catalogo').forEach(el => el.hidden = v === 'pdp');
   $('#pdp').hidden = v !== 'pdp';
 }
+function renderPdp(){ $('#pdp').innerHTML = pdpHTML(current); paintPdpCart(); }
 function showProduct(p){
   setView('pdp'); current = p;
   $('#searchCat').value = p.sec;
-  $('#pdp').innerHTML = pdpHTML(p);
+  renderPdp();
   document.title = `${p.name} · Farmacia San Daniel`;
   $$('a[data-sec]').forEach(a => a.dataset.sec === p.sec && a.closest('.rail, .mnav, footer') ? a.setAttribute('aria-current','page') : a.removeAttribute('aria-current'));
   paintPdpCart();
@@ -1272,6 +1283,8 @@ $('#filterApply').addEventListener('click', () => { closeFilters(); $('#catalogo
 function saveCart(){ store.set('sd-cart', cart); }
 const maxQty = id => Math.min(10, (P.find(p => p.id === id) || {stock:0}).stock);
 function setQty(id, q){
+  if (done && q > 0){ done = null; }
+  orderErr = '';
   if (q <= 0) delete cart[id]; else cart[id] = Math.min(q, maxQty(id));
   saveCart(); renderCart();
   paintPdpCart();
@@ -1290,8 +1303,10 @@ function renderCart(){
   const left = FREE - sub;
   $('#shipBar').innerHTML = (sub >= FREE ? '<b>Tu despacho es gratis.</b>' : `Te faltan <b>${fmt(left)}</b> para despacho gratis.`) + `<div class="track"><div class="fill" style="transform:scaleX(${Math.min(1, sub/FREE)})"></div></div>`;
   const body = $('#cartBody'), foot = $('#cartFoot');
+  $('#shipBar').hidden = false;
+  if (done){ renderDone(body, foot); return; }
   if (!items){
-    body.innerHTML = `<div class="cart-empty"><svg class="ic"><use href="#i-basket"/></svg><h3>Tu carro está vacío</h3><p>Agrega productos desde el catálogo. Los más pedidos esta semana son vitamina C, omega 3 y colágeno.</p><button class="btn btn-blue" type="button" id="goShop">Ver vitaminas</button></div>`;
+    body.innerHTML = (orderErr ? `<p class="order-err" role="alert">${orderErr}</p>` : '') + `<div class="cart-empty"><svg class="ic"><use href="#i-basket"/></svg><h3>Tu carro está vacío</h3><p>Agrega productos desde el catálogo. Los más pedidos esta semana son vitamina C, omega 3 y colágeno.</p><button class="btn btn-blue" type="button" id="goShop">Ver vitaminas</button></div>`;
     foot.innerHTML = '';
     return;
   }
@@ -1300,16 +1315,90 @@ function renderCart(){
   const lines = Object.entries(cart).map(([id,q]) => { const p = P.find(x=>x.id==id); return `• ${q} x ${p.name} · ${p.brand} [${p.id}]${p.rx?' (con receta)':''} (${fmt(p.price*q)})`; }).join('\n');
   const needsRx = Object.keys(cart).some(id => (P.find(x=>x.id===id)||{}).rx);
   const msg = encodeURIComponent(`Hola Farmacia San Daniel, quiero hacer este pedido:\n${lines}\nTotal: ${fmt(sub+ship)}`);
+  const waLink = `https://wa.me/56926014578?text=${msg}`;
   foot.innerHTML = `<div class="tot"><span>Subtotal (${items} ${items===1?'producto':'productos'})</span><span>${fmt(sub)}</span></div>
     ${save?`<div class="tot" style="color:var(--ok)"><span>Ahorras</span><span>${fmt(save)}</span></div>`:''}
     <div class="tot"><span>Despacho</span><span>${ship?fmt(ship):'Gratis'}</span></div>
     <div class="tot big"><span>Total</span><span>${fmt(sub+ship)}</span></div>
-    <a class="btn btn-red" href="https://wa.me/56926014578?text=${msg}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp-logo"/></svg>Enviar pedido por WhatsApp</a>
-    <p class="note">${needsRx?'Tu pedido incluye medicamentos con receta. Envía la foto de la receta por WhatsApp junto al pedido. ':''}Un químico farmacéutico confirma stock y forma de pago antes de despachar.</p>`;
+    ${orderErr ? `<p class="order-err" role="alert">${orderErr}${orderErrWa ? ` <a href="${waLink}" target="_blank" rel="noopener">envíalo por WhatsApp</a>.` : ''}</p>` : ''}
+    ${LIVE
+      ? `<button class="btn btn-red" type="button" id="confirmOrder" ${sending?'disabled':''}><svg class="ic"><use href="#i-check-circle--fill"/></svg>${sending?'Confirmando pedido…':'Confirmar pedido'}</button>
+         <p class="note">Al confirmar reservamos las unidades. Después envías el pedido por WhatsApp para coordinar pago y entrega.${needsRx?' Tu pedido incluye medicamentos con receta: envía también la foto de la receta.':''}</p>`
+      : `<a class="btn btn-red" href="${waLink}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp-logo"/></svg>Enviar pedido por WhatsApp</a>
+         <p class="note">${needsRx?'Tu pedido incluye medicamentos con receta. Envía la foto de la receta por WhatsApp junto al pedido. ':''}Un químico farmacéutico confirma stock y forma de pago antes de despachar.</p>`}`;
 }
+// Live inventory: /api/stock and /api/pedido run on Vercel and keep data/inventario.csv up to date.
+// Where they are not available (a static preview) the page keeps the stock it was built with.
+let LIVE = false, sending = false, done = null, orderErr = '', orderErrWa = false, lastStock = 0;
+async function api(path, opts = {}){
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 15000);
+  try { const r = await fetch(path, {...opts, signal: ctl.signal, cache: 'no-store'}); return {status: r.status, data: await r.json().catch(() => ({}))}; }
+  finally { clearTimeout(t); }
+}
+async function loadStock(force){
+  if (!force && Date.now() - lastStock < 15000) return;
+  lastStock = Date.now();
+  try {
+    const {status, data} = await api('/api/stock');
+    if (status !== 200 || !data.stock) return;
+    LIVE = true; applyStock(data.stock);
+  } catch (e) {}
+}
+function applyStock(map){
+  for (const p of P) if (map[p.id] != null) p.stock = map[p.id];
+  for (const [id, q] of Object.entries(cart)){ const m = maxQty(id); if (q > m){ if (m > 0) cart[id] = m; else delete cart[id]; } }
+  saveCart(); refreshViews();
+}
+function refreshViews(){
+  if (view === 'pdp' && current) renderPdp(); else if ($('#grid').getAttribute('aria-busy') !== 'true') renderGrid();
+  renderCart();
+}
+async function confirmOrder(){
+  if (sending) return;
+  sending = true; orderErr = ''; orderErrWa = false; renderCart();
+  const items = Object.entries(cart).map(([sku, cantidad]) => ({sku, cantidad}));
+  try {
+    const {status, data} = await api('/api/pedido', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({items})});
+    if (status === 201){
+      for (const it of data.items){ const p = P.find(x => x.id === it.sku); if (p) p.stock = it.stock; }
+      const sub = data.total, ship = sub >= FREE ? 0 : SHIP;
+      done = {...data, ship, rx: data.items.some(it => (P.find(x => x.id === it.sku) || {}).rx)};
+      cart = {}; saveCart();
+    } else if (status === 409 && data.faltantes){
+      for (const f of data.faltantes){ const p = P.find(x => x.id === f.sku); if (p) p.stock = f.disponible; }
+      for (const id of Object.keys(cart)){ const m = maxQty(id); if (cart[id] > m){ if (m > 0) cart[id] = m; else delete cart[id]; } }
+      saveCart();
+      orderErr = 'Mientras comprabas se agotaron unidades: ' + data.faltantes.map(f => `${f.nombre || f.sku} (quedan ${f.disponible})`).join(', ') + (Object.keys(cart).length ? '. Ajustamos tu carro; revísalo y confirma de nuevo.' : '. Lo quitamos de tu carro.');
+      loadStock(true);
+    } else {
+      orderErr = (data && data.error ? data.error : 'No pudimos reservar el pedido.') + ' Si se repite,'; orderErrWa = true;
+    }
+  } catch (e) {
+    orderErr = 'No pudimos conectarnos para reservar el pedido. Revisa tu conexión e intenta de nuevo, o'; orderErrWa = true;
+  }
+  sending = false; refreshViews();
+}
+function renderDone(body, foot){
+  const d = done, lines = d.items.map(it => `• ${it.cantidad} x ${it.nombre} [${it.sku}] (${fmt(it.subtotal)})`).join('\n');
+  const msg = encodeURIComponent(`Hola Farmacia San Daniel, confirmé el pedido ${d.pedido}:\n${lines}\nTotal: ${fmt(d.total + d.ship)}${d.rx ? '\nAdjunto la foto de la receta.' : ''}`);
+  $('#shipBar').hidden = true;
+  body.innerHTML = `<div class="order-ok" role="status"><svg class="ic"><use href="#i-check-circle--fill"/></svg>
+    <h3>Pedido <span class="order-id">${d.pedido}</span> reservado</h3>
+    <p>Guardamos estas unidades para ti. Envía el pedido por WhatsApp para coordinar el pago y la entrega${d.rx ? ', junto con la foto de la receta' : ''}.</p>
+    <ul>${d.items.map(it => `<li><span>${it.cantidad} x ${it.nombre}</span><b>${fmt(it.subtotal)}</b></li>`).join('')}</ul></div>`;
+  foot.innerHTML = `<div class="tot"><span>Despacho</span><span>${d.ship ? fmt(d.ship) : 'Gratis'}</span></div>
+    <div class="tot big"><span>Total</span><span>${fmt(d.total + d.ship)}</span></div>
+    <a class="btn btn-red" href="https://wa.me/56926014578?text=${msg}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp-logo"/></svg>Enviar pedido ${d.pedido} por WhatsApp</a>
+    <button class="btn btn-ghost" type="button" id="keepShopping">Seguir comprando</button>`;
+}
+document.addEventListener('click', e => {
+  if (e.target.closest('#confirmOrder')) confirmOrder();
+  if (e.target.closest('#keepShopping')){ done = null; renderCart(); closeCart(); }
+});
+
 let toastT;
 function toast(msg, showAct=true){ if ($('#cart').classList.contains('on')) return; $('#toastMsg').textContent = msg; $('#toastAct').hidden = !showAct; const t=$('#toast'); t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(()=>t.classList.remove('on'), 3200); }
-function openCart(){ $('#cart').classList.add('on'); $('#cart').setAttribute('aria-hidden','false'); scrim.classList.add('on'); scrim.dataset.for='cart'; setTimeout(()=>$('#cartClose').focus(),100); }
+function openCart(){ loadStock(); $('#cart').classList.add('on'); $('#cart').setAttribute('aria-hidden','false'); scrim.classList.add('on'); scrim.dataset.for='cart'; setTimeout(()=>$('#cartClose').focus(),100); }
 function closeCart(){ $('#cart').classList.remove('on'); $('#cart').setAttribute('aria-hidden','true'); if (scrim.dataset.for==='cart') scrim.classList.remove('on'); }
 $('#cartBtn').addEventListener('click', openCart);
 $('#cartClose').addEventListener('click', closeCart);
@@ -1387,6 +1476,7 @@ $$('#searchCat option').forEach(o => { if (o.value !== 'todos' && !COUNT[o.value
 $$('[data-count]').forEach(el => el.textContent = COUNT[el.dataset.count]);
 renderCart();
 route(!!SEC_BY_ID[decodeURIComponent(location.hash.slice(1))]);
+loadStock(true);
 </script>
 
 </body>
