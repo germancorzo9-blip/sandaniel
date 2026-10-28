@@ -1,6 +1,7 @@
 // POST /api/pedido  { items: [{ sku: "MED-001", cantidad: 2 }, ...] }
 // Lowers the stock in data/inventario.csv and logs the order in data/pedidos.csv.
 const { registrarPedido, accesoToken } = require('./_lib/inventario');
+const mercadopago = require('./_lib/mercadopago');
 
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
@@ -12,6 +13,12 @@ module.exports = async (req, res) => {
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = null; } }
   try {
     const r = await registrarPedido(body && body.items);
+    // With MP_ACCESS_TOKEN the customer pays online; if Mercado Pago fails the order stays
+    // reserved and the page falls back to WhatsApp.
+    if (mercadopago.activo()) {
+      try { r.pago = await mercadopago.crearPreferencia(r, req); }
+      catch (e) { console.error(e); r.pagoError = 'No pudimos abrir el pago con Mercado Pago.'; }
+    }
     return res.status(201).json(r);
   } catch (e) {
     if (e.faltantes) return res.status(409).json({ error: 'No hay stock suficiente para algunos productos.', faltantes: e.faltantes });

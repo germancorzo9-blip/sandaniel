@@ -6,6 +6,8 @@ const BRANCH = process.env.GITHUB_BRANCH || 'main';
 const API = process.env.GITHUB_API || 'https://api.github.com';
 const INV = 'data/inventario.csv';
 const LOG = 'data/pedidos.csv';
+const PAGOS = 'data/pagos.csv';
+const PAGOS_HEADER = ['pedido', 'fecha', 'pago_id', 'estado', 'detalle', 'monto', 'medio'];
 const LOG_HEADER = ['pedido', 'fecha', 'sku', 'nombre', 'cantidad', 'precio_unitario', 'subtotal', 'stock_anterior', 'stock_nuevo'];
 const MAX_POR_PRODUCTO = 10;
 const MAX_LINEAS = 30;
@@ -151,4 +153,32 @@ async function registrarPedido(items, { intentos = 8 } = {}) {
   }
 }
 
-module.exports = { parseCSV, toCSV, stockActual, registrarPedido, StockError, accesoToken };
+// Appends a Mercado Pago payment status to data/pagos.csv. Mercado Pago repeats its
+// notifications, so a payment already logged with the same status is skipped.
+async function registrarPago(p, { intentos = 8 } = {}) {
+  const fila = [p.pedido, p.fecha, String(p.pagoId), p.estado, p.detalle || '', String(p.monto), p.medio || ''];
+  for (let intento = 1; ; intento++) {
+    const base = await head();
+    const text = await readFile(PAGOS, base);
+    const log = text ? parseCSV(text) : { rows: [PAGOS_HEADER], eol: '\n' };
+    if (log.rows.some(r => r[2] === fila[2] && r[3] === fila[3])) return { repetido: true };
+    log.rows.push(fila);
+    const commit = await gh(`/git/commits/${base}`);
+    const tree = await gh('/git/trees', { method: 'POST', body: { base_tree: commit.tree.sha, tree: [
+      { path: PAGOS, mode: '100644', type: 'blob', content: toCSV(log) },
+    ] } });
+    const nuevo = await gh('/git/commits', { method: 'POST', body: { message: `Pago ${p.pedido}: ${p.estado}`, tree: tree.sha, parents: [base] } });
+    try {
+      await gh(`/git/refs/heads/${BRANCH}`, { method: 'PATCH', body: { sha: nuevo.sha, force: false } });
+      return { commit: nuevo.sha };
+    } catch (e) {
+      if ((e.status === 422 || e.status === 409) && intento < intentos) {
+        await new Promise(r => setTimeout(r, 100 + Math.random() * 300 * intento));
+        continue;
+      }
+      throw e;
+    }
+  }
+}
+
+module.exports = { parseCSV, toCSV, stockActual, registrarPedido, registrarPago, StockError, accesoToken };

@@ -37,7 +37,7 @@ Cuando un cliente presiona **Confirmar pedido** en el carro:
 2. Si alcanza, descuenta las unidades, anota cada línea en `data/pedidos.csv` (número de pedido, fecha, SKU, cantidad, precio, stock anterior y nuevo) y guarda ambos archivos en un solo commit `Pedido SD-…`.
 3. El cliente ve el número de pedido y lo envía por WhatsApp para coordinar pago y entrega.
 
-Si dos clientes compran la última unidad al mismo tiempo, solo uno la obtiene; al otro se le avisa y se ajusta su carro. `api/stock.js` entrega el stock actual y la página lo consulta al abrirse y al abrir el carro, así muestra lo que realmente queda sin tener que regenerarse. `vercel.json` evita un nuevo despliegue cuando un commit solo cambia los CSV.
+Si dos clientes compran la última unidad al mismo tiempo, solo uno la obtiene; al otro se le avisa y se ajusta su carro. `api/stock.js` entrega el stock actual y la página lo consulta al abrirse y al abrir el carro, así muestra lo que realmente queda sin tener que regenerarse. `vercel.json` evita un nuevo despliegue cuando un commit solo cambia los CSV de inventario, pedidos o pagos.
 
 `data/pedidos.csv` no guarda datos personales porque el repositorio es público; el nombre, teléfono y dirección del cliente llegan solo por WhatsApp.
 
@@ -52,6 +52,26 @@ Sin el token la tienda sigue funcionando como antes: el carro envía el pedido p
 ### Al editar el inventario a mano
 
 Los pedidos hacen commits en `main`, así que antes de editar ejecuta `git pull`. Para reponer stock o anular un pedido, cambia la columna `stock` del producto en `data/inventario.csv` y sube el cambio.
+
+## Pago con Mercado Pago
+
+Al confirmar el pedido, además de reservar el stock, `api/pedido.js` crea un pago de Mercado Pago (Checkout Pro) con los productos, precios del inventario y el despacho ($2.990 bajo $29.990). El carro muestra **Pagar con Mercado Pago**, que lleva al cliente a pagar con tarjeta de débito, crédito o saldo de Mercado Pago, y deja la opción de coordinar el pago por WhatsApp.
+
+1. Al terminar, Mercado Pago devuelve al cliente a la tienda (`/?pago=aprobado|pendiente|rechazado&pedido=SD-…`) y el carro le muestra el resultado. Si el pago falla, puede intentarlo de nuevo; las unidades siguen reservadas.
+2. Mercado Pago avisa cada pago a `api/mercadopago.js`, que consulta el pago directamente en Mercado Pago y lo anota en `data/pagos.csv` (pedido, fecha, id del pago, estado, detalle, monto y medio de pago) con un commit `Pago SD-…: approved`.
+3. Para saber si un pedido está pagado, busca su número en `data/pagos.csv`: `approved` es pagado; `pending` o `in_process` está en proceso; `rejected` o `cancelled` no se pagó. También lo ves en tu cuenta de Mercado Pago → Actividad, con el número del pedido como referencia.
+
+Los pedidos rechazados o sin pagar mantienen el stock reservado: para liberarlo, súbelo a mano en `data/inventario.csv`.
+
+### Configuración (una sola vez)
+
+1. Entra a [Mercado Pago Developers → Tus integraciones](https://www.mercadopago.cl/developers/panel/app), crea una aplicación (producto **Pagos online → Checkout Pro**) y copia el **Access Token** de *Credenciales de producción*. Para probar sin cobrar, usa el de *Credenciales de prueba* (empieza con `TEST-`).
+2. En Vercel → Settings → Environment Variables agrega `MP_ACCESS_TOKEN` con ese token (Production).
+3. Opcional, recomendado: en tu aplicación de Mercado Pago → Webhooks, configura la URL `https://<tu-dominio>/api/mercadopago` con el evento **Pagos**, copia la **clave secreta** y agrégala en Vercel como `MP_WEBHOOK_SECRET`. Así la tienda rechaza avisos que no vengan de Mercado Pago.
+4. Opcional: si la tienda usa un dominio propio, agrega `SITE_URL` (por ejemplo `https://farmaciasandaniel.cl`) para que Mercado Pago devuelva al cliente a ese dominio.
+5. Usa **Redeploy** en el último despliegue.
+
+Sin `MP_ACCESS_TOKEN` el carro funciona como antes: reserva el pedido y lo envía por WhatsApp. El registro de pagos usa el mismo `GITHUB_TOKEN` de los pedidos.
 
 ## Página de cada producto
 
@@ -92,4 +112,5 @@ Reemplaza los datos de ejemplo por los reales:
 
 - Teléfono `600 260 1457` y WhatsApp `+56 9 2601 4578` (también en el enlace `wa.me/56926014578`).
 - Direcciones de los locales, nombre del químico farmacéutico responsable y cifras ("27 años", "14 locales", reseñas).
+- En `api/_lib/mercadopago.js`, `FREE` y `SHIP` (despacho gratis y su costo) deben coincidir con los del carro en `src.html`.
 - Textos comerciales que no vienen del inventario: beneficios del Club San Daniel, 10% de descuento por suscribirse, despacho gratis sobre $29.990, entrega express, años, locales y reseñas.
