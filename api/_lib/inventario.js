@@ -43,8 +43,18 @@ async function gh(path, opts = {}) {
     body: opts.body ? JSON.stringify(opts.body) : undefined,
   });
   const data = res.status === 204 ? null : await res.json().catch(() => null);
-  if (!res.ok) throw Object.assign(new Error(`GitHub ${res.status}: ${data && data.message}`), { status: res.status, github: true });
+  if (!res.ok) {
+    const need = res.headers.get('x-accepted-github-permissions');
+    throw Object.assign(new Error(`GitHub ${res.status}: ${data && data.message}${need ? ` (permiso requerido: ${need})` : ''}`), { status: res.status, github: true });
+  }
   return data;
+}
+// What the configured token can do on this repository, to explain a 403 without exposing the token
+async function accesoToken() {
+  try {
+    const r = await gh('');
+    return r.permissions ? (r.permissions.push ? 'el token puede escribir en el repositorio' : 'el token solo puede leer el repositorio') : 'GitHub no informó los permisos del token';
+  } catch (e) { return e.message; }
 }
 async function readFile(path, ref) {
   try {
@@ -140,4 +150,4 @@ async function registrarPedido(items, { intentos = 8 } = {}) {
   }
 }
 
-module.exports = { parseCSV, toCSV, stockActual, registrarPedido, StockError };
+module.exports = { parseCSV, toCSV, stockActual, registrarPedido, StockError, accesoToken };
